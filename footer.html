@@ -1,0 +1,195 @@
+<!-- footer-custom.liquid -->
+{% schema %}
+{
+  "name": "Custom Footer",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "footer_logo",
+      "label": "Footer Logo"
+    },
+    {
+      "type": "image_picker",
+      "id": "footer_secondary_image",
+      "label": "Secondary Image"
+    },
+    {
+      "type": "text",
+      "id": "footer_description",
+      "label": "Footer Description",
+      "default": "Commodo egestas etiam arcu curabitur aliquam volutpat a gravida."
+    },
+    {
+      "type": "image_picker",
+      "id": "icon_facebook",
+      "label": "Facebook Icon"
+    },
+    {
+      "type": "image_picker",
+      "id": "icon_instagram",
+      "label": "Instagram Icon"
+    },
+    {
+      "type": "image_picker",
+      "id": "icon_x",
+      "label": "X (Twitter) Icon"
+    },
+    {
+      "type": "image_picker",
+      "id": "icon_youtube",
+      "label": "YouTube Icon"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Footer",
+      "category": "Footer"
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+  .custom-footer {
+    background-color: #0c2d48;
+    color: white;
+    text-align: center;
+    padding: 40px 20px;
+    font-family: sans-serif;
+  }
+
+  .footer-logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+
+  .footer-links a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .footer-socials {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+
+  .footer-socials img {
+    width: 24px;
+    height: 24px;
+  }
+
+  .footer-bottom {
+    border-top: 1px solid #ccc;
+    padding-top: 20px;
+    font-size: 13px;
+    color: #bbb;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .footer-bottom .links {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .footer-bottom .links a {
+    color: #bbb;
+    text-decoration: none;
+  }
+
+  .footer-bottom .copyright {
+    text-align: center;
+    flex: 1 1 100%;
+  }
+
+  .logo_text {
+    width: 176px;
+  }
+
+  @media (min-width: 600px) {
+    .footer-bottom .copyright {
+      flex: none;
+      text-align: left;
+    }
+
+    .footer-bottom .links {
+      justify-content: flex-end;
+    }
+  }
+</style>
+
+<div class="custom-footer">
+  <div class="footer-logo">
+    {% if section.settings.footer_logo %}
+      <a href="/" aria-label="Homepage">
+        <img src="{{ section.settings.footer_logo | image_url: width: 80 }}" alt="Footer Logo" style="height: 60px;">
+      </a>
+    {% endif %}
+    {% if section.settings.footer_secondary_image %}
+      <img class="logo_text" src="{{ section.settings.footer_secondary_image | image_url: width: 80 }}" alt="Secondary Image" style="height: 60px;">
+    {% endif %}
+    <p style="max-width: 400px;">{{ section.settings.footer_description }}</p>
+  </div>
+
+  <div class="footer-links">
+    <a href="/shipping">Shipping</a>
+    <a href="/warranty">Warranty</a>
+    <a href="/faqs">FAQs</a>
+    <a href="/blog">Blog</a>
+    <a href="/contact">Contact</a>
+  </div>
+
+  <div class="footer-socials">
+    {% if section.settings.icon_facebook %}
+      <a href="#" aria-label="Facebook">
+        <img src="{{ section.settings.icon_facebook | image_url: width: 24 }}" alt="Facebook">
+      </a>
+    {% endif %}
+    {% if section.settings.icon_instagram %}
+      <a href="#" aria-label="Instagram">
+        <img src="{{ section.settings.icon_instagram | image_url: width: 24 }}" alt="Instagram">
+      </a>
+    {% endif %}
+    {% if section.settings.icon_x %}
+      <a href="#" aria-label="X">
+        <img src="{{ section.settings.icon_x | image_url: width: 24 }}" alt="X">
+      </a>
+    {% endif %}
+    {% if section.settings.icon_youtube %}
+      <a href="#" aria-label="YouTube">
+        <img src="{{ section.settings.icon_youtube | image_url: width: 24 }}" alt="YouTube">
+      </a>
+    {% endif %}
+  </div>
+
+  <div class="footer-bottom">
+    <div class="copyright">
+      © 2025 Skaroob. All Rights Reserved.
+    </div>
+    <div class="links">
+      <a href="/terms">Terms and Conditions</a>
+      <a href="/privacy">Privacy Policy</a>
+      <a href="/terms-of-use">Terms of Use</a>
+    </div>
+  </div>
+</div>
