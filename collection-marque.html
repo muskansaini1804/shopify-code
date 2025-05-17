@@ -22,11 +22,11 @@ background: linear-gradient(to right, rgba(0 , 0,0, 0.1), rgba(255, 255, 255, 0)
             {% for card in section.blocks %}
             <div class="swiper-slide">
               <div
-                class="border-[1.07px] !box-border hover:shadow-[0px_2px_20px_0px_#112D491A] duration-300 w-full flex items-center gap-[14px] border-[#112D491A] p-[16px] rounded-[8px]"
+                class="border-[1.07px] !box-border hover:shadow-[0px_2px_20px_0px_#112D491A] duration-300 w-full flex items-center gap-[14px] border-[#112D491A] p-[16px] max-sm:p-[14px] rounded-[8px]"
               >
-                <a class="flex gap-[14px] items-center"href="{{ card.settings.link }}">
+                <a class="flex gap-[14px] max-lg:gap-[10px] items-center"href="{{ card.settings.link }}">
                   <div
-                    class="rounded-full bg-[#112D49] flex justify-center items-center min-w-[59px] min-h-[59px]"
+                    class="rounded-full bg-[#112D49] flex justify-center items-center min-w-[59px] min-h-[59px] max-lg:min-w-[45px] max-lg:min-h-[45px] max-sm:min-h-[40px] max-sm:min-w-[40px]"
                   >
                    {% if card.settings.image %}
                     <img src="{{ card.settings.image | image_url }}" alt="{{ card.settings.title }}" width="31" height="31">
@@ -44,11 +44,11 @@ background: linear-gradient(to right, rgba(0 , 0,0, 0.1), rgba(255, 255, 255, 0)
           </div>
         </div>
           <div class="swiper-buttons w-full flex justify-between">
-             <div class="absolute top-1/2 left-0 z-[2] left-overlay -translate-y-1/2 min-w-[100px] max-sm:min-w-[70px] flex justify-start pl-[10px] items-center min-h-[93px]">
+             <div class="absolute top-1/2 left-0 z-[2] left-overlay -translate-y-1/2 min-w-[100px] max-sm:min-w-[60px] flex justify-start pl-[10px] items-center min-h-[93px] max-lg:min-h-[79px] max-sm:min-h-[70px]">
                 <button
-                class="swiper-button-prev-custom flex bg-white hover:bg-[#112D49] group transition-all duration-300 justify-center rounded-full items-center border border-solid border-[#112D49] size-[38px] aspect-square"
+                class="swiper-button-prev-custom flex bg-white hover:bg-[#112D49] group transition-all duration-300 justify-center rounded-full items-center border border-solid border-[#112D49] size-[38px] max-sm:size-[30px] aspect-square"
               >
-                <svg 
+                <svg class="max-sm:w-[5px]" 
                   width="9"
                   height="14"
                   viewBox="0 0 9 14"
@@ -65,11 +65,11 @@ background: linear-gradient(to right, rgba(0 , 0,0, 0.1), rgba(255, 255, 255, 0)
                 </svg>
               </button>
              </div>
-             <div class="absolute top-1/2 right-0 right-overlay z-[2] -translate-y-1/2 min-w-[100px] max-sm:min-w-[70px] flex justify-end pr-[10px] items-center min-h-[93px]">
+             <div class="absolute top-1/2 right-0 right-overlay z-[2] -translate-y-1/2 min-w-[100px] max-sm:min-w-[60px] flex justify-end pr-[10px] items-center min-h-[93px] max-lg:min-h-[79px] max-sm:min-h-[70px]">
               <button
-                class="swiper-button-next-custom flex bg-white hover:bg-[#112D49] group transition-all duration-300 rotate-180 rounded-full justify-center items-center border border-solid border-[#112D49] size-[38px] aspect-square"
+                class="swiper-button-next-custom flex bg-white hover:bg-[#112D49] group transition-all duration-300 rotate-180 rounded-full justify-center items-center border border-solid border-[#112D49] size-[38px] max-sm:size-[30px] aspect-square"
               >
-                <svg 
+                <svg class="max-sm:w-[5px]"
                   width="9"
                   height="14"
                   viewBox="0 0 9 14"
@@ -105,14 +105,17 @@ background: linear-gradient(to right, rgba(0 , 0,0, 0.1), rgba(255, 255, 255, 0)
           1280: {
             slidesPerView: 6,
             centeredSlides: false,
-             loop : false,
           },
           1024: {
             slidesPerView: 5,
             centeredSlides: true,
           },
+          940: {
+              slidesPerView: 4.5,
+            centeredSlides: true,
+          },
           768: {
-            slidesPerView: 4.5,
+            slidesPerView: 4,
             centeredSlides: true,
           },
           640: {
