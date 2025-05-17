@@ -1,0 +1,148 @@
+{% schema %}
+{
+  "name": "Feature Row",
+  "tag": "section",
+  "class": "feature-row-section",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Feature Icon"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "EXPRESS Delivery"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Subtitle",
+          "default": "Order Now"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 5,
+  "presets": [
+    {
+      "name": "Feature Row",
+      "blocks": [
+        { "type": "feature" },
+        { "type": "feature" },
+        { "type": "feature" },
+        { "type": "feature" },
+        { "type": "feature" }
+      ]
+    }
+  ]
+}
+{% endschema %}
+{% style %}
+.feature-row-wrapper {
+  background-color: #F1F7FD;
+  border-radius: 10px;
+  padding: 20px 30px;
+}
+.feature-row {
+  display: flex;
+}
+.feature-block {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-width: 1px;
+  border-style: solid;
+  border-top:0 !important;
+  border-bottom:0;
+  border-left:0 !important;
+  border-color: transparent; /* Hide all borders */
+  border-right-color: transparent; /* Ensure right border is transparent so gradient shows */
+
+  border-image-source: linear-gradient(
+    180deg,
+    rgba(17, 45, 73, 0) 0%,
+    #112D49 51.44%,
+    rgba(17, 45, 73, 0) 100%
+  );
+  border-image-slice: 1;
+  border-image-width: 1;
+  
+}
+.feature-block:last-child {
+  border-right: none;
+}
+.feature-icon {
+  background-color: #4F88D8;
+  border-radius: 50%;
+  padding: 10px;
+  width: 47px;
+  height: 47px;
+  display: flex;
+  align-items: center;
+}
+.feature-icon img {
+  max-width: 24px;
+  max-height: 24px;
+}
+.feature-text h4 {
+  margin: 0;
+  font-weight: 700;
+  font-size: 14px;
+  color: #000;
+}
+.feature-text p {
+  margin: 0;
+  font-size: 13px;
+  color: #333;
+}
+@media
+ (max-width: 768px) {
+  .feature-row {
+    flex-direction: column;
+    gap:24px
+  }
+ .feature-block {
+  border: 1px solid;
+  border-top:0 !important;
+  border-right: none;
+  border-bottom: 1px solid #D1D1D1 !important;
+  padding-bottom: 15px;
+  border-image-source: linear-gradient(
+    90deg,
+    rgba(17, 45, 73, 0) 0%,
+    #112D49 51.44%,
+    rgba(17, 45, 73, 0) 100%
+  );
+  border-image-slice: 1;
+}
+  .feature-block:last-child {
+    border-bottom: 0 !important;
+  }
+}
+{% endstyle %}
+<div class="bg-[#F1F6FC] rounded-[8px] mx-[24px] md:!mt-[24px] !mt-[42px]">
+<div class="feature-row-wrapper lg:!py-[43px] max-lg:!mx-[24px]">
+  <div class="feature-row !max-w-[1384px] mx-auto min-[1400px]:!h-[61px] xl:gap-[30px] justify-center md:gap-[20px] flex-wrap max-md:!max-w-[330px] max-md:mx-auto min-[1400px]:!flex-nowrap min-[1400px]:px-[60px]">
+    {% for block in section.blocks %}
+      <div class="feature-block max-md:!justify-start :!justify-center max-md:flex max-[460px]:!gap-[10px] max-[460px]:mx-auto max-[460px]:items-center max-[460px]:flex-col  max-[460px]:max-w-[176px] xl:pr-[30px] md:pr-[20px] last:pr-0">
+        <div class="feature-icon">
+          {% if block.settings.icon %}
+            <img src="{{ block.settings.icon | image_url: width: 48 }}" alt="Icon">
+          {% endif %}
+        </div>
+        <div class="feature-text">
+          <h4 class="text-nowrap !font-[700] text-[16px] text-black !leading-[150%] max-[460px]:text-center">{{ block.settings.title }}</h4>
+          <p class="text-nowrap max-[460px]:pt-[4px] text-[14px] text-black !leading-[120%] max-[460px]:text-center">{{ block.settings.subtitle }}</p>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+</div>
