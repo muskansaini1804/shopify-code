@@ -1,130 +1,145 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 <div class="xl:py-[132px] relative lg:py-[100px] xl:!pb-0 sm:py-[80px] px-[24px] py-[54px]">
   <div class="max-w-[1140px] mx-auto">
-<div class="max-w-[602px] mx-auto  flex flex-col gap-[8px]">
-           <p class="leading-[120%] text-[20px] italic text-center max-lg:text-[18px] text-[#112D49]">{{ section.settings.sub_heading }}</p>
-         <h2 class="!font-[700] !text-center !leading-[120%] max-sm:max-w-[240px] max-sm:px-10 mx-auto !text-[48px] max-lg:!text-[40px] max-md:!text-[28px] !text-[#112D49]">{{ section.settings.heading }}</h2>
-       </div>
-    
-    <div class="swiper testimonial !px-[6px] !pb-[6px] xl:!pt-[59px] lg:!pt-[40px] !pt-[32px] max-xl:!pb-[40px] max-md:!pb-[15px] ">
-      <div class="swiper-wrapper xl:pb-[100px] ">
-  {% for card in section.blocks %}
-    <div class="swiper-slide">
-    <div class="bg-white rounded-[8px] max-w-[558px] flex flex-col justify-center items-center sm:p-[20px] px-[14px] py-[20px] hover:shadow-[0px_2px_20px_0px_#112D491A] max-[580px]:shadow-[0px_2px_20px_0px_#112D491A] duration-300 transition-all">
-                {% if card.settings.image %}
-       <img src="{{ card.settings.image | image_url }}" alt="{{ card.settings.name }}" class="rounded-full md:w-[93px] w-[74px] md:h-[93px] h-[74px]" width="93" height="93">
-    {% endif %}
-    <p class="font-normal inline-block sm:text-[16px] text-[14px] text-center pt-[16px] !leading-[150%] md:pb-[20px] pb-[18px] text-[#112D49]/80 align-middle">
-  <img src="https://cdn.shopify.com/s/files/1/0932/6906/6023/files/start-comma.png?v=1747288508"
-       width="20" height="20"
-       class="inline-block align-text-top mr-1" />
-  {{ card.settings.description }}
-  <img src="https://cdn.shopify.com/s/files/1/0932/6906/6023/files/end-comma.png?v=1747288589"
-       width="20" height="20"
-       class="inline-block align-text-bottom ml-1" />
-</p>
-                <img src="https://cdn.shopify.com/s/files/1/0932/6906/6023/files/rating.png?v=1747286992" width="192" height="31" class="max-w-[192px] max-sm:w-[133px] max-sm:h-[25px] w-full mb-[8px] sm:mb-[10px]">
-                <p class="sm:text-[24px] text-[20px] text-center font-semibold !leading-[100%] text-[#112D49]">{{ card.settings.name }}</p>
-                <p class="font-normal text-center sm:text-[16px] text-[14px] !leading-[161%] text-[#112D49]/70">{{ card.settings.designation }}</p>
-              </div>
-      </div>
-  {% endfor %}
-              </div>
+    <div class="max-w-[602px] mx-auto  flex flex-col gap-[10px] md:gap-[8px]">
+      <p class="leading-[120%] text-[20px] italic text-center max-lg:text-[18px] text-[#112D49]">{{
+        section.settings.sub_heading }}</p>
+      <h2
+        class="!font-[700] capitalize !text-center !leading-[120%] max-sm:max-w-[240px] max-sm:px-10 mx-auto !text-[48px] max-lg:!text-[40px] max-md:!text-[28px] !text-[#112D49]">
+        {{ section.settings.heading }}</h2>
+    </div>
+
+    <div class="swiper testimonial !px-[6px]  xl:!pt-[59px] lg:!pt-[40px] !pt-[32px] max-md:!pb-[15px] ">
+      <div class="swiper-wrapper xl:pb-[132px] ">
+        {% for card in section.blocks %}
+        <div class="swiper-slide">
+          <div
+            class="bg-white rounded-[8px] max-w-[558px] flex flex-col justify-center items-center sm:p-[20px] px-[14px] py-[20px] hover:shadow-[0px_2px_20px_0px_#112D491A] max-[580px]:shadow-[0px_2px_20px_0px_#112D491A] duration-300 transition-all">
+            {% if card.settings.image %}
+            <img src="{{ card.settings.image | image_url }}" alt="{{ card.settings.name }}"
+              class="rounded-full md:w-[93px] w-[74px] md:h-[93px] h-[74px]" width="93" height="93">
+            {% endif %}
+            <p
+              class="font-normal inline-block sm:text-[16px] text-[14px] text-center pt-[16px] !leading-[150%] md:pb-[20px] pb-[18px] text-[#112D49]/80 align-middle">
+              <img src="https://cdn.shopify.com/s/files/1/0932/6906/6023/files/start-comma.png?v=1747288508" width="20"
+                height="20" class="inline-block align-text-top mr-1" />
+              {{ card.settings.description }}
+              <img src="https://cdn.shopify.com/s/files/1/0932/6906/6023/files/end-comma.png?v=1747288589" width="20"
+                height="20" class="inline-block align-text-bottom ml-1" />
+            </p>
+            <img src="https://cdn.shopify.com/s/files/1/0932/6906/6023/files/rating.png?v=1747286992" width="192"
+              height="31" class="max-w-[192px] max-sm:w-[133px] max-sm:h-[25px] w-full mb-[8px] sm:mb-[10px]">
+            <p class="sm:text-[24px] text-[20px] text-center font-semibold !leading-[120%] text-[#112D49]">{{
+              card.settings.name }}</p>
+            <p class="font-normal text-center sm:text-[16px] text-[14px] !leading-[161%] text-[#112D49]/70">{{
+              card.settings.designation }}</p>
+          </div>
+        </div>
+        {% endfor %}
       </div>
     </div>
-   <div class="flex absolute top-[64%] left-1/2 max-w-[1256px]  w-full -translate-x-1/2 -translate-y-1/2 max-xl:relative max-xl:translate-y-0 max-xl:translate-0-1/2 max-xl:justify-center max-sm:gap-[8px] max-xl:gap-[20px] justify-between">
-  <!-- Previous Button -->
-  <div class="testimonial-button-prev left-[-2%] cursor-pointer max-sm:w-[33px] max-sm:h-[33px] !w-[38px] flex group justify-center items-center !h-[38px] border-[#112D49] rounded-full border min-w-[38px] size-[38px] hover:bg-[#112D49] transition-all duration-300">
- <svg width="25" height="24" viewBox="0 0 25 24" class="stroke-[#112D49] rotate-180 group-hover:stroke-white transition-all duration-300" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M9.35352 18L15.3535 12L9.35352 6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
   </div>
-  <!-- Next Button -->
-  <div class="testimonial-button-next !w-[38px] cursor-pointer max-sm:w-[33px] max-sm:h-[33px] !h-[38px] flex group justify-center items-center border-[#112D49] rounded-full min-w-[38px] border size-[38px] hover:bg-[#112D49] transition-all duration-300">
-    <svg width="25" height="24" viewBox="0 0 25 24" class="stroke-[#112D49] group-hover:stroke-white transition-all duration-300" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M9.35352 18L15.3535 12L9.35352 6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
+  <div
+    class="flex absolute top-[60%] left-1/2 max-w-[1256px]  w-full -translate-x-1/2 -translate-y-1/2 max-xl:relative max-xl:translate-y-0 max-xl:translate-0-1/2 max-xl:justify-center max-sm:gap-[8px] max-xl:gap-[20px] justify-between">
+    <!-- Previous Button -->
+    <div
+      class="testimonial-button-prev left-[-2%] cursor-pointer max-sm:w-[33px] max-sm:h-[33px] !w-[38px] flex group justify-center items-center !h-[38px] border-[#112D49] rounded-full border min-w-[38px] size-[38px] hover:bg-[#112D49] transition-all duration-300">
+      <svg width="25" height="24" viewBox="0 0 25 24"
+        class="stroke-[#112D49] rotate-180 group-hover:stroke-white transition-all duration-300" fill="none"
+        xmlns="http://www.w3.org/2000/svg">
+        <path d="M9.35352 18L15.3535 12L9.35352 6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </div>
+    <!-- Next Button -->
+    <div
+      class="testimonial-button-next !w-[38px] cursor-pointer max-sm:w-[33px] max-sm:h-[33px] !h-[38px] flex group justify-center items-center border-[#112D49] rounded-full min-w-[38px] border size-[38px] hover:bg-[#112D49] transition-all duration-300">
+      <svg width="25" height="24" viewBox="0 0 25 24"
+        class="stroke-[#112D49] group-hover:stroke-white transition-all duration-300" fill="none"
+        xmlns="http://www.w3.org/2000/svg">
+        <path d="M9.35352 18L15.3535 12L9.35352 6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </div>
   </div>
 </div>
-       </div>
-       <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script>
   document.querySelectorAll('.testimonial').forEach(swiperContainer => {
-  if (!swiperContainer.classList.contains('swiper-initialized')) {
-    new Swiper(swiperContainer, {
-      slidesPerView: 1,
-      spaceBetween: 24,
-      loop: true,
-      pagination: {
-        el: swiperContainer.querySelector('.swiper-pagination'),
-        clickable: true,
-      },
-      navigation: {
-        nextEl: document.querySelector('.testimonial-button-next'),
-        prevEl: document.querySelector('.testimonial-button-prev'),
-      },
-      breakpoints: {
-        480: { slidesPerView: 1 ,
-             },
-         580: { slidesPerView: 1.5 },
-        800: { slidesPerView: 2, },
-      },
-    });
-  }
-});
+    if (!swiperContainer.classList.contains('swiper-initialized')) {
+      new Swiper(swiperContainer, {
+        slidesPerView: 1,
+        spaceBetween: 24,
+        loop: true,
+        pagination: {
+          el: swiperContainer.querySelector('.swiper-pagination'),
+          clickable: true,
+        },
+        navigation: {
+          nextEl: document.querySelector('.testimonial-button-next'),
+          prevEl: document.querySelector('.testimonial-button-prev'),
+        },
+        breakpoints: {
+          480: {
+            slidesPerView: 1,
+          },
+          580: { slidesPerView: 1.5 },
+          800: { slidesPerView: 2, },
+        },
+      });
+    }
+  });
 </script>
 {% schema %}
-  {
-    "name": "testimonial",
-    "settings": [
-      {
-        "type": "text",
-        "label": "sub_heading",
-        "id": "sub_heading"
-      },
-       {
-        "type": "text",
-        "label": "heading",
-        "id": "heading"
-      },
-    ],
-    "blocks": [
-      {
-        "type": "testimonial_card",
-        "name":"testimonial_card",
-        "settings": [
-          {
-            "type": "image_picker",
-            "label": "image",
-            "id": "image"
-          },
-           {
-            "type": "text",
-            "label": "description",
-            "id": "description"
-          },
-           {
-            "type": "text",
-            "label": "name",
-            "id": "name"
-          },
-           {
-            "type": "text",
-            "label": "designation",
-            "id": "designation"
-          }
-        ]
-      }
-    ],
-    "presets": [
-      {
-        "name": "testimonial",
-        "blocks": [
-          {
-            "type": "testimonial_card"
-          }
-        ]
-      }
-    ]
-  }
+{
+"name": "testimonial",
+"settings": [
+{
+"type": "text",
+"label": "sub_heading",
+"id": "sub_heading"
+},
+{
+"type": "text",
+"label": "heading",
+"id": "heading"
+},
+],
+"blocks": [
+{
+"type": "testimonial_card",
+"name":"testimonial_card",
+"settings": [
+{
+"type": "image_picker",
+"label": "image",
+"id": "image"
+},
+{
+"type": "text",
+"label": "description",
+"id": "description"
+},
+{
+"type": "text",
+"label": "name",
+"id": "name"
+},
+{
+"type": "text",
+"label": "designation",
+"id": "designation"
+}
+]
+}
+],
+"presets": [
+{
+"name": "testimonial",
+"blocks": [
+{
+"type": "testimonial_card"
+}
+]
+}
+]
+}
 {% endschema %}
