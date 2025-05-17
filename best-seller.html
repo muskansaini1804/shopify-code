@@ -5,132 +5,153 @@
       --color-dark-black: #010101;
   }
 </style>
-<div class="best-seller relative py-10 px-[24px]">
+<div class="best-seller xl:py-[132px] py-[112px] relative py-10 px-[24px]">
   <div class="max-w-[1140px] container mx-auto">
-      <h2 class="!font-[700] ff-montserrat text-center !text-[48px] max-sm !text-[#112D49] leading-[120%]  max-lg:!text-[40px] max-md:!text-[32px] max-sm:!text-[28px]">
-        {{ section.settings.heading }}
-      </h2>
-<div class="swiper best-seller-slider !pt-[116px] max-lg:!pt-[80px] max-sm:!pt-[54px] max-sm:!pb-[23px] max-xl:!pb-10">
+    <h2
+      class="!font-[700] ff-montserrat text-center !text-[48px] max-sm !text-[#112D49] leading-[120%]  max-lg:!text-[40px] max-md:!text-[32px] max-sm:!text-[28px]">
+      {{ section.settings.heading }}
+    </h2>
+    <div
+      class="swiper best-seller-slider !pt-[116px] max-lg:!pt-[80px] max-sm:!pt-[54px] max-sm:!pb-[23px] max-xl:!pb-10">
       <div class="swiper-wrapper">
-      {% if section.settings.selected_collection != blank %}
+        {% if section.settings.selected_collection != blank %}
         {% assign products = collections[section.settings.selected_collection].products %}
         {% for product in products %}
-          <div class="swiper-slide">
-          <div class="md:p-[16px] p-[12px] bg-white rounded-[8px] relative hover:shadow-[0px_0px_11.4px_0px_#73A4E033] max-[480px]:shadow-[0px_0px_11.4px_0px_#73A4E033] duration-300 flex flex-col border-[#112D4914] border justify-between max-md:min-h-[494px] min-h-[536px]">
+        <div class="swiper-slide">
+          <div
+            class="md:p-[16px] p-[12px] bg-white rounded-[8px] relative hover:shadow-[0px_0px_11.4px_0px_#73A4E033] max-[480px]:shadow-[0px_0px_11.4px_0px_#73A4E033] duration-300 flex flex-col border-[#112D4914] border justify-between gap-[22px] max-md:min-h-[494px] min-h-[506px]">
             <a href="{{ product.url }}" class="flex flex-col gap-[14px] md:gap-[16px]">
-            {% assign is_even = forloop.index0 | modulo: 2 %}
-<div class="relative rounded-[4px] duration-300 !min-h-[242px]" style="background-color: {% if is_even == 0 %}#E5E4E2{% else %}#EEF4FB{% endif %};">
-            <img src="{{ product.featured_image | image_url }}" alt="{{ product.title }}" class="absolute bottom-[12px] left-[50%] translate-x-[-50%] max-h-[336px] max-lg:max-h-[300px] max-md:max-h-[277px] object-contain" width="238" height="274">
-            </div>
-            <div class="flex flex-col gap-2 max-sm:gap-[6px]">
-              <p class="!font-[700] leading-[120%] ff-montserrat text-[#112D49] text-[24px] max-lg:text-[20px]">{{ product.title }}</p>
-              <p class="leading-[150%] ff-montserrat text-[#112D49]/80 font-normal text-[16px] max-sm:text-[14px]">{{ product.description | strip_html | truncate: 100 }}</p>
-            </div>
+              {% assign is_even = forloop.index0 | modulo: 2 %}
+              <div class="relative rounded-[4px] duration-300 !min-h-[242px]"
+                style="background-color: {% if is_even == 0 %}#E5E4E2{% else %}#EEF4FB{% endif %};">
+                <img src="{{ product.featured_image | image_url }}" alt="{{ product.title }}"
+                  class="absolute bottom-[12px] left-[50%] translate-x-[-50%] max-h-[336px] max-lg:max-h-[300px] max-md:max-h-[277px] object-contain"
+                  width="238" height="274">
+              </div>
+              <div class="flex flex-col gap-2 max-sm:gap-[6px]">
+                <p class="!font-[700] leading-[120%] ff-montserrat text-[#112D49] text-[24px] max-lg:text-[20px]">{{
+                  product.title }}</p>
+                <p class="leading-[150%] ff-montserrat text-[#112D49]/80 font-normal text-[16px] max-sm:text-[14px]">{{
+                  product.description | strip_html | truncate: 100 }}</p>
+              </div>
+            </a>
+            <div class="flex flex-col  gap-[25px]">
+              <a href="{{ product.url }}" class="flex flex-col gap-[16px]">
+                <div class="flex items-center justify-between">
+                  <p class="font-semibold leading-[100%] !text-[#112D49] ff-montserrat text-[24px] max-sm:text-[20px]">
+                    ${{ product.price | dollar }}</p>
+                  <div>
+                    {{ 'rating.svg' | inline_asset_content }}
+                  </div>
+                </div>
               </a>
-          <div class="flex flex-col  gap-[25px]">
-             <a href="{{ product.url }}" class="flex flex-col gap-[16px]">
-            <div class="flex items-center justify-between">
-              <p class="font-semibold leading-[100%] !text-[#112D49] ff-montserrat text-[24px] max-sm:text-[20px]">${{ product.price | money }}</p>
-              <div>
-          {{ 'rating.svg' | inline_asset_content }}
+              <div class="flex max-sm:gap-[19px] gap-[24px] max-sm:h-[49px] items-center justify-between">
+                <a href="/cart/{{ product.variants.first.id }}:1"
+                  class="group cursor-pointer relative flex max-sm:py-[14px] justify-center px-[20px] !rounded-full py-[16px] max-w-[260px] w-full !bg-[#FFFFFF] !border-[2px] !border-[#112D49] text-white font-medium !leading-[120%] text-[14px] overflow-hidden rounded-[36px] transition duration-500 ">
+                  <span
+                    class="relative z-[2] duration-300 max-sm:!text-[14px] !text-[16px] transition-all text-nowrap !font-[500] !text-[#112D49] group-hover:!text-[#FFFFFF]">Shop
+                    Now</span>
+                  <span
+                    class="absolute top-full left-0 w-1/4 h-full bg-[#112D49] rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[0s] z-[1]"></span>
+                  <span
+                    class="absolute top-full left-1/4 w-1/4 h-full bg-[#112D49] rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[100ms] z-[1]"></span>
+                  <span
+                    class="absolute top-full left-1/2 w-1/4 h-full bg-[#112D49] rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[200ms] z-[1]"></span>
+                  <span
+                    class="absolute top-full left-[75%] w-1/4 h-full bg-[#112D49] rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[300ms] z-[1]"></span>
+                </a>
+                <form method="post" action="/cart/add">
+                  <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+                  <button type="submit"
+                    class="bg-[#73A4E0] size-[45px] max-sm:h-[49px] max-sm:w-[49px] rounded-full cursor-pointer flex items-center justify-center">
+                    <span class="flex size-[24px] items-center">
+                      <svg width="27" height="28" viewBox="0 0 27 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                          d="M18.7819 20.6229C19.3674 20.6229 19.9289 20.8555 20.3429 21.2695C20.7569 21.6835 20.9895 22.245 20.9895 22.8305C20.9895 23.416 20.7569 23.9775 20.3429 24.3915C19.9289 24.8055 19.3674 25.0381 18.7819 25.0381C18.1964 25.0381 17.6349 24.8055 17.2209 24.3915C16.8069 23.9775 16.5743 23.416 16.5743 22.8305C16.5743 21.6053 17.5566 20.6229 18.7819 20.6229ZM1.12109 2.96216H4.73051L5.76808 5.16975H22.0933C22.386 5.16975 22.6668 5.28605 22.8738 5.49305C23.0808 5.70005 23.1971 5.98081 23.1971 6.27355C23.1971 6.4612 23.1419 6.64884 23.0646 6.82545L19.113 13.967C18.7377 14.6403 18.0092 15.1039 17.1814 15.1039H8.95806L7.96464 16.9031L7.93153 17.0356C7.93153 17.1088 7.9606 17.179 8.01235 17.2307C8.0641 17.2825 8.13429 17.3115 8.20748 17.3115H20.9895V19.5191H7.74388C7.15839 19.5191 6.59688 19.2865 6.18288 18.8725C5.76887 18.4585 5.53629 17.897 5.53629 17.3115C5.53629 16.9252 5.63563 16.5609 5.8012 16.2519L7.30236 13.5476L3.32869 5.16975H1.12109V2.96216ZM7.74388 20.6229C8.32937 20.6229 8.89088 20.8555 9.30489 21.2695C9.71889 21.6835 9.95148 22.245 9.95148 22.8305C9.95148 23.416 9.71889 23.9775 9.30489 24.3915C8.89088 24.8055 8.32937 25.0381 7.74388 25.0381C7.15839 25.0381 6.59688 24.8055 6.18288 24.3915C5.76887 23.9775 5.53629 23.416 5.53629 22.8305C5.53629 21.6053 6.51867 20.6229 7.74388 20.6229ZM17.6781 12.8963L20.7466 7.37735H6.79461L9.39958 12.8963H17.6781Z"
+                          fill="white" />
+                      </svg>
+                    </span>
+                  </button>
+                </form>
               </div>
             </div>
-             </a>
-            <div class="flex max-sm:gap-[19px] gap-[24px] max-sm:h-[49px] items-center justify-between">
-          <a href="/cart/{{ product.variants.first.id }}:1"
-            class="group cursor-pointer relative flex max-sm:py-[14px] justify-center px-[20px] !rounded-full py-[16px] max-w-[260px] w-full !bg-[#FFFFFF] !border-[2px] !border-[#112D49] text-white font-medium !leading-[120%] text-[14px] overflow-hidden rounded-[36px] transition duration-500 ">
-            <span class="relative z-[2] duration-300 max-sm:!text-[14px] !text-[16px] transition-all text-nowrap !font-[500] !text-[#112D49] group-hover:!text-[#FFFFFF]">Shop Now</span>
-            <span
-                class="absolute top-full left-0 w-1/4 h-full bg-[#112D49] rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[0s] z-[1]"></span>
-            <span
-                class="absolute top-full left-1/4 w-1/4 h-full bg-[#112D49] rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[100ms] z-[1]"></span>
-            <span
-                class="absolute top-full left-1/2 w-1/4 h-full bg-[#112D49] rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[200ms] z-[1]"></span>
-            <span
-                class="absolute top-full left-[75%] w-1/4 h-full bg-[#112D49] rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[300ms] z-[1]"></span>
-        </a>
-                       <form method="post" action="/cart/add">
-                    <input type="hidden" name="id" value="{{ product.variants.first.id }}">
-                   <button type="submit" class="bg-[#73A4E0] size-[45px] max-sm:h-[49px] max-sm:w-[49px] rounded-full cursor-pointer flex items-center justify-center">
-                <span class="flex size-[24px] items-center">
-                  <svg width="27" height="28" viewBox="0 0 27 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M18.7819 20.6229C19.3674 20.6229 19.9289 20.8555 20.3429 21.2695C20.7569 21.6835 20.9895 22.245 20.9895 22.8305C20.9895 23.416 20.7569 23.9775 20.3429 24.3915C19.9289 24.8055 19.3674 25.0381 18.7819 25.0381C18.1964 25.0381 17.6349 24.8055 17.2209 24.3915C16.8069 23.9775 16.5743 23.416 16.5743 22.8305C16.5743 21.6053 17.5566 20.6229 18.7819 20.6229ZM1.12109 2.96216H4.73051L5.76808 5.16975H22.0933C22.386 5.16975 22.6668 5.28605 22.8738 5.49305C23.0808 5.70005 23.1971 5.98081 23.1971 6.27355C23.1971 6.4612 23.1419 6.64884 23.0646 6.82545L19.113 13.967C18.7377 14.6403 18.0092 15.1039 17.1814 15.1039H8.95806L7.96464 16.9031L7.93153 17.0356C7.93153 17.1088 7.9606 17.179 8.01235 17.2307C8.0641 17.2825 8.13429 17.3115 8.20748 17.3115H20.9895V19.5191H7.74388C7.15839 19.5191 6.59688 19.2865 6.18288 18.8725C5.76887 18.4585 5.53629 17.897 5.53629 17.3115C5.53629 16.9252 5.63563 16.5609 5.8012 16.2519L7.30236 13.5476L3.32869 5.16975H1.12109V2.96216ZM7.74388 20.6229C8.32937 20.6229 8.89088 20.8555 9.30489 21.2695C9.71889 21.6835 9.95148 22.245 9.95148 22.8305C9.95148 23.416 9.71889 23.9775 9.30489 24.3915C8.89088 24.8055 8.32937 25.0381 7.74388 25.0381C7.15839 25.0381 6.59688 24.8055 6.18288 24.3915C5.76887 23.9775 5.53629 23.416 5.53629 22.8305C5.53629 21.6053 6.51867 20.6229 7.74388 20.6229ZM17.6781 12.8963L20.7466 7.37735H6.79461L9.39958 12.8963H17.6781Z" fill="white"/>
-</svg>
-                </span>
-              </button>
-                  </form>
-            </div>
           </div>
-          </div>
-  </div>
+        </div>
         {% endfor %}
-      {% else %}
+        {% else %}
         <p class="text-white">No collection selected.</p>
-      {% endif %}
+        {% endif %}
       </div>
     </div>
-  <div class="flex absolute top-1/2 left-1/2 max-w-[1272px]  w-full -translate-x-1/2 -translate-y-1/2 max-xl:relative max-xl:translate-y-0 max-xl:translate-0-1/2 max-xl:justify-center max-sm:gap-[8px] max-xl:gap-[20px] justify-between">
-  <!-- Previous Button -->
-  <div class="seller-button-prev left-[-2%] max-sm:w-[33px] max-sm:h-[33px] !w-[38px] flex group justify-center cursor-pointer items-center !h-[38px] border-[#112D49] rounded-full border min-w-[38px] size-[38px] hover:bg-[#112D49] transition-all duration-300">
-    <svg width="25" height="24" viewBox="0 0 25 24" class="stroke-[#112D49] group-hover:stroke-white transition-all duration-300" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M15.3535 18L9.35352 12L15.3535 6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-  </div>
-  <!-- Next Button -->
-  <div class="seller-button-next !w-[38px] max-sm:w-[33px] max-sm:h-[33px] !h-[38px] flex group justify-center cursor-pointer items-center border-[#112D49] rounded-full min-w-[38px] border size-[38px] hover:bg-[#112D49] transition-all duration-300">
-    <svg width="25" height="24" viewBox="0 0 25 24" class="stroke-[#112D49] group-hover:stroke-white transition-all duration-300" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M9.35352 18L15.3535 12L9.35352 6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-  </div>
-</div>
+    <div
+      class="flex absolute top-1/2 left-1/2 max-w-[1272px]  w-full -translate-x-1/2 -translate-y-1/2 max-xl:relative max-xl:translate-y-0 max-xl:translate-0-1/2 max-xl:justify-center max-sm:gap-[8px] max-xl:gap-[20px] justify-between">
+      <!-- Previous Button -->
+      <div
+        class="seller-button-prev left-[-2%] max-sm:w-[33px] max-sm:h-[33px] !w-[38px] flex group justify-center cursor-pointer items-center !h-[38px] border-[#112D49] rounded-full border min-w-[38px] size-[38px] hover:bg-[#112D49] transition-all duration-300">
+        <svg width="25" height="24" viewBox="0 0 25 24"
+          class="stroke-[#112D49] group-hover:stroke-white transition-all duration-300" fill="none"
+          xmlns="http://www.w3.org/2000/svg">
+          <path d="M15.3535 18L9.35352 12L15.3535 6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </div>
+      <!-- Next Button -->
+      <div
+        class="seller-button-next !w-[38px] max-sm:w-[33px] max-sm:h-[33px] !h-[38px] flex group justify-center cursor-pointer items-center border-[#112D49] rounded-full min-w-[38px] border size-[38px] hover:bg-[#112D49] transition-all duration-300">
+        <svg width="25" height="24" viewBox="0 0 25 24"
+          class="stroke-[#112D49] group-hover:stroke-white transition-all duration-300" fill="none"
+          xmlns="http://www.w3.org/2000/svg">
+          <path d="M9.35352 18L15.3535 12L9.35352 6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </div>
+    </div>
   </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script>
   document.querySelectorAll('.best-seller-slider').forEach(swiperContainer => {
-  if (!swiperContainer.classList.contains('swiper-initialized')) {
-    new Swiper(swiperContainer, {
-      slidesPerView: 1,
-      spaceBetween: 20,
-      loop: true,
-      pagination: {
-        el: swiperContainer.querySelector('.swiper-pagination'),
-        clickable: true,
-      },
-      navigation: {
-        nextEl: document.querySelector('.seller-button-next'),
-        prevEl: document.querySelector('.seller-button-prev'),
-      },
-      breakpoints: {
-        480: { slidesPerView: 1 },
+    if (!swiperContainer.classList.contains('swiper-initialized')) {
+      new Swiper(swiperContainer, {
+        slidesPerView: 1,
+        spaceBetween: 20,
+        loop: true,
+        pagination: {
+          el: swiperContainer.querySelector('.swiper-pagination'),
+          clickable: true,
+        },
+        navigation: {
+          nextEl: document.querySelector('.seller-button-next'),
+          prevEl: document.querySelector('.seller-button-prev'),
+        },
+        breakpoints: {
+          480: { slidesPerView: 1 },
           500: { slidesPerView: 1.5 },
-        768: { slidesPerView: 2 },
-        1100: { slidesPerView: 2.5 },
-        1200: { slidesPerView: 3 },
-      },
-    });
-  }
-});
+          768: { slidesPerView: 2 },
+          1100: { slidesPerView: 2.5 },
+          1200: { slidesPerView: 3 },
+        },
+      });
+    }
+  });
 </script>
 {% schema %}
-  {
-    "name": "Best sellers",
-    "settings": [
-      {
-        "type": "text",
-        "id": "heading",
-        "label": "Heading"
-      },
-      {
-        "type": "collection",
-        "id": "selected_collection",
-        "label": "Select Collection"
-      }
-    ],
-    "presets": [
-      {
-        "name": "Best sellers"
-      }
-    ]
-  }
+{
+"name": "Best sellers",
+"settings": [
+{
+"type": "text",
+"id": "heading",
+"label": "Heading"
+},
+{
+"type": "collection",
+"id": "selected_collection",
+"label": "Select Collection"
+}
+],
+"presets": [
+{
+"name": "Best sellers"
+}
+]
+}
 {% endschema %}
