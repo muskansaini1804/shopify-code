@@ -1,51 +1,51 @@
 <!-- footer-custom.liquid -->
 {% schema %}
 {
-  "name": "Custom Footer",
-  "settings": [
-    {
-      "type": "image_picker",
-      "id": "footer_logo",
-      "label": "Footer Logo"
-    },
-    {
-      "type": "image_picker",
-      "id": "footer_secondary_image",
-      "label": "Secondary Image"
-    },
-    {
-      "type": "text",
-      "id": "footer_description",
-      "label": "Footer Description",
-      "default": "Commodo egestas etiam arcu curabitur aliquam volutpat a gravida."
-    },
-    {
-      "type": "image_picker",
-      "id": "icon_facebook",
-      "label": "Facebook Icon"
-    },
-    {
-      "type": "image_picker",
-      "id": "icon_instagram",
-      "label": "Instagram Icon"
-    },
-    {
-      "type": "image_picker",
-      "id": "icon_x",
-      "label": "X (Twitter) Icon"
-    },
-    {
-      "type": "image_picker",
-      "id": "icon_youtube",
-      "label": "YouTube Icon"
-    }
-  ],
-  "presets": [
-    {
-      "name": "Custom Footer",
-      "category": "Footer"
-    }
-  ]
+"name": "Custom Footer",
+"settings": [
+{
+"type": "image_picker",
+"id": "footer_logo",
+"label": "Footer Logo"
+},
+{
+"type": "image_picker",
+"id": "footer_secondary_image",
+"label": "Secondary Image"
+},
+{
+"type": "text",
+"id": "footer_description",
+"label": "Footer Description",
+"default": "Commodo egestas etiam arcu curabitur aliquam volutpat a gravida."
+},
+{
+"type": "image_picker",
+"id": "icon_facebook",
+"label": "Facebook Icon"
+},
+{
+"type": "image_picker",
+"id": "icon_instagram",
+"label": "Instagram Icon"
+},
+{
+"type": "image_picker",
+"id": "icon_x",
+"label": "X (Twitter) Icon"
+},
+{
+"type": "image_picker",
+"id": "icon_youtube",
+"label": "YouTube Icon"
+}
+],
+"presets": [
+{
+"name": "Custom Footer",
+"category": "Footer"
+}
+]
 }
 {% endschema %}
 
@@ -54,8 +54,7 @@
     background-color: #0c2d48;
     color: white;
     text-align: center;
-    padding: 40px 20px;
-    font-family: sans-serif;
+    font-family: "Montserrat", sans-serif !important;
   }
 
   .footer-logo {
@@ -63,14 +62,14 @@
     flex-direction: column;
     align-items: center;
     gap: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
   }
 
   .footer-links {
     display: flex;
     justify-content: center;
     gap: 15px;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
   }
 
   .footer-links a {
@@ -82,27 +81,32 @@
   .footer-socials {
     display: flex;
     justify-content: center;
-    gap: 15px;
+    gap: 10px;
     margin-bottom: 20px;
   }
 
   .footer-socials img {
-    width: 24px;
-    height: 24px;
+    width: 32px;
+    height: 32px;
   }
 
   .footer-bottom {
-    border-top: 1px solid #ccc;
+    border-top: 1px solid transparent;
+    border-image: linear-gradient(90deg, rgba(255, 255, 255, 0) 3.37%, rgba(255, 255, 255, 0.8) 51.44%, rgba(255, 255, 255, 0) 100%);
+    border-image-slice: 1;
     padding-top: 20px;
     font-size: 13px;
     color: #bbb;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap;
-    gap: 10px;
     max-width: 1000px;
     margin: 0 auto;
+  }
+
+  .top-gradient-border {
+    height: 1px;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0) 3.37%, rgba(255, 255, 255, 0.8) 51.44%, rgba(255, 255, 255, 0) 100%);
   }
 
   .footer-bottom .links {
@@ -122,9 +126,6 @@
     flex: 1 1 100%;
   }
 
-  .logo_text {
-    width: 176px;
-  }
 
   @media (min-width: 600px) {
     .footer-bottom .copyright {
@@ -138,58 +139,70 @@
   }
 </style>
 
-<div class="custom-footer">
-  <div class="footer-logo">
+<div class="custom-footer lg:!pt-[75px] pt-[39px] md:pb-[30px] pb-[18px]">
+  <div class="footer-logo lg:!mb-[27px] lg:!gap-[24px] !gap-[16px]">
     {% if section.settings.footer_logo %}
-      <a href="/" aria-label="Homepage">
-        <img src="{{ section.settings.footer_logo | image_url: width: 80 }}" alt="Footer Logo" style="height: 60px;">
-      </a>
+    <a href="/" aria-label="Homepage">
+      <img src="{{ section.settings.footer_logo | image_url: width: 80 }}" alt="Footer Logo"
+        class="lg:w-[176px] w-[130px] h-[105px] lg:h-[142px]">
+    </a>
     {% endif %}
-    {% if section.settings.footer_secondary_image %}
-      <img class="logo_text" src="{{ section.settings.footer_secondary_image | image_url: width: 80 }}" alt="Secondary Image" style="height: 60px;">
-    {% endif %}
-    <p style="max-width: 400px;">{{ section.settings.footer_description }}</p>
+    <p style="max-width: 400px;" class="text-[16px] px-[30px] max-sm:text-[14px] text-white/80 !leading-[150%]">{{
+      section.settings.footer_description }}</p>
   </div>
 
-  <div class="footer-links">
-    <a href="/shipping">Shipping</a>
-    <a href="/warranty">Warranty</a>
-    <a href="/faqs">FAQs</a>
-    <a href="/blog">Blog</a>
-    <a href="/contact">Contact</a>
+  <div
+    class="footer-links !gap-y-[14px] max-sm:!gap-x-[24px] lg:!mb-[27px] !mb-[36px] max-[460px]:mx-auto max-[460px]:flex-wrap max-[460px]:max-w-[246px]">
+    <a class="!font-medium !text-[16px] max-sm:!text-[14px] max-[460px]:text-center !leading-[150%] relative after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full"
+      href="/shipping">Shipping</a>
+    <a class="!font-medium !text-[16px] max-sm:!text-[14px] max-[460px]:text-center !leading-[150%] relative after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full"
+      href="/warranty">Warranty</a>
+    <a class="!font-medium !text-[16px] max-sm:!text-[14px] max-[460px]:text-center !leading-[150%] relative after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full"
+      href="/faqs">FAQs</a>
+    <a class="!font-medium !text-[16px] max-sm:!text-[14px] max-[460px]:text-center !leading-[150%] relative after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full"
+      href="/blog">Blog</a>
+    <a class="!font-medium !text-[16px] max-sm:!text-[14px] max-[460px]:text-center !leading-[150%] relative after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full"
+      href="/contact">Contact</a>
   </div>
 
-  <div class="footer-socials">
+  <div class="footer-socials lg:!mb-[82px] !mb-[43px]">
     {% if section.settings.icon_facebook %}
-      <a href="#" aria-label="Facebook">
-        <img src="{{ section.settings.icon_facebook | image_url: width: 24 }}" alt="Facebook">
-      </a>
+    <a class="hover:!scale-[1.1] duration-300" href="#" aria-label="Facebook">
+      <img src="{{ section.settings.icon_facebook | image_url: width: 24 }}" alt="Facebook">
+    </a>
     {% endif %}
     {% if section.settings.icon_instagram %}
-      <a href="#" aria-label="Instagram">
-        <img src="{{ section.settings.icon_instagram | image_url: width: 24 }}" alt="Instagram">
-      </a>
+    <a class="hover:!scale-[1.1] duration-300" href="#" aria-label="Instagram">
+      <img src="{{ section.settings.icon_instagram | image_url: width: 24 }}" alt="Instagram">
+    </a>
     {% endif %}
     {% if section.settings.icon_x %}
-      <a href="#" aria-label="X">
-        <img src="{{ section.settings.icon_x | image_url: width: 24 }}" alt="X">
-      </a>
+    <a class="hover:!scale-[1.1] duration-300" href="#" aria-label="X">
+      <img src="{{ section.settings.icon_x | image_url: width: 24 }}" alt="X">
+    </a>
     {% endif %}
     {% if section.settings.icon_youtube %}
-      <a href="#" aria-label="YouTube">
-        <img src="{{ section.settings.icon_youtube | image_url: width: 24 }}" alt="YouTube">
-      </a>
+    <a class="hover:!scale-[1.1] duration-300" href="#" aria-label="YouTube">
+      <img src="{{ section.settings.icon_youtube | image_url: width: 24 }}" alt="YouTube">
+    </a>
     {% endif %}
   </div>
-
-  <div class="footer-bottom">
-    <div class="copyright">
+  <div class="min-h-[1px] top-gradient-border w-full max-w-[1440px] !block "></div>
+  <div
+    class="footer-bottom max-md:!justify-center max-md:!flex-wrap min-[640px]:!gap-[30px] gap-[12px] max-md:items-center px-[20px]">
+    <div class="links !items-center max-sm:!gap-[3px] max-sm:text-center">
+      <a class="!text-[14px] !text-white max-sm:!text-[12px] !leading-[100%] text-white" href="/terms">Terms and
+        Conditions</a>
+      <span class="h-[14px] w-[1px] bg-white"></span>
+      <a class="!text-[14px] !text-white max-sm:!text-[12px] !leading-[100%] text-white" href="/privacy">Privacy
+        Policy</a>
+      <span class="h-[14px] w-[1px] bg-white"></span>
+      <a class="!text-[14px] !text-white max-sm:!text-[12px] !leading-[100%] text-white" href="/terms-of-use">Terms of
+        Use</a>
+    </div>
+    <div class="copyright !text-white!text-[14px] max-sm:!text-[12px] !leading-[100%] text-white">
       © 2025 Skaroob. All Rights Reserved.
     </div>
-    <div class="links">
-      <a href="/terms">Terms and Conditions</a>
-      <a href="/privacy">Privacy Policy</a>
-      <a href="/terms-of-use">Terms of Use</a>
-    </div>
+
   </div>
 </div>
