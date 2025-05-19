@@ -1,13 +1,15 @@
-  <header class="custom-header">
+<header class="custom-header max-sm:!py-0">
   <!-- Main Header -->
-  <div class="main-header page-width mx-100">
+  <div class="main-header page-width mx-100 !py-[12px]">
 
     <!-- Search -->
     <div class="search-wrapper">
-      <form action="/search" method="get" role="search" class="search-form">
-        <input type="search" name="q" placeholder="Search..." aria-label="Search" />
+      <form action="/search" method="get" role="search"
+        class="search-form max-sm:max-w-[263px] shadow-[0px_2px_20px_0px_#112D491A] max-sm:h-[32px]">
+        <input type="search" name="q" class="placeholder:!text-[14px] !text-[#112D49]/52 placeholder:sm:!text-[16px]"
+          placeholder="Search..." aria-label="Search" />
         <button type="submit" class="search-icon" aria-label="Submit Search">
-           <span class="svg-wrapper">{{'search-icon.svg' | inline_asset_content }}</span>
+          <span class="svg-wrapper">{{'search-icon.svg' | inline_asset_content }}</span>
         </button>
       </form>
     </div>
@@ -16,106 +18,107 @@
 </header>
 
 <style>
-.custom-header {
-  background-color: #f2f7fd;
-  padding: 10px 0;
-}
+  .custom-header {
+    background-color: #f2f7fd;
+    padding: 10px 0;
+  }
 
-.main-header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 10px 20px;
-}
-.search-form input:focus {
-  box-shadow: none; 
-  outline: none;   
-}
-.logo {
-  margin-right: 20px;
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
-  overflow: hidden;
-  border: 4px solid white;
-  box-shadow: 0 0 5px rgba(0,0,0,0.1);
-}
-
-.logo img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.search-wrapper {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-}
-
-.search-form {
-  display: flex;
-  align-items: center;
-  background: white;
-  padding: 8px 20px;
-  border-radius: 50px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.05);
-  width: 100%;
-  max-width: 600px;
-}
-
-.search-form input {
-  border: none;
-  outline: none;
-  flex: 1;
-  font-size: 14px;
-  color: #333;
-  background: transparent;
-}
-
-.search-icon {
-  background: none;
-  border: none;
-  font-size: 16px;
-  color: #555;
-  cursor: pointer;
-  padding-left: 10px;
-  padding-top: 10px;
-}
-
-@media (max-width: 768px) {
   .main-header {
-    flex-direction: column;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 10px 20px;
+  }
+
+  .search-form input:focus {
+    box-shadow: none;
+    outline: none;
   }
 
   .logo {
-    margin-bottom: 10px;
+    margin-right: 20px;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid white;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  }
+
+  .logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   .search-wrapper {
-    width: 100%;
+    flex: 1;
+    display: flex;
+    justify-content: center;
   }
 
   .search-form {
-    max-width: 90%;
+    display: flex;
+    align-items: center;
+    background: white;
+    padding: 8px 20px;
+    border-radius: 50px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    max-width: 600px;
   }
-}
+
+  .search-form input {
+    border: none;
+    outline: none;
+    flex: 1;
+    font-size: 14px;
+    color: #333;
+    background: transparent;
+  }
+
+  .search-icon {
+    background: none;
+    border: none;
+    font-size: 16px;
+    color: #555;
+    cursor: pointer;
+    padding-left: 10px;
+    padding-top: 10px;
+  }
+
+  @media (max-width: 768px) {
+    .main-header {
+      flex-direction: column;
+    }
+
+    .logo {
+      margin-bottom: 10px;
+    }
+
+    .search-wrapper {
+      width: 100%;
+    }
+
+    .search-form {
+      max-width: 90%;
+    }
+  }
 </style>
 
 {% schema %}
 {
-  "name": "Custom Header",
-  "tag": "section",
-  "class": "custom-header-section",
-  "settings": [
-  ],
-  "presets": [
-    {
-      "name": "Custom Header"
-    }
-  ]
+"name": "Custom Header",
+"tag": "section",
+"class": "custom-header-section",
+"settings": [
+],
+"presets": [
+{
+"name": "Custom Header"
+}
+]
 }
 {% endschema %}
-
