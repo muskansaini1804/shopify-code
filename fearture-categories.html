@@ -1,128 +1,155 @@
 <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <style type="text/tailwindcss">
-      @theme {
+<style type="text/tailwindcss">
+  @theme {
         --color-clifford: #DA373D;
     }
   </style>
- <div class="flex items-center flex-col px-[24px] py-[132px] max-xl:py-[128px] max-lg:py-[120px] max-lg:py-[112px] max-sm:py-[60px]">
-       <div class="max-w-[602px] mx-auto pb-[57px] max-lg:pb-[40px] max-md:pb-[30px] flex flex-col gap-[8px]">
-           <p class=" leading-[120%] text-[20px] text-center max-lg:text-[18px] max-md:text-[16px] text-[#112D49]">{{ section.settings.sub_heading }}</p>
-         <h2 class="!font-[700] !text-center !text-[48px] max-lg:!text-[40px] max-md:!text-[32px] !text-[#112D49]">{{ section.settings.heading }}</h2>
-       </div>
-        <div class="max-w-[1384px] container flex flex-col gap-[24px] mx-auto">
-            <div class="!grid grid-cols-2 max-lg:grid-cols-1 gap-[24px]">
-                <div class="min-h-[335px] max-sm:min-h-[unset] max-sm:!h-[291px] relative bg-[#D5E8FF] rounded-lg">
-                    <p class="font-[700] max-w-[172px] max-sm:max-w-[unset] text-[32px] max-md:text-[28px] max-sm:!max-w-[130px] max-sm:text-[24px] leading-[120%] absolute left-[62.54px] max-sm:left-[24px] max-sm:-translate-x-0 max-sm:-translate-y-0 max-sm:top-[24px] top-1/2 -translate-y-1/2 text-[#112D49]">{{ section.settings.sensors_modules }}</p>
-                    <img class="absolute max-xl:w-[50%] bottom-0 max-w-[372px] w-full right-0 max-sm:w-[246px] max-sm:bottom-[6px]" width="372" height="261" src="{{ section.settings.sensors_modules_image | image_url }}" alt="">
-                </div>
-                <div class="!grid grid-cols-2 max-sm:grid-cols-1 gap-[24px]">
-                    <div class="!bg-[#EEF4FB] min-h-[335px] max-sm:min-h-[unset] max-sm:!h-[291px] relative rounded-lg">
-                        <p class="font-[700] min-w-[220px] text-center text-[32px] max-md:text-[28px] max-sm:text-[24px] leading-[120%] absolute top-[32.96px] max-sm:top-[30px] max-sm:min-w-[unset] left-1/2 -translate-x-1/2 text-[#112D49]">{{ section.settings.custom_pc_parts_text }}</p>
-                        <img class="absolute max-xl:w-[70%] bottom-0 left-1/2 -translate-x-1/2 max-w-[213px] max-sm:w-[auto] max-sm:h-[192px] w-full" width="174" height="213" src="{{ section.settings.custom_pc_parts_image | image_url }}" alt="">
-                    </div>
-                    <div class="!bg-[#E5E4E2] min-h-[335px] max-sm:min-h-[unset] max-sm:!h-[291px] relative rounded-lg">
-                        <p class="font-[700] min-w-[220px] text-center text-[32px] max-md:text-[28px] max-sm:text-[24px] leading-[120%] absolute top-[46.08px] max-sm:top-[30px] left-1/2 -translate-x-1/2 text-[#112D49]">{{ section.settings.diy_text }}</p>
-                        <img class="absolute max-xl:w-[70%] bottom-0 max-sm:bottom-[14px] left-1/2 -translate-x-1/2 max-w-[184px] max-sm:max-w-[162px] max-sm:h-[179px] w-full" width="184" height="208" src="{{ section.settings.diy_tools_image | image_url }}" alt="">
-                    </div>
-                </div>
-            </div>
-          <div class="!grid grid-cols-2 max-lg:grid-cols-1 gap-[24px]">
-          <div class="!grid grid-cols-2 max-sm:grid-cols-1 gap-[24px]">
-            <div class="!bg-[#EEF4FB] min-h-[335px] overflow-hidden max-sm:min-h-[unset] max-sm:!h-[291px] relative rounded-lg">
-              <p  class="font-[700] text-center text-[32px] max-md:text-[28px] max-sm:!max-w-[130px] max-sm:text-[24px] max-sm:left-[24px] max-sm:top-[24px] leading-[120%] max-sm:text-left absolute top-[26.96px] right-[16px] text-left lg:max-w-[196px] max-sm:translate-x-0 text-[#112D49]"> {{ section.settings.cables_and_connectors }} </p>
-              <img class="absolute max-xl:w-[70%] bottom-0 cables-connectors-image max-sm:-translate-x-0 max-sm:!translate-y-0 max-sm:w-full max-w-[310px] max-sm:rotate-[-90deg] max-sm:right-[-5%] max-sm:bottom-[15px] max-sm:translate-x-0 w-full"width="300" height="213" src="{{ section.settings.cables_and_connectors_image | image_url }}" alt="" />
-            </div>
-            <div class="!bg-[#E5E4E2] min-h-[335px] max-sm:min-h-[unset] max-sm:!h-[291px] relative rounded-lg">
-                <p  class="font-[700] min-w-[220px] text-center text-[32px] max-md:text-[28px] max-sm:top-[30px] max-sm:min-w-[unset] max-sm:max-w-[156px] max-sm:text-[24px] leading-[120%] absolute top-[22px] left-1/2 -translate-x-1/2 text-[#112D49]" >{{ section.settings.gaming_peripherals_text }}</p>
-              <img class="absolute max-xl:w-[70%] bottom-[18px] w-[266px] left-1/2 -translate-x-1/2 max-w-[266px] max-sm:max-w-[198px]" width="266" height="187" src="{{ section.settings.gaming_peripherals_image | image_url }}" alt="" />
-            </div>
-          </div>
-          <div class="min-h-[335px] max-sm:min-h-[unset] overflow-hidden max-sm:!h-[291px] relative !bg-[#D5E8FF] rounded-lg">
-            <p  class="font-[700] text-[32px] max-md:text-[28px] max-sm:min-w-[unset] max-sm:top-[30px] max-sm:max-w-[222px] max-sm:text-center max-sm:w-full max-sm:text-[24px] leading-[120%] absolute left-1/2 -translate-x-1/2 top-[59.34px] text-[#112D49]" > {{ section.settings.raspberry-pi-kits_text }}</p>
-            <img class="absolute bottom-0 max-w-[680px] max-lg:max-w-[950px] max-sm:transform max-sm:scale-x-[-1] max-sm:h-[140px] w-full right-0" width="680" height="261" src="{{ section.settings.raspberry_pi_kits_image | image_url }}" alt=""/>
-          </div>
+<div class="flex items-center flex-col px-[24px] pt-[132px] max-xl:pt-[128px] max-lg:pt-[120px] max-sm:pt-[112px]">
+  <div class="max-w-[602px] mx-auto pb-[57px] max-lg:pb-[40px] max-md:pb-[30px] flex flex-col gap-[8px]">
+    <p class=" leading-[120%] text-[20px] text-center max-lg:text-[18px] italic max-md:text-[16px] text-[#112D49]">{{
+      section.settings.sub_heading }}</p>
+    <h2 class="!font-[700] !text-center !text-[48px] max-lg:!text-[40px] max-md:!text-[32px] !text-[#112D49]">{{
+      section.settings.heading }}</h2>
+  </div>
+  <div class="max-w-[1384px] container flex flex-col gap-[24px] mx-auto">
+    <div class="!grid grid-cols-2 max-lg:grid-cols-1 gap-[24px]">
+      <div class="min-h-[335px] max-sm:min-h-[unset] max-sm:!h-[291px] relative bg-[#D5E8FF] rounded-lg">
+        <p
+          class="font-[700] max-w-[172px] max-sm:max-w-[unset] text-[32px] max-md:text-[28px] max-sm:!max-w-[130px] max-sm:text-[24px] leading-[120%] absolute left-[62.54px] max-sm:left-[24px] max-sm:-translate-x-0 max-sm:-translate-y-0 max-sm:top-[24px] top-1/2 -translate-y-1/2 text-[#112D49]">
+          {{ section.settings.sensors_modules }}</p>
+        <img class="absolute max-xl:w-[50%] bottom-0 max-w-[372px] w-full right-0 max-sm:w-[246px] max-sm:bottom-[6px]"
+          width="372" height="261" src="{{ section.settings.sensors_modules_image | image_url }}" alt="">
+      </div>
+      <div class="!grid grid-cols-2 max-sm:grid-cols-1 gap-[24px]">
+        <div class="!bg-[#EEF4FB] min-h-[335px] max-sm:min-h-[unset] max-sm:!h-[291px] relative rounded-lg">
+          <p
+            class="font-[700] min-w-[220px] text-center text-[32px] max-md:text-[28px] max-sm:text-[24px] leading-[120%] absolute top-[32.96px] max-sm:top-[30px] max-sm:min-w-[unset] left-1/2 -translate-x-1/2 text-[#112D49]">
+            {{ section.settings.custom_pc_parts_text }}</p>
+          <img
+            class="absolute max-xl:w-[70%] bottom-0 left-1/2 -translate-x-1/2 max-w-[213px] max-sm:w-[auto] max-sm:h-[192px] w-full"
+            width="174" height="213" src="{{ section.settings.custom_pc_parts_image | image_url }}" alt="">
         </div>
+        <div class="!bg-[#E5E4E2] min-h-[335px] max-sm:min-h-[unset] max-sm:!h-[291px] relative rounded-lg">
+          <p
+            class="font-[700] min-w-[220px] text-center text-[32px] max-md:text-[28px] max-sm:text-[24px] leading-[120%] absolute top-[46.08px] max-sm:top-[30px] left-1/2 -translate-x-1/2 text-[#112D49]">
+            {{ section.settings.diy_text }}</p>
+          <img
+            class="absolute max-xl:w-[70%] bottom-0 max-sm:bottom-[14px] left-1/2 -translate-x-1/2 max-w-[184px] max-sm:max-w-[162px] max-sm:h-[179px] w-full"
+            width="184" height="208" src="{{ section.settings.diy_tools_image | image_url }}" alt="">
         </div>
+      </div>
     </div>
+    <div class="!grid grid-cols-2 max-lg:grid-cols-1 gap-[24px]">
+      <div class="!grid grid-cols-2 max-sm:grid-cols-1 gap-[24px]">
+        <div
+          class="!bg-[#EEF4FB] min-h-[335px] overflow-hidden max-sm:min-h-[unset] max-sm:!h-[291px] relative rounded-lg">
+          <p
+            class="font-[700] text-center text-[32px] max-md:text-[28px] max-sm:!max-w-[130px] max-sm:text-[24px] max-sm:left-[24px] max-sm:top-[24px] leading-[120%] max-sm:text-left absolute top-[26.96px] right-[16px] text-left lg:max-w-[196px] max-sm:translate-x-0 text-[#112D49]">
+            {{ section.settings.cables_and_connectors }} </p>
+          <img
+            class="absolute max-xl:w-[70%] bottom-0 cables-connectors-image max-sm:-translate-x-0 max-sm:!translate-y-0 max-sm:w-full max-w-[310px] max-sm:rotate-[-90deg] max-sm:right-[-5%] max-sm:bottom-[15px] max-sm:translate-x-0 w-full"
+            width="300" height="213" src="{{ section.settings.cables_and_connectors_image | image_url }}" alt="" />
+        </div>
+        <div class="!bg-[#E5E4E2] min-h-[335px] max-sm:min-h-[unset] max-sm:!h-[291px] relative rounded-lg">
+          <p
+            class="font-[700] min-w-[220px] text-center text-[32px] max-md:text-[28px] max-sm:top-[30px] max-sm:min-w-[unset] max-sm:max-w-[156px] max-sm:text-[24px] leading-[120%] absolute top-[22px] left-1/2 -translate-x-1/2 text-[#112D49]">
+            {{ section.settings.gaming_peripherals_text }}</p>
+          <img
+            class="absolute max-xl:w-[70%] bottom-[18px] w-[266px] left-1/2 -translate-x-1/2 max-w-[266px] max-sm:max-w-[198px]"
+            width="266" height="187" src="{{ section.settings.gaming_peripherals_image | image_url }}" alt="" />
+        </div>
+      </div>
+      <div
+        class="min-h-[335px] max-sm:min-h-[unset] overflow-hidden max-sm:!h-[291px] relative !bg-[#D5E8FF] rounded-lg">
+        <p
+          class="font-[700] text-[32px] max-md:text-[28px] max-sm:min-w-[unset] max-sm:top-[30px] max-sm:max-w-[222px] text-center max-sm:w-full max-sm:text-[24px] leading-[120%] absolute left-1/2 -translate-x-1/2 top-[59.34px] text-[#112D49]">
+          {{ section.settings.raspberry-pi-kits_text }}</p>
+        <img
+          class="absolute bottom-0 max-w-[680px] max-lg:max-w-[950px] max-sm:transform max-sm:scale-x-[-1] max-sm:h-[140px] w-full right-0"
+          width="680" height="261" src="{{ section.settings.raspberry_pi_kits_image | image_url }}" alt="" />
+      </div>
+    </div>
+  </div>
+</div>
 {% schema %}
-  {
-    "name": "Featured Categories",
-    "settings": [
-      {
-        "type": "text",
-        "id" : "heading",
-        "label": "Heading"
-      },
-      {
-        "type": "text",
-        "id": "sub_heading",
-        "label": "Sub Heading"
-      },
-      {
-        "type": "text" ,
-        "id": "sensors_modules",
-        "label": "Sensors & Modules Text "
-      } ,
-      {
-        "type": "image_picker", 
-        "id": "sensors_modules_image" ,
-          "label": "Sensors & Modules Image"
-      },
-      {
-        "type": "text",
-        "id": "custom_pc_parts_text",
-        "label": "Custom PC Parts Heading"
-      },
-      {
-        "type": "image_picker",
-        "id": "custom_pc_parts_image",
-        "label": "Custom PC Parts Image"
-      },
-      {
-        "type": "text",
-        "id": "diy_text",
-        "label": "DIY Tools Text"
-      },
-       {
-        "type": "image_picker",
-        "id": "diy_tools_image",
-        "label": "DIY Tools Image "
-      },
-      {
-        "type": "text",
-        "id": "cables_and_connectors" ,
-        "label": "Cables And Connectors"
-      },
-      {
-        "type": "image_picker",
-        "id": "cables_and_connectors_image",
-        "label": "Cables And Connectors"
-      },
-      {
-        "type": "text",
-        "id": "gaming_peripherals_text" ,
-        "label": "Gaming Peripherals Text"
-      },
-      {
-        "type": "image_picker",
-        "id": "gaming_peripherals_image" ,
-        "label": "Gaming Peripherals Image"
-      },
-      {
-        "type": "text",
-        "id": "raspberry-pi-kits_text",
-        "label": "Raspberry Pi Kits",
-      },
-      {
-        "type": "image_picker",
-        "id": "raspberry_pi_kits_image",
-        "label": "Raspberry Pi Kits Image"
-      }
-    ] ,
-    "presets": [
-      {
-        "name": "Featured Categories" ,
-      }
-    ]
-  }
+{
+"name": "Featured Categories",
+"settings": [
+{
+"type": "text",
+"id" : "heading",
+"label": "Heading"
+},
+{
+"type": "text",
+"id": "sub_heading",
+"label": "Sub Heading"
+},
+{
+"type": "text" ,
+"id": "sensors_modules",
+"label": "Sensors & Modules Text "
+} ,
+{
+"type": "image_picker",
+"id": "sensors_modules_image" ,
+"label": "Sensors & Modules Image"
+},
+{
+"type": "text",
+"id": "custom_pc_parts_text",
+"label": "Custom PC Parts Heading"
+},
+{
+"type": "image_picker",
+"id": "custom_pc_parts_image",
+"label": "Custom PC Parts Image"
+},
+{
+"type": "text",
+"id": "diy_text",
+"label": "DIY Tools Text"
+},
+{
+"type": "image_picker",
+"id": "diy_tools_image",
+"label": "DIY Tools Image "
+},
+{
+"type": "text",
+"id": "cables_and_connectors" ,
+"label": "Cables And Connectors"
+},
+{
+"type": "image_picker",
+"id": "cables_and_connectors_image",
+"label": "Cables And Connectors"
+},
+{
+"type": "text",
+"id": "gaming_peripherals_text" ,
+"label": "Gaming Peripherals Text"
+},
+{
+"type": "image_picker",
+"id": "gaming_peripherals_image" ,
+"label": "Gaming Peripherals Image"
+},
+{
+"type": "text",
+"id": "raspberry-pi-kits_text",
+"label": "Raspberry Pi Kits",
+},
+{
+"type": "image_picker",
+"id": "raspberry_pi_kits_image",
+"label": "Raspberry Pi Kits Image"
+}
+] ,
+"presets": [
+{
+"name": "Featured Categories" ,
+}
+]
+}
 {% endschema %}
