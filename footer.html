@@ -1,46 +1,51 @@
 <!-- footer-custom.liquid -->
 {% schema %}
 {
-  "name": "Custom Footer",
-  "settings": [
-    {
-      "type": "image_picker",
-      "id": "footer_logo",
-      "label": "Footer Logo"
-    },
-    {
-      "type": "text",
-      "id": "footer_description",
-      "label": "Footer Description",
-      "default": "Commodo egestas etiam arcu curabitur aliquam volutpat a gravida."
-    },
-    {
-      "type": "image_picker",
-      "id": "icon_facebook",
-      "label": "Facebook Icon"
-    },
-    {
-      "type": "image_picker",
-      "id": "icon_instagram",
-      "label": "Instagram Icon"
-    },
-    {
-      "type": "image_picker",
-      "id": "icon_x",
-      "label": "X (Twitter) Icon"
-    },
-    {
-      "type": "image_picker",
-      "id": "icon_youtube",
-      "label": "YouTube Icon"
-    }
-  ],
-  "presets": [
-    {
-      "name": "Custom Footer",
-      "category": "Footer"
-    }
-  ]
+"name": "Custom Footer",
+"settings": [
+{
+"type": "image_picker",
+"id": "footer_logo",
+"label": "Footer Logo"
+},
+{
+"type": "image_picker",
+"id": "footer_secondary_image",
+"label": "Secondary Image"
+},
+{
+"type": "text",
+"id": "footer_description",
+"label": "Footer Description",
+"default": "Commodo egestas etiam arcu curabitur aliquam volutpat a gravida."
+},
+{
+"type": "image_picker",
+"id": "icon_facebook",
+"label": "Facebook Icon"
+},
+{
+"type": "image_picker",
+"id": "icon_instagram",
+"label": "Instagram Icon"
+},
+{
+"type": "image_picker",
+"id": "icon_x",
+"label": "X (Twitter) Icon"
+},
+{
+"type": "image_picker",
+"id": "icon_youtube",
+"label": "YouTube Icon"
+}
+],
+"presets": [
+{
+"name": "Custom Footer",
+"category": "Footer"
+}
+]
 }
 {% endschema %}
 
@@ -184,14 +189,14 @@
   </div>
   <div class="min-h-[1px] top-gradient-border w-full max-w-[1440px] !block "></div>
   <div
-    class="footer-bottom max-md:!justify-center max-md:!flex-wrap min-[640px]:!gap-[30px] gap-[12px] max-md:items-center px-[20px]">
-    <div class="links !items-center max-sm:!gap-[3px] max-sm:text-center">
+    class="footer-bottom md:!pt-[30px] max-md:!justify-center max-md:!flex-wrap min-[640px]:!gap-[30px] gap-[12px] max-sm:!pt-[18px] max-md:items-center px-[24px]">
+    <div class="links !items-center max-sm:!gap-[2px] max-sm:text-center">
       <a class="!text-[14px] !text-white max-sm:!text-[12px] !leading-[100%] text-white" href="/terms">Terms and
         Conditions</a>
-      <span class="h-[14px] w-[1px] bg-white"></span>
+      <span class="h-[14px] max-sm:h-[10px] w-[1px] bg-white"></span>
       <a class="!text-[14px] !text-white max-sm:!text-[12px] !leading-[100%] text-white" href="/privacy">Privacy
         Policy</a>
-      <span class="h-[14px] w-[1px] bg-white"></span>
+      <span class="h-[14px] max-sm:h-[10px] w-[1px] bg-white"></span>
       <a class="!text-[14px] !text-white max-sm:!text-[12px] !leading-[100%] text-white" href="/terms-of-use">Terms of
         Use</a>
     </div>
