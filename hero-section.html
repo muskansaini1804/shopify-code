@@ -1,0 +1,392 @@
+{% schema %}
+{
+"name": "Slideshow Text",
+"tag": "section",
+"class": "slideshow-text-section",
+"settings": [],
+"blocks": [
+{
+"type": "slide",
+"name": "Slide",
+"settings": [
+{
+"type": "image_picker",
+"id": "bg_image",
+"label": "Desktop Background Image"
+},
+{
+"type": "image_picker",
+"id": "bg_image_mobile",
+"label": "Mobile Background Image"
+},
+{
+"type": "text",
+"id": "heading",
+"label": "Heading",
+"default": "This is your heading"
+},
+{
+"type": "textarea",
+"id": "subheading",
+"label": "Subheading",
+"default": "This is your subheading text."
+},
+{
+"type": "text",
+"id": "button1_text",
+"label": "Button 1 Text",
+"default": "Learn More"
+},
+{
+"type": "url",
+"id": "button1_link",
+"label": "Button 1 Link"
+},
+{
+"type": "text",
+"id": "button2_text",
+"label": "Button 2 Text",
+"default": "Shop Now"
+},
+{
+"type": "url",
+"id": "button2_link",
+"label": "Button 2 Link"
+}
+]
+}
+],
+"max_blocks": 5,
+"presets": [
+{
+"name": "Slideshow with Two Buttons",
+"category": "Custom"
+}
+]
+}
+{% endschema %}
+{% style %}
+.slideshow-overlay {
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: rgba(255, 255, 255, 0.2);
+z-index: 1;
+}
+
+/* Make sure slide content appears above the overlay */
+.slideshow-slide > *:not(.slideshow-overlay) {
+position: relative;
+z-index: 2;
+}
+.slideshow-navigation {
+position: absolute;
+top: 50%;
+width: 100%;
+pointer-events: none;
+z-index: 2;
+}
+
+.slideshow-prev,
+.slideshow-next {
+pointer-events: all;
+background: white;
+border: 1px solid #112D49;
+cursor: pointer;
+width:45px!important;
+height:45px !important;
+border-radius: 50%;
+position: absolute;
+top: 50%;
+transform: translateY(-50%);
+transition: background 0.3s ease;
+}
+.slideshow-prev {
+left: 10px;
+}
+
+.slideshow-next {
+right: 10px;
+}
+.slideshow-text-section {
+position: relative;
+overflow: hidden;
+max-width: 1384px;
+margin: 0 auto;
+}
+.slideshow-text-wrapper {
+display: flex;
+width: 100%;
+transition: transform 0.6s ease-in-out;
+}
+.slideshow-slide {
+min-width: 100%;
+background-size: cover;
+background-position: top;
+height: 650px;
+color: white;
+display: flex;
+justify-content: center;
+align-items: center;
+text-align: center;
+flex-direction: column;
+padding: 40px;
+background-repeat: no-repeat;
+}
+.slideshow-slide h1 {
+font-size: 60px;
+font-weight: 700;
+margin-bottom: 10px;
+max-width: 727px;
+color: #112D49;
+}
+.slideshow-slide p {
+font-size: 16px;
+margin-bottom: 20px;
+color: #3D5369;
+max-width: 492px;
+}
+.slideshow-buttons {
+display: flex;
+gap: 15px;
+flex-wrap: wrap;
+justify-content: center;
+}
+.button:after, .button:before {
+box-shadow: none;
+}
+.button:not([disabled]):hover:after {
+box-shadow: none;
+}
+.slideshow-slide a.button {
+background-color: #112D49;
+color: #fff;
+padding: 16px 20px;
+text-decoration: none;
+border-radius: 93px;
+font-weight: 500;
+font-size: 16px;
+transition: background-color 0.3s ease;
+height: 52px;
+}
+.slideshow-slide a.second-button {
+background-color: transparent;
+color: #112D49;
+border: 1px solid #112D49;
+padding: 10px 20px;
+text-decoration: none;
+border-radius: 93px;
+font-weight: bold;
+font-size: 16px;
+transition: background-color 0.3s ease;
+}
+.slideshow-dots {
+text-align: center;
+bottom: 20px;
+width: 100%;
+}
+.slideshow-dot {
+display: inline-block;
+width: 21px;
+height: 6px;
+border-radius: 22px;
+background-color: #E8E8E8;
+margin: 0px -1px !important;
+cursor: pointer;
+}
+.slideshow-dot.active {
+background-color: #112D49;
+width: 51px;
+}
+@media(max-width: 767px){
+.slideshow-slide h1 {
+font-size: 32px;
+}
+.slideshow-slide {
+background-size: cover;
+background-position: unset;
+height: 600px;
+}
+.slideshow-slide h1 {
+max-width: 272px;
+margin-top:60px;
+}
+.slideshow-slide a.button {
+font-size: 14px;
+padding: 10px 10px;
+}
+.slideshow-slide a.second-button {
+padding: 10px 10px;
+font-size: 14px;
+}
+}
+@media (max-width: 576px) {
+.slideshow-slide h1 {
+max-width: 264px;
+margin-top:20px;
+margin-bottom: 8px;
+}
+.slideshow-slide a.button {
+letter-spacing: -0.1px;
+padding: 16px 16px;
+}
+.slideshow-slide a.second-button {
+letter-spacing: -0.1px;
+padding: 16px 20px;
+}
+.slideshow-slide {
+background-size: cover;
+background-position: unset;
+height: 500px;
+}
+}
+@media (max-width: 376px) {
+.slideshow-slide {
+background-size: 100% 100%;
+background-position: unset;
+height: 415px;
+}
+}
+{% endstyle %}
+<div class="slideshow-text-section" data-slideshow>
+    <div class="slideshow-text-wrapper">
+        <!-- Overlay -->
+        <div class="slideshow-overlay"></div>
+        {% for block in section.blocks %}
+        <div class="slideshow-slide relative"
+            style="background-image: url({{ block.settings.bg_image | img_url: 'master' }});"
+            data-bg-desktop="{{ block.settings.bg_image | img_url: 'master' }}"
+            data-bg-mobile="{{ block.settings.bg_image_mobile | img_url: 'master' }}">
+            <!-- Overlay inside the slide -->
+            <div class="slideshow-overlay !block"></div>
+            <h1>{{ block.settings.heading }}</h1>
+            <p>{{ block.settings.subheading }}</p>
+            <div class="slideshow-buttons">
+                {% if block.settings.button1_text != blank and block.settings.button1_link != blank %}
+                <a href="{{ block.settings.button1_link }}"
+                    class="button group cursor-pointer relative px-[20px] py-[16px] !border !border-solid !border-[#112D49] text-[#112D49]  font-medium !leading-[120%] text-[16px] overflow-hidden rounded-[36px] transition duration-500 ">
+                    <!-- {{ block.settings.button1_text }} -->
+                    <span class="relative z-[2] duration-300 transition-all group-hover:text-[#112D49]">{{
+                        block.settings.button1_text }}</span>
+                    <span
+                        class="absolute top-full left-0 w-1/4 h-full bg-[#EAE9E7] rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[0s] z-[1]"></span>
+                    <span
+                        class="absolute top-full left-1/4 w-1/4 h-full bg-[#EAE9E7] rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[100ms] z-[1]"></span>
+                    <span
+                        class="absolute top-full left-1/2 w-1/4 h-full bg-[#EAE9E7] rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[200ms] z-[1]"></span>
+                    <span
+                        class="absolute top-full left-[75%] w-1/4 h-full bg-[#EAE9E7] rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[300ms] z-[1]"></span>
+                </a>
+                {% endif %}
+                {% if block.settings.button2_text != blank and block.settings.button2_link != blank %}
+                <a href="{{ block.settings.button2_link }}"
+                    class="second-button group flex justify-center cursor-pointer relative px-[20px] py-[16px] border border-soild border-[#112D49] !bg-[#E7E6E4] font-medium !leading-[120%] text-[16px] overflow-hidden rounded-[36px] transition duration-500 ">
+                    <span
+                        class="relative z-[2] duration-300 transition-all !text-[#112D49] flex items-center group-hover:!text-white">{{
+                        block.settings.button2_text }}</span>
+                    <span
+                        class="absolute top-full left-0 w-1/4 h-full !bg-[#112D49] rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[0s] z-[1]"></span>
+                    <span
+                        class="absolute top-full left-1/4 w-1/4 h-full !bg-[#112D49] rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[100ms] z-[1]"></span>
+                    <span
+                        class="absolute top-full left-1/2 w-1/4 h-full !bg-[#112D49] rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[200ms] z-[1]"></span>
+                    <span
+                        class="absolute top-full left-[75%] w-1/4 h-full !bg-[#112D49] rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[300ms] z-[1]"></span>
+                </a>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <!-- Navigation Arrows -->
+    <div class="slideshow-navigation max-md:!hidden">
+        <button class="slideshow-prev flex justify-center items-center" aria-label="Previous Slide"><svg width="25"
+                height="24" viewBox="0 0 25 24" class="stroke-[#112D49] rotate-180  transition-all duration-300"
+                fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9.35352 18L15.3535 12L9.35352 6" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" />
+            </svg></button>
+        <button class="slideshow-next flex justify-center items-center" aria-label="Next Slide"><svg width="25"
+                height="24" viewBox="0 0 25 24" class="stroke-[#112D49]  transition-all duration-300" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <path d="M9.35352 18L15.3535 12L9.35352 6" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" />
+            </svg></button>
+    </div>
+    <div class="slideshow-dots">
+        {% for block in section.blocks %}
+        <span class="slideshow-dot{% if forloop.first %} active{% endif %}" data-index="{{ forloop.index0 }}"></span>
+        {% endfor %}
+    </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const section = document.querySelector('[data-slideshow]');
+        const wrapper = section.querySelector('.slideshow-text-wrapper');
+        const dots = section.querySelectorAll('.slideshow-dot');
+        const totalSlides = dots.length;
+        const prevButton = section.querySelector('.slideshow-prev');
+        const nextButton = section.querySelector('.slideshow-next');
+        let index = 0;
+        let slideInterval;
+
+        function showSlide(i) {
+            wrapper.style.transform = `translateX(-${i * 100}%)`;
+            dots.forEach(dot => dot.classList.remove('active'));
+            dots[i].classList.add('active');
+        }
+
+        function startAutoSlide() {
+            slideInterval = setInterval(() => {
+                index = (index + 1) % totalSlides;
+                showSlide(index);
+            }, 5000);
+        }
+
+        function stopAutoSlide() {
+            clearInterval(slideInterval);
+        }
+
+        dots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                stopAutoSlide();
+                index = parseInt(dot.getAttribute('data-index'));
+                showSlide(index);
+                startAutoSlide();
+            });
+        });
+
+        prevButton.addEventListener('click', () => {
+            stopAutoSlide();
+            index = (index - 1 + totalSlides) % totalSlides;
+            showSlide(index);
+            startAutoSlide();
+        });
+
+        nextButton.addEventListener('click', () => {
+            stopAutoSlide();
+            index = (index + 1) % totalSlides;
+            showSlide(index);
+            startAutoSlide();
+        });
+
+        // Initialize
+        showSlide(index);
+        startAutoSlide();
+
+        // Mobile background support
+        function updateSlideBackgrounds() {
+            const isMobile = window.innerWidth <= 767;
+            document.querySelectorAll('.slideshow-slide').forEach(slide => {
+                const desktopBg = slide.getAttribute('data-bg-desktop');
+                const mobileBg = slide.getAttribute('data-bg-mobile');
+                slide.style.backgroundImage = `url('${isMobile && mobileBg ? mobileBg : desktopBg}')`;
+            });
+        }
+
+        window.addEventListener('resize', updateSlideBackgrounds);
+        updateSlideBackgrounds();
+    });
+</script>
