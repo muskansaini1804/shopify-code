@@ -1,172 +1,147 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 <style>
-
-
-
   @media (max-width : 1280px) {
-        
-.left-overlay{
-background: linear-gradient(to right, rgba(0 , 0,0, 0.1), rgba(255, 255, 255, 0));
-  backdrop-filter: blur(2px)
-}
-  .right-overlay {
-    background: linear-gradient(to left, rgba(0 , 0,0, 0.1), rgba(255, 255, 255, 0));
-    backdrop-filter: blur(2px)
+
+    .left-overlay {
+      background: linear-gradient(to right, rgba(0, 0, 0, 0.1), rgba(255, 255, 255, 0));
+      backdrop-filter: blur(2px)
+    }
+
+    .right-overlay {
+      background: linear-gradient(to left, rgba(0, 0, 0, 0.1), rgba(255, 255, 255, 0));
+      backdrop-filter: blur(2px)
+    }
   }
-      }
 </style>
-<div class="py-[24px] relative mx-auto max-w-[1440px]">
-      <div class="max-w-[1302px] mx-auto">
-        <div class="swiper relative collection-marque">
-          <div class="swiper-wrapper">
-            {% for card in section.blocks %}
-            <div class="swiper-slide">
+<div class="py-[10px] relative mx-auto max-w-[1440px]">
+  <div class="max-w-[1302px] mx-auto">
+    <div class="swiper relative collection-marque">
+      <div class="swiper-wrapper">
+        {% for card in section.blocks %}
+        <div class="swiper-slide ">
+          <div
+            class="border-[1.07px] !box-border hover:shadow-[0px_1px_10px_0px_#112D491A] duration-300 w-full flex items-center gap-[14px] border-[#112D491A] p-[10px] rounded-[8px]">
+            <a class="flex gap-[14px] max-lg:gap-[10px] items-center" href="{{ card.settings.link }}">
               <div
-                class="border-[1.07px] !box-border hover:shadow-[0px_2px_20px_0px_#112D491A] duration-300 w-full flex items-center gap-[14px] border-[#112D491A] p-[16px] max-sm:p-[14px] rounded-[8px]"
-              >
-                <a class="flex gap-[14px] max-lg:gap-[10px] items-center"href="{{ card.settings.link }}">
-                  <div
-                    class="rounded-full bg-[#112D49] flex justify-center items-center min-w-[59px] min-h-[59px] max-lg:min-w-[45px] max-lg:min-h-[45px] max-sm:min-h-[40px] max-sm:min-w-[40px]"
-                  >
-                   {% if card.settings.image %}
-                    <img src="{{ card.settings.image | image_url }}" alt="{{ card.settings.title }}" width="31" height="31">
-                  {% endif %}
-                  </div>
-                  <p
-                    class="font-bold text-[16px] max-sm:text-[12px] max-[780px]:!text-[14px] !leading-[120%] text-[#112D49]"
-                  >
-                    {{ card.settings.title }}
-                  </p>
-                </a>
+                class="rounded-full bg-[#112D49] flex justify-center items-center min-w-[40px] min-h-[40px] max-lg:min-w-[32px] p-[6px] max-lg:min-h-[32px] max-sm:min-h-[28px] max-sm:min-w-[28px]">
+                {% if card.settings.image %}
+                <img src="{{ card.settings.image | image_url }}" alt="{{ card.settings.title }}" width="31" height="31">
+                {% endif %}
               </div>
-            </div>
-            {% endfor %}
+              <p
+                class="font-bold text-[16px] max-sm:text-[12px] max-[780px]:!text-[14px] !leading-[120%] text-[#112D49]">
+                {{ card.settings.title }}
+              </p>
+            </a>
           </div>
         </div>
-          <div class="swiper-buttons w-full flex justify-between">
-             <div class="absolute top-1/2 left-0 z-[2] left-overlay -translate-y-1/2 min-w-[100px] max-sm:min-w-[60px] flex justify-start pl-[10px] items-center min-h-[93px] max-lg:min-h-[79px] max-sm:min-h-[70px]">
-                <button
-                class="swiper-button-prev-custom flex bg-white hover:bg-[#112D49] group transition-all duration-300 justify-center rounded-full items-center border border-solid border-[#112D49] size-[38px] max-sm:size-[30px] aspect-square"
-              >
-                <svg class="max-sm:w-[5px]" 
-                  width="9"
-                  height="14"
-                  viewBox="0 0 9 14"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  >
-                  <path class="group-hover:stroke-white transition-all duration-300"
-                    d="M7.35352 13L1.35352 7L7.35352 1"
-                    stroke="#112D49"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </button>
-             </div>
-             <div class="absolute top-1/2 right-0 right-overlay z-[2] -translate-y-1/2 min-w-[100px] max-sm:min-w-[60px] flex justify-end pr-[10px] items-center min-h-[93px] max-lg:min-h-[79px] max-sm:min-h-[70px]">
-              <button
-                class="swiper-button-next-custom flex bg-white hover:bg-[#112D49] group transition-all duration-300 rotate-180 rounded-full justify-center items-center border border-solid border-[#112D49] size-[38px] max-sm:size-[30px] aspect-square"
-              >
-                <svg class="max-sm:w-[5px]"
-                  width="9"
-                  height="14"
-                  viewBox="0 0 9 14"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path class="group-hover:stroke-white transition-all duration-300"
-                    d="M7.35352 13L1.35352 7L7.35352 1"
-                    stroke="#112D49"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </button>
-             </div>
-          </div>
+        {% endfor %}
       </div>
     </div>
+    <div class="swiper-buttons w-full flex justify-between">
+      <div
+        class="absolute top-1/2 left-0 z-[2] left-overlay -translate-y-1/2 min-w-[100px] max-sm:min-w-[60px] flex justify-start pl-[10px] items-center min-h-[93px] max-lg:min-h-[79px] max-sm:min-h-[70px]">
+        <button
+          class="swiper-button-prev-custom flex bg-white hover:bg-[#112D49] group transition-all duration-300 justify-center rounded-full items-center border border-solid border-[#112D49] size-[38px] max-sm:size-[30px] aspect-square">
+          <svg class="max-sm:w-[5px]" width="9" height="14" viewBox="0 0 9 14" fill="none"
+            xmlns="http://www.w3.org/2000/svg">
+            <path class="group-hover:stroke-white transition-all duration-300" d="M7.35352 13L1.35352 7L7.35352 1"
+              stroke="#112D49" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+      </div>
+      <div
+        class="absolute top-1/2 right-0 right-overlay z-[2] -translate-y-1/2 min-w-[100px] max-sm:min-w-[60px] flex justify-end pr-[10px] items-center min-h-[93px] max-lg:min-h-[79px] max-sm:min-h-[70px]">
+        <button
+          class="swiper-button-next-custom flex bg-white hover:bg-[#112D49] group transition-all duration-300 rotate-180 rounded-full justify-center items-center border border-solid border-[#112D49] size-[38px] max-sm:size-[30px] aspect-square">
+          <svg class="max-sm:w-[5px]" width="9" height="14" viewBox="0 0 9 14" fill="none"
+            xmlns="http://www.w3.org/2000/svg">
+            <path class="group-hover:stroke-white transition-all duration-300" d="M7.35352 13L1.35352 7L7.35352 1"
+              stroke="#112D49" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
- <script>
-      var swiper = new Swiper(".collection-marque", {
+<script>
+  var swiper = new Swiper(".collection-marque", {
+    slidesPerView: 6,
+    spaceBetween: 12,
+    loop: true,
+    centeredSlides: true,
+    navigation: {
+      nextEl: ".swiper-button-next-custom",
+      prevEl: ".swiper-button-prev-custom",
+    },
+    breakpoints: {
+      1280: {
         slidesPerView: 6,
-        spaceBetween: 12,
-        loop : true,
+        centeredSlides: false,
+      },
+      1080: {
+        slidesPerView: 5,
         centeredSlides: true,
-        navigation: {
-          nextEl: ".swiper-button-next-custom",
-          prevEl: ".swiper-button-prev-custom",
-        },
-        breakpoints: {
-          1280: {
-            slidesPerView: 6,
-            centeredSlides: false,
-          },
-          1080: {
-            slidesPerView: 5,
-            centeredSlides: true,
-          },
-          940: {
-              slidesPerView: 4.5,
-            centeredSlides: true,
-          },
-          768: {
-            slidesPerView: 4,
-            centeredSlides: true,
-          },
-          640: {
-            slidesPerView: 3,
-            centeredSlides: true,
-          },
-          0: {
-            slidesPerView: 2,
-            centeredSlides: true,
-             loop : true,
-          },
-        },
-      });
-   
-    </script>
+      },
+      940: {
+        slidesPerView: 4.5,
+        centeredSlides: true,
+      },
+      768: {
+        slidesPerView: 4,
+        centeredSlides: true,
+      },
+      640: {
+        slidesPerView: 3,
+        centeredSlides: true,
+      },
+      0: {
+        slidesPerView: 2,
+        centeredSlides: true,
+        loop: true,
+      },
+    },
+  });
+
+</script>
 {% schema %}
-  {
-    "name": "collection-marque",
-    "settings": [],
-    "blocks": [
-      {
-        "type": "collections",
-        "name":"collections",
-        "settings": [
-          {
-            "type": "image_picker",
-            "label": "image",
-            "id": "image"
-          },
-          {
-            "type": "text",
-            "label": "title",
-            "id": "title"
-          },
-         {
-            "type": "url",
-            "label": "link",
-            "id": "link"
-          }
-        ]
-      }
-    ],
-    "presets": [
-      {
-        "name": "collection-marque",
-        "blocks": [
-          {
-            "type": "collections"
-          }
-        ]
-      }
-    ]
-  }
+{
+"name": "collection-marque",
+"settings": [],
+"blocks": [
+{
+"type": "collections",
+"name":"collections",
+"settings": [
+{
+"type": "image_picker",
+"label": "image",
+"id": "image"
+},
+{
+"type": "text",
+"label": "title",
+"id": "title"
+},
+{
+"type": "url",
+"label": "link",
+"id": "link"
+}
+]
+}
+],
+"presets": [
+{
+"name": "collection-marque",
+"blocks": [
+{
+"type": "collections"
+}
+]
+}
+]
+}
 {% endschema %}

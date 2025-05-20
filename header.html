@@ -57,6 +57,7 @@
 
   .list-menu {
     list-style: none;
+    padding-bottom: 12px !important;
     padding: 0;
     margin: 0;
   }
@@ -172,21 +173,20 @@ endif
   endif
   -%}
   <header
-    class="header !h-[80px] max-md:!px-[24px] max-sm:!h-[58px] header--{{ section.settings.logo_position }} header--mobile-{{ section.settings.mobile_logo_position }} page-width{% if section.settings.menu_type_desktop == 'drawer' %} drawer-menu{% endif %}{% if section.settings.menu != blank %} header--has-menu{% endif %}{% if has_app_block %} header--has-app{% endif %}{% if social_links %} header--has-social{% endif %}{% if shop.customer_accounts_enabled %} header--has-account{% endif %}{% if localization_forms %} header--has-localizations{% endif %}">
+    class="header max-md:!px-[24px] !h-[48px] header--{{ section.settings.logo_position }} header--mobile-{{ section.settings.mobile_logo_position }} page-width{% if section.settings.menu_type_desktop == 'drawer' %} drawer-menu{% endif %}{% if section.settings.menu != blank %} header--has-menu{% endif %}{% if has_app_block %} header--has-app{% endif %}{% if social_links %} header--has-social{% endif %}{% if shop.customer_accounts_enabled %} header--has-account{% endif %}{% if localization_forms %} header--has-localizations{% endif %}">
     {%- if section.settings.logo_position != 'middle-center' -%}
     {%- if request.page_type == 'index' -%}
     <h1 class="header__heading min-[990px]:!hidden ">
       {%- endif -%}
-      <a href="{{ routes.root_url }}" class="header__heading-link link link--text focus-inset">
+      <a href="{{ routes.root_url }}" class="header__heading-link link link--text focus-inset"></a>
 
-        {%- if settings.logo != blank -%}
-        <div
-          class="header__heading-logo-wrapper  min-[990px]:!translate-y-[40px] max-[990px]:!w-[40px] max-[990px]:!h-[31px]">
-          <img src="https://cdn.shopify.com/s/files/1/0932/6906/6023/files/logo-mobile.png?v=1747645872">
-        </div>
-        {%- else -%}
-        <span class="h2">{{ shop.name }}</span>
-        {%- endif -%}
+      {%- if settings.logo != blank -%}
+      <div class="header__heading-logo-wrapper  max-[990px]:!w-[40px] max-[990px]:!h-[31px]">
+        <img src="https://cdn.shopify.com/s/files/1/0932/6906/6023/files/logo-mobile.png?v=1747645872">
+      </div>
+      {%- else -%}
+      <span class="h2">{{ shop.name }}</span>
+      {%- endif -%}
       </a>
       {%- if request.page_type == 'index' -%}
     </h1>
@@ -200,7 +200,7 @@ endif
       {%- endif -%}
       <a href="{{ routes.root_url }}" class="header__heading-link link link--text focus-inset">
         {%- if settings.logo != blank -%}
-        <div class="header__heading-logo-wrapper min-[990px]:!translate-y-[40px]">
+        <div class="header__heading-logo-wrapper min-[990px]:!translate-y-[26px]">
           {%- assign logo_alt = settings.logo.alt | default: shop.name | escape -%}
           {%- assign logo_height = settings.logo_width | divided_by: settings.logo.aspect_ratio -%}
           {% capture sizes %}(max-width: {{ settings.logo_width | times: 2 }}px) 50vw, {{ settings.logo_width }}px{%
@@ -284,11 +284,11 @@ endif
           {%- if customer and customer.has_avatar? -%}
           {{ customer | avatar }}
           {%- else -%}
-          <span class="svg-wrapper">{{ 'icon-account.svg' | inline_asset_content }}</span>
+          <span class="svg-wrapper !h-[20px] !w-[20px]">{{ 'icon-account.svg' | inline_asset_content }}</span>
           {%- endif -%}
         </account-icon>
         {%- else -%}
-        <span class="svg-wrapper">{{ 'icon-account.svg' | inline_asset_content }}</span>
+        <span class="svg-wrapper !h-[20px] !w-[20px]">{{ 'icon-account.svg' | inline_asset_content }}</span>
         {%- endif -%}
         <span class="visually-hidden">
           {%- liquid
@@ -301,7 +301,7 @@ endif
         </span>
       </a>
       {%- endif -%}
-      <span class="max-[749px]:!hidden" style="height:40px; opacity:0.45; width:1px; background-color:#D9D9D9"></span>
+      <span class="max-[749px]:!hidden" style="height:30px; opacity:0.45; width:1px; background-color:#D9D9D9"></span>
       <!-- <div class="desktop-localization-wrapper">
         {%- if section.settings.enable_country_selector and localization.available_countries.size > 1 -%}
           <localization-form class="small-hide medium-hide" data-prevent-hide>
@@ -325,7 +325,7 @@ endif
           </localization-form>
         {%- endif -%}
       </div> -->
-      <span class="svg-wrapper max-[749px]:!hidden" style="cursor:pointer">
+      <span class="svg-wrapper !h-[20px] !w-[20px] max-[749px]:!hidden" style="cursor:pointer">
         {{ 'icon-heart.svg' | inline_asset_content }}
       </span>
       <!-- {% render 'header-search', input_id: 'Search-In-Modal' %} -->
@@ -338,13 +338,13 @@ endif
       {% render block %}
       {%- endcase -%}
       {%- endfor -%}
-      <span class="max-[749px]:!hidden" style="height:40px; opacity: 0.45; width:1px; background-color:#D9D9D9"></span>
+      <span class="max-[749px]:!hidden" style="height:30px; opacity: 0.45; width:1px; background-color:#D9D9D9"></span>
       <a href="{{ routes.cart_url }}" class="header__icon header__icon--cart link focus-inset max-[749px]:!hidden"
         id="cart-icon-bubble">
         {% if cart == empty %}
-        <span class="svg-wrapper">{{ 'icon-cart-empty.svg' | inline_asset_content }}</span>
+        <span class="svg-wrapper !h-[20px] !w-[20px]">{{ 'icon-cart-empty.svg' | inline_asset_content }}</span>
         {% else %}
-        <span class="svg-wrapper">{{ 'icon-cart.svg' | inline_asset_content }}</span>
+        <span class="svg-wrapper !h-[20px] !w-[20px]">{{ 'icon-cart.svg' | inline_asset_content }}</span>
         {% endif %}
         <span class="visually-hidden">{{ 'templates.cart.cart' | t }}</span>
         {%- if cart != empty -%}
@@ -356,7 +356,7 @@ endif
         {%- endif -%}
       </a>
 
-      <span class="setting-icon" style="padding-left:36px">
+      <span class="setting-icon !h-[20px] !w-[20px]" style="padding-left:36px">
         {{ 'setting-icon.svg' | inline_asset_content }}
       </span>
     </div>
