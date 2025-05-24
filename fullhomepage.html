@@ -1,0 +1,2539 @@
+<!-- HEADER  LIQUID -->
+ <link rel="stylesheet" href="{{ 'component-list-menu.css' | asset_url }}" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="{{ 'component-search.css' | asset_url }}" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="{{ 'component-menu-drawer.css' | asset_url }}" media="print" onload="this.media='all'">
+<link
+  rel="stylesheet"
+  href="{{ 'component-cart-notification.css' | asset_url }}"
+  media="print"
+  onload="this.media='all'"
+>
+
+{%- if settings.predictive_search_enabled -%}
+  <link rel="stylesheet" href="{{ 'component-price.css' | asset_url }}" media="print" onload="this.media='all'">
+{%- endif -%}
+
+{%- if section.settings.menu_type_desktop == 'mega' -%}
+  <link rel="stylesheet" href="{{ 'component-mega-menu.css' | asset_url }}" media="print" onload="this.media='all'">
+{%- endif -%}
+  
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+  header-drawer {
+    justify-self: start;
+    margin-left: -1.2rem;
+  }
+
+  {%- if section.settings.sticky_header_type == 'reduce-logo-size' -%}
+    .scrolled-past-header .header__heading-logo-wrapper {
+      width: 75%;
+    }
+  {%- endif -%}
+
+  {%- if section.settings.menu_type_desktop != "drawer" -%}
+    @media screen and (min-width: 990px) {
+      header-drawer {
+        display: none;
+      }
+    }
+  {%- endif -%}
+
+  .menu-drawer-container {
+    display: flex;
+  }
+ .svg-wrapper{
+  height:30px;
+  width:30px
+}
+  .list-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .list-menu--inline {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap:12px
+  }
+
+  summary.list-menu__item {
+    padding-right: 2.7rem;
+  }
+.header__icon .svg-wrapper{
+  height:30px;
+  width:30px
+}
+  .list-menu__item {
+    display: flex;
+    align-items: center;
+    line-height: calc(1 + 0.3 / var(--font-body-scale));
+    font-family: "Montserrat", sans-serif;
+    font-size:16px
+
+  }
+
+  .list-menu__item--link {
+    text-decoration: none;
+    padding-bottom: 1rem;
+    padding-top: 1rem;
+    line-height: calc(1 + 0.8 / var(--font-body-scale));
+  }
+  .header{
+    display:flex;
+    justify-content: space-between;
+    background-color:#112D49
+  }
+#HeaderMenu-about{
+  color:white !important
+}
+  @media screen and (min-width: 750px) {
+    .list-menu__item--link {
+      padding-bottom: 0.5rem;
+      padding-top: 0.5rem;
+    }
+  }
+</style>
+
+{%- style -%}
+  .header {
+    padding: {{ section.settings.padding_top | times: 0.5 | round: 0 }}px 3rem {{ section.settings.padding_bottom | times: 0.5 | round: 0 }}px 3rem;
+  }
+
+  .section-header {
+    position: sticky; /* This is for fixing a Safari z-index issue. PR #2147 */
+    margin-bottom: {{ section.settings.margin_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-header {
+      margin-bottom: {{ section.settings.margin_bottom }}px;
+    }
+  }
+
+  /* @media screen and (min-width: 990px) {
+    .header {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  } */
+{%- endstyle -%}
+
+<script src="{{ 'cart-notification.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  for block in section.blocks
+    if block.type == '@app'
+      assign has_app_block = true
+    endif
+  endfor
+-%}
+
+{% liquid
+  assign header_tag = 'div'
+
+  if section.settings.sticky_header_type != 'none'
+    assign header_tag = 'sticky-header'
+  endif
+%}
+
+<{{ header_tag }}
+  {% if header_tag == 'sticky-header' %}
+    data-sticky-type="{{ section.settings.sticky_header_type }}"
+  {% endif %}
+  class="header-wrapper color-{{ section.settings.color_scheme }} gradient{% if section.settings.show_line_separator %} header-wrapper--border-bottom{% endif %}"
+>
+  {%- liquid
+    assign social_links = false
+    assign localization_forms = false
+
+    if settings.social_twitter_link != blank or settings.social_facebook_link != blank or settings.social_pinterest_link != blank or settings.social_instagram_link != blank or settings.social_youtube_link != blank or settings.social_vimeo_link != blank or settings.social_tiktok_link != blank or settings.social_tumblr_link != blank or settings.social_snapchat_link != blank
+      assign social_links = true
+    endif
+
+    if localization.available_countries.size > 1 and section.settings.enable_country_selector or section.settings.enable_language_selector and localization.available_languages.size > 1
+      assign localization_forms = true
+    endif
+  -%}
+  <div>
+    <header class="header max-md:!px-[24px] !h-[58px] header--{{ section.settings.logo_position }} header--mobile-{{ section.settings.mobile_logo_position }} page-width{% if section.settings.menu_type_desktop == 'drawer' %} drawer-menu{% endif %}{% if section.settings.menu != blank %} header--has-menu{% endif %}{% if has_app_block %} header--has-app{% endif %}{% if social_links %} header--has-social{% endif %}{% if shop.customer_accounts_enabled %} header--has-account{% endif %}{% if localization_forms %} header--has-localizations{% endif %}">
+    {%- if section.settings.logo_position != 'middle-center' -%}
+      {%- if request.page_type == 'index' -%}
+        <h1 class="header__heading min-[990px]:!hidden ">
+      {%- endif -%}
+      <a href="{{ routes.root_url }}" class="header__heading-link link link--text focus-inset"></a>
+        
+       <!-- {%- if settings.logo != blank -%}
+    <div class="header__heading-logo-wrapper  max-[990px]:!w-[40px] max-[990px]:!h-[31px]">
+          <img src="https://cdn.shopify.com/s/files/1/0938/6079/0345/files/Footer-Logo_Image.svg?v=1747645037">
+          </div>
+        {%- else -%}
+          <span class="h2">{{ shop.name }}</span>
+        {%- endif -%} -->
+      </a>
+      {%- if request.page_type == 'index' -%}
+        </h1>
+      {%- endif -%}
+    {%- endif -%}
+   
+
+    {%- if section.settings.logo_position != 'middle-center' -%}
+      {%- if request.page_type == 'index' -%}
+        <h1 class="header__heading min-[990px]:!block hidden">
+      {%- endif -%}
+      <a href="{{ routes.root_url }}" class="header__heading-link link link--text focus-inset">
+        {%- if settings.logo != blank -%}
+          <div class="header__heading-logo-wrapper">
+            {%- assign logo_alt = settings.logo.alt | default: shop.name | escape -%}
+            {%- assign logo_height = settings.logo_width | divided_by: settings.logo.aspect_ratio -%}
+            {% capture sizes %}(max-width: {{ settings.logo_width | times: 2 }}px) 50vw, {{ settings.logo_width }}px{% endcapture %}
+            {% capture widths %}{{ settings.logo_width }}, {{ settings.logo_width | times: 1.5 | round }}, {{ settings.logo_width | times: 2 }}{% endcapture %}
+            {{
+              settings.logo
+              | image_url: width: 600
+              | image_tag:
+                class: 'header__heading-logo motion-reduce',
+                widths: widths,
+                height: logo_height,
+                width: settings.logo_width,
+                alt: logo_alt,
+                sizes: sizes,
+                preload: true
+            }}
+          </div>
+        {%- else -%}
+          <span class="h2">{{ shop.name }}</span>
+        {%- endif -%}
+      </a>
+      {%- if request.page_type == 'index' -%}
+        </h1>
+      {%- endif -%}
+    {%- endif -%}
+
+    {%- liquid
+      if section.settings.menu != blank
+        if section.settings.menu_type_desktop == 'dropdown'
+          render 'header-dropdown-menu'
+        elsif section.settings.menu_type_desktop != 'drawer'
+          render 'header-mega-menu'
+        endif
+      endif
+    %}
+
+    {%- if section.settings.logo_position == 'middle-center' -%}
+      {%- if request.page_type == 'index' -%}
+        <h1 class="header__heading">
+      {%- endif -%}
+      <a href="{{ routes.root_url }}" class="header__heading-link link link--text focus-inset">
+        {%- if settings.logo != blank -%}
+          <div class="header__heading-logo-wrapper">
+            {%- assign logo_alt = settings.logo.alt | default: shop.name | escape -%}
+            {%- assign logo_height = settings.logo_width | divided_by: settings.logo.aspect_ratio -%}
+            {% capture sizes %}(min-width: 750px) {{ settings.logo_width }}px, 50vw{% endcapture %}
+            {% capture widths %}{{ settings.logo_width }}, {{ settings.logo_width | times: 1.5 | round }}, {{ settings.logo_width | times: 2 }}{% endcapture %}
+            {{
+              settings.logo
+              | image_url: width: 600
+              | image_tag:
+                class: 'header__heading-logo',
+                widths: widths,
+                height: logo_height,
+                width: settings.logo_width,
+                alt: logo_alt,
+                sizes: sizes,
+                preload: true
+            }}
+          </div>
+        {%- else -%}
+          <span class="h2">{{ shop.name }}</span>
+        {%- endif -%}
+      </a>
+      {%- if request.page_type == 'index' -%}
+        </h1>
+      {%- endif -%}
+    {%- endif -%}
+
+    <div style="gap:12px; align-items:center; display:flex" class="header__icons{% if section.settings.enable_country_selector or section.settings.enable_language_selector %} header__icons--localization header-localization{% endif %}">
+           {%- if shop.customer_accounts_enabled -%}
+        <a
+          href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}"
+          class="header__icon header__icon--account link focus-inset{% if section.settings.menu != blank %} small-hide{% endif %}"
+          rel="nofollow"
+        >
+          {%- if section.settings.enable_customer_avatar -%}
+            <account-icon>
+              {%- if customer and customer.has_avatar? -%}
+                {{ customer | avatar }}
+              {%- else -%}
+                <span class="svg-wrapper !h-[26px] !w-[26px]">{{ 'icon-account.svg' | inline_asset_content }}</span>
+              {%- endif -%}
+            </account-icon>
+          {%- else -%}
+            <span class="svg-wrapper !h-[26px] !w-[26px]">{{ 'icon-account.svg' | inline_asset_content }}</span>
+          {%- endif -%}
+          <span class="visually-hidden">
+            {%- liquid
+              if customer
+                echo 'customer.account_fallback' | t
+              else
+                echo 'customer.log_in' | t
+              endif
+            -%}
+          </span>
+        </a>
+      {%- endif -%}
+      <span class="max-[749px]:!hidden" style="height:30px; opacity:0.45; width:1px; background-color:#D9D9D9"></span>
+      <!-- <div class="desktop-localization-wrapper">
+        {%- if section.settings.enable_country_selector and localization.available_countries.size > 1 -%}
+          <localization-form class="small-hide medium-hide" data-prevent-hide>
+            {%- form 'localization', id: 'HeaderCountryForm', class: 'localization-form' -%}
+              <div>
+                <h2 class="visually-hidden" id="HeaderCountryLabel">{{ 'localization.country_label' | t }}</h2>
+                {%- render 'country-localization', localPosition: 'HeaderCountry' -%}
+              </div>
+            {%- endform -%}
+          </localization-form>
+        {% endif %}
+
+        {%- if section.settings.enable_language_selector and localization.available_languages.size > 1 -%}
+          <localization-form class="small-hide medium-hide" data-prevent-hide>
+            {%- form 'localization', id: 'HeaderLanguageForm', class: 'localization-form' -%}
+              <div>
+                <h2 class="visually-hidden" id="HeaderLanguageLabel">{{ 'localization.language_label' | t }}</h2>
+                {%- render 'language-localization', localPosition: 'HeaderLanguage' -%}
+              </div>
+            {%- endform -%}
+          </localization-form>
+        {%- endif -%}
+      </div> -->
+      <div class="svg-wrapper !h-[26px] !w-[26px] max-[749px]:!hidden" style="cursor:pointer">
+        {{ 'heart-icon.svg' | inline_asset_content }}
+      </div>
+      <!-- {% render 'header-search', input_id: 'Search-In-Modal' %} -->
+
+ 
+
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when '@app' -%}
+            {% render block %}
+        {%- endcase -%}
+      {%- endfor -%}
+      <span class="max-[749px]:!hidden" style="height:30px; opacity: 0.45; width:1px; background-color:#D9D9D9"></span>
+      <a href="{{ routes.cart_url }}" class="header__icon header__icon--cart link focus-inset max-[749px]:!hidden" id="cart-icon-bubble">
+        {% if cart == empty %}
+          <span class="svg-wrapper !h-[26px] !w-[26px]">{{ 'icon-cart-empty.svg' | inline_asset_content }}</span>
+        {% else %}
+          <span class="svg-wrapper !h-[26px] !w-[26px]">{{ 'icon-cart.svg' | inline_asset_content }}</span>
+        {% endif %}
+        <span class="visually-hidden">{{ 'templates.cart.cart' | t }}</span>
+        {%- if cart != empty -%}
+          <div class="cart-count-bubble">
+            {%- if cart.item_count < 100 -%}
+              <span aria-hidden="true">{{ cart.item_count }}</span>
+            {%- endif -%}
+            <span class="visually-hidden">{{ 'sections.header.cart_count' | t: count: cart.item_count }}</span>
+          </div>
+        {%- endif -%}
+      </a>
+
+        <span class="setting-icon max-[749px]:!hidden" style="padding-left:32px ">
+        {{ 'setting-icon.svg' | inline_asset_content }}
+      </span>
+    </div>
+   {%- liquid
+      if section.settings.menu != blank
+        render 'header-drawer'
+      endif
+
+      if section.settings.logo_position == 'top-center' or section.settings.menu == blank
+        render 'header-search', input_id: 'Search-In-Modal-1'
+      endif
+    -%}
+  </header>
+  </div>
+</{{ header_tag }}>
+
+{%- if settings.cart_type == 'notification' -%}
+  {%- render 'cart-notification',
+    color_scheme: section.settings.color_scheme,
+    desktop_menu_type: section.settings.menu_type_desktop
+  -%}
+{%- endif -%}
+
+{% javascript %}
+  class StickyHeader extends HTMLElement {
+    constructor() {
+      super();
+    }
+
+    connectedCallback() {
+      this.header = document.querySelector('.section-header');
+      this.headerIsAlwaysSticky =
+        this.getAttribute('data-sticky-type') === 'always' ||
+        this.getAttribute('data-sticky-type') === 'reduce-logo-size';
+      this.headerBounds = {};
+
+      this.setHeaderHeight();
+
+      window.matchMedia('(max-width: 990px)').addEventListener('change', this.setHeaderHeight.bind(this));
+
+      if (this.headerIsAlwaysSticky) {
+        this.header.classList.add('shopify-section-header-sticky');
+      }
+
+      this.currentScrollTop = 0;
+      this.preventReveal = false;
+      this.predictiveSearch = this.querySelector('predictive-search');
+
+      this.onScrollHandler = this.onScroll.bind(this);
+      this.hideHeaderOnScrollUp = () => (this.preventReveal = true);
+
+      this.addEventListener('preventHeaderReveal', this.hideHeaderOnScrollUp);
+      window.addEventListener('scroll', this.onScrollHandler, false);
+
+      this.createObserver();
+    }
+
+    setHeaderHeight() {
+      document.documentElement.style.setProperty('--header-height', `${this.header.offsetHeight}px`);
+    }
+
+    disconnectedCallback() {
+      this.removeEventListener('preventHeaderReveal', this.hideHeaderOnScrollUp);
+      window.removeEventListener('scroll', this.onScrollHandler);
+    }
+
+    createObserver() {
+      let observer = new IntersectionObserver((entries, observer) => {
+        this.headerBounds = entries[0].intersectionRect;
+        observer.disconnect();
+      });
+
+      observer.observe(this.header);
+    }
+
+    onScroll() {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+      if (this.predictiveSearch && this.predictiveSearch.isOpen) return;
+
+      if (scrollTop > this.currentScrollTop && scrollTop > this.headerBounds.bottom) {
+        this.header.classList.add('scrolled-past-header');
+        if (this.preventHide) return;
+        requestAnimationFrame(this.hide.bind(this));
+      } else if (scrollTop < this.currentScrollTop && scrollTop > this.headerBounds.bottom) {
+        this.header.classList.add('scrolled-past-header');
+        if (!this.preventReveal) {
+          requestAnimationFrame(this.reveal.bind(this));
+        } else {
+          window.clearTimeout(this.isScrolling);
+
+          this.isScrolling = setTimeout(() => {
+            this.preventReveal = false;
+          }, 66);
+
+          requestAnimationFrame(this.hide.bind(this));
+        }
+      } else if (scrollTop <= this.headerBounds.top) {
+        this.header.classList.remove('scrolled-past-header');
+        requestAnimationFrame(this.reset.bind(this));
+      }
+
+      this.currentScrollTop = scrollTop;
+    }
+
+    hide() {
+      if (this.headerIsAlwaysSticky) return;
+      this.header.classList.add('shopify-section-header-hidden', 'shopify-section-header-sticky');
+      this.closeMenuDisclosure();
+      this.closeSearchModal();
+    }
+
+    reveal() {
+      if (this.headerIsAlwaysSticky) return;
+      this.header.classList.add('shopify-section-header-sticky', 'animate');
+      this.header.classList.remove('shopify-section-header-hidden');
+    }
+
+    reset() {
+      if (this.headerIsAlwaysSticky) return;
+      this.header.classList.remove('shopify-section-header-hidden', 'shopify-section-header-sticky', 'animate');
+    }
+
+    closeMenuDisclosure() {
+      this.disclosures = this.disclosures || this.header.querySelectorAll('header-menu');
+      this.disclosures.forEach((disclosure) => disclosure.close());
+    }
+
+    closeSearchModal() {
+      this.searchModal = this.searchModal || this.header.querySelector('details-modal');
+      this.searchModal.close(false);
+    }
+  }
+
+  customElements.define('sticky-header', StickyHeader);
+{% endjavascript %}
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "Organization",
+    "name": {{ shop.name | json }},
+    {% if settings.logo %}
+      "logo": {{ settings.logo | image_url: width: 500 | prepend: "https:" | json }},
+    {% endif %}
+    "sameAs": [
+      {{ settings.social_twitter_link | json }},
+      {{ settings.social_facebook_link | json }},
+      {{ settings.social_pinterest_link | json }},
+      {{ settings.social_instagram_link | json }},
+      {{ settings.social_tiktok_link | json }},
+      {{ settings.social_tumblr_link | json }},
+      {{ settings.social_snapchat_link | json }},
+      {{ settings.social_youtube_link | json }},
+      {{ settings.social_vimeo_link | json }}
+    ],
+    "url": {{ request.origin | append: page.url | json }}
+  }
+</script>
+
+{%- if request.page_type == 'index' -%}
+  {% assign potential_action_target = request.origin | append: routes.search_url | append: '?q={search_term_string}' %}
+  <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "WebSite",
+      "name": {{ shop.name | json }},
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {{ potential_action_target | json }},
+        "query-input": "required name=search_term_string"
+      },
+      "url": {{ request.origin | append: page.url | json }}
+    }
+  </script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "t:sections.header.name",
+  "class": "section-header",
+  "max_blocks": 3,
+  "settings": [
+    {
+      "type": "select",
+      "id": "logo_position",
+      "options": [
+        {
+          "value": "top-left",
+          "label": "t:sections.header.settings.logo_position.options__2.label"
+        },
+        {
+          "value": "top-center",
+          "label": "t:sections.header.settings.logo_position.options__3.label"
+        },
+        {
+          "value": "middle-left",
+          "label": "t:sections.header.settings.logo_position.options__1.label"
+        },
+        {
+          "value": "middle-center",
+          "label": "t:sections.header.settings.logo_position.options__4.label"
+        }
+      ],
+      "default": "middle-left",
+      "label": "t:sections.header.settings.logo_position.label",
+      "info": "t:sections.header.settings.logo_help.content"
+    },
+    {
+      "type": "select",
+      "id": "mobile_logo_position",
+      "options": [
+        {
+          "value": "center",
+          "label": "t:sections.header.settings.mobile_logo_position.options__1.label"
+        },
+        {
+          "value": "left",
+          "label": "t:sections.header.settings.mobile_logo_position.options__2.label"
+        }
+      ],
+      "default": "center",
+      "label": "t:sections.header.settings.mobile_logo_position.label"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "default": "main-menu",
+      "label": "t:sections.header.settings.menu.label"
+    },
+    {
+      "type": "select",
+      "id": "menu_type_desktop",
+      "options": [
+        {
+          "value": "dropdown",
+          "label": "t:sections.header.settings.menu_type_desktop.options__1.label"
+        },
+        {
+          "value": "mega",
+          "label": "t:sections.header.settings.menu_type_desktop.options__2.label"
+        },
+        {
+          "value": "drawer",
+          "label": "t:sections.header.settings.menu_type_desktop.options__3.label"
+        }
+      ],
+      "default": "dropdown",
+      "label": "t:sections.header.settings.menu_type_desktop.label"
+    },
+    {
+      "type": "select",
+      "id": "sticky_header_type",
+      "options": [
+        {
+          "value": "none",
+          "label": "t:sections.header.settings.sticky_header_type.options__1.label"
+        },
+        {
+          "value": "on-scroll-up",
+          "label": "t:sections.header.settings.sticky_header_type.options__2.label"
+        },
+        {
+          "value": "always",
+          "label": "t:sections.header.settings.sticky_header_type.options__3.label"
+        },
+        {
+          "value": "reduce-logo-size",
+          "label": "t:sections.header.settings.sticky_header_type.options__4.label"
+        }
+      ],
+      "default": "on-scroll-up",
+      "label": "t:sections.header.settings.sticky_header_type.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_line_separator",
+      "default": true,
+      "label": "t:sections.header.settings.show_line_separator.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.header.settings.header__1.content"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "color_scheme",
+      "id": "menu_color_scheme",
+      "label": "t:sections.header.settings.menu_color_scheme.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.header.settings.header__utilities.content"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_country_selector",
+      "default": true,
+      "label": "t:sections.header.settings.enable_country_selector.label",
+      "info": "t:sections.header.settings.enable_country_selector.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_language_selector",
+      "default": true,
+      "label": "t:sections.header.settings.enable_language_selector.label",
+      "info": "t:sections.header.settings.enable_language_selector.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_customer_avatar",
+      "default": true,
+      "label": "t:sections.header.settings.enable_customer_avatar.label",
+      "info": "t:sections.header.settings.enable_customer_avatar.info"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.spacing"
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.header.settings.margin_bottom.label",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 36,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 36,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 20
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    }
+  ]
+}
+{% endschema %}
+
+
+
+<!-- CUSTOM SEARCH -->
+  <header class="custom-header max-sm:!py-0">
+  <!-- Main Header -->
+  <div class="main-header page-width mx-100 !py-[12px]">
+
+    <!-- Search -->
+    <div class="search-wrapper">
+      <form action="/search" method="get" role="search" class="search-form max-sm:max-w-[263px] shadow-[0px_2px_20px_0px_#112D491A] h-[40px] max-sm:h-[32px]">
+        <input type="search" name="q" class="placeholder:!text-[14px] !text-[#112D49]/52 placeholder:sm:!text-[16px]" placeholder="Search..." aria-label="Search" />
+        <button type="submit" class="search-icon" aria-label="Submit Search">
+           <span class="svg-wrapper !h-[20px] !w-[20px]">{{'search-icon.svg' | inline_asset_content }}</span>
+        </button>
+      </form>
+    </div>
+
+  </div>
+</header>
+
+<style>
+.custom-header {
+  background-color: #f2f7fd;
+}
+
+.main-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 10px 20px;
+}
+.search-form input:focus {
+  box-shadow: none; 
+  outline: none;   
+}
+.logo {
+  margin-right: 20px;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 4px solid white;
+  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+}
+
+.logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.search-wrapper {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.search-form {
+  display: flex;
+  align-items: center;
+  background: white;
+  padding: 8px 20px;
+  border-radius: 50px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+  width: 100%;
+  max-width: 460px;
+}
+
+.search-form input {
+  border: none;
+  outline: none;
+  flex: 1;
+  font-size: 14px;
+  color: #333;
+  background: transparent;
+}
+
+.search-icon {
+  background: none;
+  border: none;
+  font-size: 16px;
+  color: #555;
+  cursor: pointer;
+  padding-left: 10px;
+  padding-top: 10px;
+}
+
+@media (max-width: 768px) {
+  .main-header {
+    flex-direction: column;
+  }
+
+  .logo {
+    margin-bottom: 10px;
+  }
+
+  .search-wrapper {
+    width: 100%;
+  }
+
+  .search-form {
+    max-width: 90%;
+  }
+}
+</style>
+
+{% schema %}
+{
+  "name": "Custom Header",
+  "tag": "section",
+  "class": "custom-header-section",
+  "settings": [
+  ],
+  "presets": [
+    {
+      "name": "Custom Header"
+    }
+  ]
+}
+{% endschema %}
+
+<!-- COLLECTION MARQUEE -->
+ <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+<style>
+
+
+
+  @media (max-width : 1280px) {
+        
+.left-overlay{
+background: linear-gradient(to right, rgba(0 , 0,0, 0.1), rgba(255, 255, 255, 0));
+  backdrop-filter: blur(2px)
+}
+  .right-overlay {
+    background: linear-gradient(to left, rgba(0 , 0,0, 0.1), rgba(255, 255, 255, 0));
+    backdrop-filter: blur(2px)
+  }
+      }
+</style>
+<div class="py-[10px] max-[500px]:pl-[16px] relative mx-auto max-w-[1440px]">
+      <div class="max-w-[1302px] mx-auto">
+        <div class="swiper relative collection-marque">
+          <div class="swiper-wrapper">
+            {% for card in section.blocks %}
+            <div class="swiper-slide ">
+              <div
+                class="border-[1.07px] !box-border hover:shadow-[0px_1px_10px_0px_#112D491A] min-w-[160px] duration-300 w-full flex items-center gap-[14px] border-[#112D491A] p-[10px] rounded-[8px]"
+              >
+                <a class="flex gap-[14px] min-[500px]:flex-row h-full flex-col justify-center w-full max-lg:gap-[10px] items-center"href="{{ card.settings.link }}">
+                  <div
+                    class="rounded-full bg-[#112D49] flex justify-center items-center min-w-[40px] min-h-[40px] max-lg:w-[32px] p-[6px] max-lg:h-[32px]"
+                  >
+                   {% if card.settings.image %}
+                    <img src="{{ card.settings.image | image_url }}" alt="{{ card.settings.title }}" class="max-w-[24px] w-full" width="31" height="31">
+                  {% endif %}
+                  </div>
+                  <p
+                    class="font-bold text-[16px] max-sm:text-[12px] max-[780px]:!text-[14px] !leading-[120%] text-[#112D49]"
+                  >
+                    {{ card.settings.title }}
+                  </p>
+                </a>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+          <div class="swiper-buttons w-full flex justify-between">
+             <div class="absolute top-1/2 left-0 z-[2] left-overlay -translate-y-1/2 max-sm:!hidden min-w-[100px] max-sm:min-w-[60px] flex justify-start pl-[10px] items-center min-h-[93px] max-lg:min-h-[79px] max-sm:min-h-[70px]">
+                <button
+                class="swiper-button-prev-custom flex bg-white hover:bg-[#112D49] group transition-all duration-300 justify-center rounded-full items-center border border-solid border-[#112D49] size-[38px] max-sm:size-[30px] aspect-square"
+              >
+                <svg class="max-sm:w-[5px]" 
+                  width="9"
+                  height="14"
+                  viewBox="0 0 9 14"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  >
+                  <path class="group-hover:stroke-white transition-all duration-300"
+                    d="M7.35352 13L1.35352 7L7.35352 1"
+                    stroke="#112D49"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </button>
+             </div>
+             <div class="absolute top-1/2 right-0 right-overlay z-[2] -translate-y-1/2 max-sm:!hidden min-w-[100px] max-sm:min-w-[60px] flex justify-end pr-[10px] items-center min-h-[93px] max-lg:min-h-[79px] max-sm:min-h-[70px]">
+              <button
+                class="swiper-button-next-custom flex bg-white hover:bg-[#112D49] group transition-all duration-300 rotate-180 rounded-full justify-center items-center border border-solid border-[#112D49] size-[38px] max-sm:size-[30px] aspect-square"
+              >
+                <svg class="max-sm:w-[5px]"
+                  width="9"
+                  height="14"
+                  viewBox="0 0 9 14"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path class="group-hover:stroke-white transition-all duration-300"
+                    d="M7.35352 13L1.35352 7L7.35352 1"
+                    stroke="#112D49"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </button>
+             </div>
+          </div>
+      </div>
+    </div>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+ <script>
+      var swiper = new Swiper(".collection-marque", {
+        slidesPerView: 6,
+        spaceBetween: 12,
+        loop : true,
+        centeredSlides: true,
+        navigation: {
+          nextEl: ".swiper-button-next-custom",
+          prevEl: ".swiper-button-prev-custom",
+        },
+        breakpoints: {
+          1280: {
+            slidesPerView: 6,
+            centeredSlides: false,
+          },
+          1080: {
+            slidesPerView: 5,
+            centeredSlides: true,
+          },
+          940: {
+              slidesPerView: 4.5,
+            centeredSlides: true,
+          },
+          768: {
+            slidesPerView: 4,
+            centeredSlides: true,
+          },
+          640: {
+            slidesPerView: 3.6,
+            centeredSlides: true,
+          },
+           600: {
+            slidesPerView: 2.8,
+            centeredSlides: false,
+          },
+           400: {
+            slidesPerView: 2.4,
+            centeredSlides: false,
+          },
+          0: {
+            slidesPerView: 2.1,
+            centeredSlides: false,
+             loop : true,
+          },
+        },
+      });
+   
+    </script>
+{% schema %}
+  {
+    "name": "collection-marque",
+    "settings": [],
+    "blocks": [
+      {
+        "type": "collections",
+        "name":"collections",
+        "settings": [
+          {
+            "type": "image_picker",
+            "label": "image",
+            "id": "image"
+          },
+          {
+            "type": "text",
+            "label": "title",
+            "id": "title"
+          },
+         {
+            "type": "url",
+            "label": "link",
+            "id": "link"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "collection-marque",
+        "blocks": [
+          {
+            "type": "collections"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}
+
+
+<!-- SLIDESHOW -->
+ {% schema %}
+{
+  "name": "Slideshow Text",
+  "tag": "section",
+  "class": "slideshow-text-section",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "bg_image",
+          "label": "Desktop Background Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "bg_image_mobile",
+          "label": "Mobile Background Image"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "This is your heading"
+        },
+        {
+          "type": "textarea",
+          "id": "subheading",
+          "label": "Subheading",
+          "default": "This is your subheading text."
+        },
+        {
+          "type": "text",
+          "id": "button1_text",
+          "label": "Button 1 Text",
+          "default": "Learn More"
+        },
+        {
+          "type": "url",
+          "id": "button1_link",
+          "label": "Button 1 Link"
+        },
+        {
+          "type": "text",
+          "id": "button2_text",
+          "label": "Button 2 Text",
+          "default": "Shop Now"
+        },
+        {
+          "type": "url",
+          "id": "button2_link",
+          "label": "Button 2 Link"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 5,
+  "presets": [
+    {
+      "name": "Slideshow with Two Buttons",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}
+{% style %}
+.slideshow-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.2); 
+  z-index: 1;
+}
+
+/* Make sure slide content appears above the overlay */
+.slideshow-slide > *:not(.slideshow-overlay) {
+  position: relative;
+  z-index: 2;
+}
+  .slideshow-navigation {
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.slideshow-prev,
+.slideshow-next {
+  pointer-events: all;
+  background: white;
+  border: 1px solid #112D49;
+  cursor: pointer;
+    width:45px!important;
+    height:45px !important;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: background 0.3s ease;
+}
+.slideshow-prev {
+  left: 10px;
+}
+
+.slideshow-next {
+  right: 10px;
+}
+.slideshow-text-section {
+  position: relative;
+  overflow: hidden;
+  max-width: 1384px;
+  margin: 0 auto;
+}
+.slideshow-text-wrapper {
+  display: flex;
+  width: 100%;
+  transition: transform 0.6s ease-in-out;
+}
+.slideshow-slide {
+  min-width: 100%;
+  background-size: cover;
+  background-position: top;
+  height: 650px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  flex-direction: column;
+  padding: 40px;
+  background-repeat: no-repeat;
+}
+.slideshow-slide h1 {
+  font-size: 60px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  max-width: 727px;
+  color: #112D49;
+}
+.slideshow-slide p {
+  font-size: 16px;
+  margin-bottom: 20px;
+  color: #3D5369;
+max-width: 492px;
+}
+.slideshow-buttons {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.button:after, .button:before {
+  box-shadow: none;
+}
+.button:not([disabled]):hover:after {
+  box-shadow: none;
+}
+.slideshow-slide a.button {
+  background-color: #112D49;
+  color: #fff;
+  padding: 16px 20px;
+  text-decoration: none;
+  border-radius: 93px;
+ font-weight: 500;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+  height: 52px;
+}
+.slideshow-slide a.second-button {
+  background-color: transparent;
+  color: #112D49;
+  border: 1px solid #112D49;
+  padding: 10px 20px;
+  text-decoration: none;
+  border-radius: 93px;
+  font-weight: bold;
+   font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+.slideshow-dots {
+  text-align: center;
+  bottom: 20px;
+  width: 100%;
+}
+.slideshow-dot {
+  display: inline-block;
+  width: 21px;
+  height: 6px;
+  border-radius: 22px;
+  background-color: #E8E8E8;
+margin: 0px -1px !important;
+  cursor: pointer;
+}
+.slideshow-dot.active {
+  background-color: #112D49;
+  width: 51px;
+}
+@media(max-width: 767px){
+  .slideshow-slide h1 {
+    font-size: 32px;
+  }
+      .slideshow-prev,
+.slideshow-next {
+    width:32px!important;
+    height:32px !important;
+}
+  .slideshow-slide {
+  background-size: cover;
+  background-position: unset;
+  height: 600px;
+}
+  .slideshow-slide h1 {
+  max-width: 272px;
+    margin-top:60px;
+}
+  .slideshow-slide a.button {
+ font-size: 14px;
+  padding: 10px 10px;
+}
+.slideshow-slide a.second-button {
+  padding: 10px 10px;
+   font-size: 14px;
+}
+}
+  @media (max-width: 576px) {
+    .slideshow-prev,
+.slideshow-next {
+    width:26px!important;
+    height:26px !important;
+}
+  .slideshow-slide h1 {
+    max-width: 264px;
+    margin-top:20px;
+    margin-bottom: 8px;
+  }
+  .slideshow-slide a.button {
+    letter-spacing: -0.1px;
+    padding: 16px 16px;
+  }
+  .slideshow-slide a.second-button {
+    letter-spacing: -0.1px;
+    padding: 16px 20px;
+  }
+     .slideshow-slide {
+  background-size: cover;
+  background-position: unset;
+  height: 500px;
+}
+}
+   @media (max-width: 376px) {
+  .slideshow-slide {
+  background-size: 100% 100%;
+  background-position: unset;
+  height: 415px;
+}
+   }
+{% endstyle %}
+<div class="slideshow-text-section" data-slideshow>
+  <div class="slideshow-text-wrapper">
+     <!-- Overlay -->
+  <div class="slideshow-overlay"></div>
+    {% for block in section.blocks %}
+      <div class="slideshow-slide relative"
+        style="background-image: url({{ block.settings.bg_image | img_url: 'master' }});"
+        data-bg-desktop="{{ block.settings.bg_image | img_url: 'master' }}"
+        data-bg-mobile="{{ block.settings.bg_image_mobile | img_url: 'master' }}">
+          <!-- Overlay inside the slide -->
+  <div class="slideshow-overlay !block"></div>
+        <h1>{{ block.settings.heading }}</h1>
+        <p>{{ block.settings.subheading }}</p>
+        <div class="slideshow-buttons">
+          {% if block.settings.button1_text != blank and block.settings.button1_link != blank %}
+            <a href="{{ block.settings.button1_link }}" class="button group cursor-pointer relative px-[20px] py-[16px] !border !border-solid !border-[#112D49] text-[#112D49]  font-medium !leading-[120%] text-[16px] overflow-hidden rounded-[36px] transition duration-500 ">
+            <!-- {{ block.settings.button1_text }} -->
+              <span class="relative z-[2] duration-300 transition-all group-hover:text-[#112D49]">{{ block.settings.button1_text }}</span>
+              <span class="absolute top-full left-0 w-1/4 h-full bg-[#EAE9E7] rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[0s] z-[1]"></span>
+              <span class="absolute top-full left-1/4 w-1/4 h-full bg-[#EAE9E7] rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[100ms] z-[1]"></span>
+              <span class="absolute top-full left-1/2 w-1/4 h-full bg-[#EAE9E7] rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[200ms] z-[1]"></span>
+              <span class="absolute top-full left-[75%] w-1/4 h-full bg-[#EAE9E7] rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[300ms] z-[1]"></span>
+            </a>
+          {% endif %}
+          {% if block.settings.button2_text != blank and block.settings.button2_link != blank %}
+            <a href="{{ block.settings.button2_link }}" class="second-button group flex justify-center cursor-pointer relative px-[20px] py-[16px] border border-soild border-[#112D49] !bg-[#E7E6E4] font-medium !leading-[120%] text-[16px] overflow-hidden rounded-[36px] transition duration-500 ">
+              <span class="relative z-[2] duration-300 transition-all !text-[#112D49] flex items-center group-hover:!text-white">{{ block.settings.button2_text }}</span>
+              <span class="absolute top-full left-0 w-1/4 h-full !bg-[#112D49] rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[0s] z-[1]"></span>
+              <span class="absolute top-full left-1/4 w-1/4 h-full !bg-[#112D49] rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[100ms] z-[1]"></span>
+              <span class="absolute top-full left-1/2 w-1/4 h-full !bg-[#112D49] rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[200ms] z-[1]"></span>
+              <span class="absolute top-full left-[75%] w-1/4 h-full !bg-[#112D49] rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[300ms] z-[1]"></span>
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+    <!-- Navigation Arrows -->
+  <div class="slideshow-navigation">
+    <button class="slideshow-prev flex justify-center items-center" aria-label="Previous Slide"><svg width="25" height="24" viewBox="0 0 25 24" class="stroke-[#112D49] rotate-180  transition-all duration-300" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M9.35352 18L15.3535 12L9.35352 6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg></button>
+    <button class="slideshow-next flex justify-center items-center" aria-label="Next Slide"><svg  width="25" height="24" viewBox="0 0 25 24" class="stroke-[#112D49]  transition-all duration-300" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M9.35352 18L15.3535 12L9.35352 6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg></button>
+  </div>
+  <div class="slideshow-dots">
+    {% for block in section.blocks %}
+      <span class="slideshow-dot{% if forloop.first %} active{% endif %}" data-index="{{ forloop.index0 }}"></span>
+    {% endfor %}
+  </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const section = document.querySelector('[data-slideshow]');
+    const wrapper = section.querySelector('.slideshow-text-wrapper');
+    const dots = section.querySelectorAll('.slideshow-dot');
+    const totalSlides = dots.length;
+    const prevButton = section.querySelector('.slideshow-prev');
+    const nextButton = section.querySelector('.slideshow-next');
+    let index = 0;
+    let slideInterval;
+
+    function showSlide(i) {
+      wrapper.style.transform = `translateX(-${i * 100}%)`;
+      dots.forEach(dot => dot.classList.remove('active'));
+      dots[i].classList.add('active');
+    }
+
+    function startAutoSlide() {
+      slideInterval = setInterval(() => {
+        index = (index + 1) % totalSlides;
+        showSlide(index);
+      }, 5000);
+    }
+
+    function stopAutoSlide() {
+      clearInterval(slideInterval);
+    }
+
+    dots.forEach(dot => {
+      dot.addEventListener('click', () => {
+        stopAutoSlide();
+        index = parseInt(dot.getAttribute('data-index'));
+        showSlide(index);
+        startAutoSlide();
+      });
+    });
+
+    prevButton.addEventListener('click', () => {
+      stopAutoSlide();
+      index = (index - 1 + totalSlides) % totalSlides;
+      showSlide(index);
+      startAutoSlide();
+    });
+
+    nextButton.addEventListener('click', () => {
+      stopAutoSlide();
+      index = (index + 1) % totalSlides;
+      showSlide(index);
+      startAutoSlide();
+    });
+
+    // Initialize
+    showSlide(index);
+    startAutoSlide();
+
+    // Mobile background support
+    function updateSlideBackgrounds() {
+      const isMobile = window.innerWidth <= 767;
+      document.querySelectorAll('.slideshow-slide').forEach(slide => {
+        const desktopBg = slide.getAttribute('data-bg-desktop');
+        const mobileBg = slide.getAttribute('data-bg-mobile');
+        slide.style.backgroundImage = `url('${isMobile && mobileBg ? mobileBg : desktopBg}')`;
+      });
+    }
+
+    window.addEventListener('resize', updateSlideBackgrounds);
+    updateSlideBackgrounds();
+  });
+</script>
+
+<!-- FEATURE ROW -->
+ {% schema %}
+{
+  "name": "Feature Row",
+  "tag": "section",
+  "class": "feature-row-section",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Feature Icon"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "EXPRESS Delivery"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Subtitle",
+          "default": "Order Now"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 5,
+  "presets": [
+    {
+      "name": "Feature Row",
+      "blocks": [
+        { "type": "feature" },
+        { "type": "feature" },
+        { "type": "feature" },
+        { "type": "feature" },
+        { "type": "feature" }
+      ]
+    }
+  ]
+}
+{% endschema %}
+{% style %}
+.feature-row-wrapper {
+  background-color: #F1F7FD;
+  border-radius: 10px;
+  padding: 20px 30px;
+}
+.feature-row {
+  display: flex;
+}
+.feature-block {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-width: 1px;
+  border-style: solid;
+  border-top:0 !important;
+  border-bottom:0;
+  border-left:0 !important;
+  border-color: transparent; /* Hide all borders */
+  border-right-color: transparent; /* Ensure right border is transparent so gradient shows */
+
+  border-image-source: linear-gradient(
+    180deg,
+    rgba(17, 45, 73, 0) 0%,
+    #112D49 51.44%,
+    rgba(17, 45, 73, 0) 100%
+  );
+  border-image-slice: 1;
+  border-image-width: 1;
+  
+}
+.feature-block:last-child {
+  border-right: none;
+}
+.feature-icon {
+  background-color: #73A4E0;
+  border-radius: 50%;
+  padding: 10px;
+  width: 47px;
+  height: 47px;
+  display: flex;
+  align-items: center;
+}
+.feature-icon img {
+  max-width: 24px;
+  max-height: 24px;
+}
+.feature-text h4 {
+  margin: 0;
+  font-weight: 700;
+  font-size: 14px;
+  color: #000;
+}
+.feature-text p {
+  margin: 0;
+  font-size: 13px;
+  color: #333;
+}
+@media
+ (max-width: 768px) {
+  .feature-row {
+    flex-direction: column;
+    gap:24px
+  }
+ .feature-block {
+  border: 1px solid;
+  border-top:0 !important;
+  border-right: none;
+  border-bottom: 1px solid #D1D1D1 !important;
+  padding-bottom: 15px;
+  border-image-source: linear-gradient(
+    90deg,
+    rgba(17, 45, 73, 0) 0%,
+    #112D49 51.44%,
+    rgba(17, 45, 73, 0) 100%
+  );
+  border-image-slice: 1;
+}
+  .feature-block:last-child {
+    border-bottom: 0 !important;
+  }
+}
+{% endstyle %}
+<div class="bg-[#F1F6FC] rounded-[8px] mx-[24px] md:!mt-[67px] !mt-[42px]">
+<div class="feature-row-wrapper lg:!py-[43px] max-lg:!mx-[24px]">
+  <div class="feature-row !max-w-[1384px] mx-auto min-[1400px]:!h-[61px] xl:gap-[30px] justify-center md:gap-[20px] flex-wrap max-md:!max-w-[330px] max-md:mx-auto min-[1400px]:!flex-nowrap min-[1400px]:px-[60px]">
+    {% for block in section.blocks %}
+      <div class="feature-block max-md:!justify-start :!justify-center max-md:flex max-[460px]:!gap-[10px] max-[460px]:mx-auto max-[460px]:items-center max-[460px]:flex-col  max-[460px]:max-w-[176px] xl:pr-[30px] md:pr-[20px] last:pr-0">
+        <div class="feature-icon">
+          {% if block.settings.icon %}
+            <img class="m-auto"
+              src="{{ block.settings.icon | image_url: width: 48 }}" alt="Icon">
+          {% endif %}
+        </div>
+        <div class="feature-text">
+          <h4 class="text-nowrap !font-[700] text-[16px] text-black !leading-[150%] max-[460px]:text-center">{{ block.settings.title }}</h4>
+          <p class="text-nowrap max-[460px]:pt-[4px] text-[14px] text-black !leading-[120%] max-[460px]:text-center">{{ block.settings.subtitle }}</p>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+</div>
+<!-- FEATURED CATEGORIES -->
+ <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<style type="text/tailwindcss">
+  @theme {
+    --color-clifford: #DA373D;
+  }
+</style>
+
+<div class="flex items-center flex-col px-[24px] pt-[132px] max-xl:pt-[128px] max-lg:pt-[120px] max-sm:pt-[112px]">
+  <div class="max-w-[602px] mx-auto pb-[57px] max-lg:pb-[40px] max-md:pb-[30px] flex flex-col gap-[8px]">
+    <p class="leading-[120%] text-[20px] text-center max-lg:text-[18px] italic max-md:text-[16px] text-[#112D49]">
+      {{ section.settings.sub_heading }}
+    </p>
+    <h2 class="!font-[700] !text-center !text-[48px] max-lg:!text-[40px] max-md:!text-[32px] !text-[#112D49]">
+      {{ section.settings.heading }}
+    </h2>
+  </div>
+
+  <div class="max-w-[1384px] container flex flex-col gap-[24px] mx-auto">
+    <div class="!grid grid-cols-2 max-lg:grid-cols-1 gap-[24px]">
+      <!-- Sensors & Modules -->
+      <a href="{{ section.settings.sensors_modules_url }}" class="block">
+        <div class="min-h-[335px] max-sm:min-h-[unset] max-sm:!h-[291px] relative bg-[#D5E8FF] rounded-lg">
+          <p class="font-[700] max-w-[172px] text-[32px] max-md:text-[28px] max-sm:text-[24px] leading-[120%] absolute left-[62.54px] top-1/2 -translate-y-1/2 text-[#112D49]">
+            {{ section.settings.sensors_modules }}
+          </p>
+          <img class="absolute max-xl:w-[50%] bottom-0 right-0 w-full max-w-[372px] max-sm:w-[246px]" src="{{ section.settings.sensors_modules_image | image_url }}" alt="">
+        </div>
+      </a>
+
+      <div class="!grid grid-cols-2 max-sm:grid-cols-1 gap-[24px]">
+        <!-- Custom PC Parts -->
+        <a href="{{ section.settings.custom_pc_parts_url }}" class="block">
+          <div class="!bg-[#EEF4FB] min-h-[335px] max-sm:!h-[291px] relative rounded-lg">
+            <p class="font-[700] min-w-[220px] text-center text-[32px] max-md:text-[28px] max-sm:text-[24px] absolute top-[32.96px] left-1/2 -translate-x-1/2 text-[#112D49]">
+              {{ section.settings.custom_pc_parts_text }}
+            </p>
+            <img class="absolute max-xl:w-[70%] bottom-0 left-1/2 -translate-x-1/2 max-w-[213px]" src="{{ section.settings.custom_pc_parts_image | image_url }}" alt="">
+          </div>
+        </a>
+
+        <!-- DIY Tools -->
+        <a href="{{ section.settings.diy_tools_url }}" class="block">
+          <div class="!bg-[#E5E4E2] min-h-[335px] max-sm:!h-[291px] relative rounded-lg">
+            <p class="font-[700] min-w-[220px] text-center text-[32px] max-md:text-[28px] max-sm:text-[24px] absolute top-[46.08px] left-1/2 -translate-x-1/2 text-[#112D49]">
+              {{ section.settings.diy_text }}
+            </p>
+            <img class="absolute max-xl:w-[70%] bottom-0 left-1/2 -translate-x-1/2 max-w-[184px]" src="{{ section.settings.diy_tools_image | image_url }}" alt="">
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div class="!grid grid-cols-2 max-lg:grid-cols-1 gap-[24px]">
+      <div class="!grid grid-cols-2 max-sm:grid-cols-1 gap-[24px]">
+        <!-- Cables & Connectors -->
+        <a href="{{ section.settings.cables_and_connectors_url }}" class="block">
+          <div class="!bg-[#EEF4FB] min-h-[335px] max-sm:!h-[291px] relative rounded-lg">
+            <p class="font-[700] text-[32px] max-md:text-[28px] max-sm:text-[24px] absolute top-[26.96px] right-[16px] text-left lg:max-w-[196px] text-[#112D49]">
+              {{ section.settings.cables_and_connectors }}
+            </p>
+            <img class="absolute max-xl:w-[70%] bottom-0 right-[-5%] max-w-[310px] max-sm:rotate-[-90deg]" src="{{ section.settings.cables_and_connectors_image | image_url }}" alt="" />
+          </div>
+        </a>
+
+        <!-- Gaming Peripherals -->
+        <a href="{{ section.settings.gaming_peripherals_url }}" class="block">
+          <div class="!bg-[#E5E4E2] min-h-[335px] max-sm:!h-[291px] relative rounded-lg">
+            <p class="font-[700] min-w-[220px] text-center text-[32px] max-md:text-[28px] max-sm:text-[24px] absolute top-[22px] left-1/2 -translate-x-1/2 text-[#112D49]">
+              {{ section.settings.gaming_peripherals_text }}
+            </p>
+            <img class="absolute max-xl:w-[70%] bottom-[18px] left-1/2 -translate-x-1/2 max-w-[266px]" src="{{ section.settings.gaming_peripherals_image | image_url }}" alt="" />
+          </div>
+        </a>
+      </div>
+
+      <!-- Raspberry Pi Kits -->
+      <a href="{{ section.settings.raspberry_pi_kits_url }}" class="block">
+        <div class="min-h-[335px] max-sm:!h-[291px] relative !bg-[#D5E8FF] rounded-lg">
+          <p class="font-[700] text-[32px] max-md:text-[28px] max-sm:text-[24px] text-center absolute top-[59.34px] left-1/2 -translate-x-1/2 text-[#112D49]">
+            {{ section.settings.raspberry-pi-kits_text }}
+          </p>
+          <img class="absolute bottom-0 right-0 max-w-[680px] w-full" src="{{ section.settings.raspberry_pi_kits_image | image_url }}" alt="" />
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Featured Categories",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading" },
+    { "type": "text", "id": "sub_heading", "label": "Sub Heading" },
+
+    { "type": "text", "id": "sensors_modules", "label": "Sensors & Modules Text" },
+    { "type": "image_picker", "id": "sensors_modules_image", "label": "Sensors & Modules Image" },
+    { "type": "url", "id": "sensors_modules_url", "label": "Sensors & Modules URL" },
+
+    { "type": "text", "id": "custom_pc_parts_text", "label": "Custom PC Parts Heading" },
+    { "type": "image_picker", "id": "custom_pc_parts_image", "label": "Custom PC Parts Image" },
+    { "type": "url", "id": "custom_pc_parts_url", "label": "Custom PC Parts URL" },
+
+    { "type": "text", "id": "diy_text", "label": "DIY Tools Text" },
+    { "type": "image_picker", "id": "diy_tools_image", "label": "DIY Tools Image" },
+    { "type": "url", "id": "diy_tools_url", "label": "DIY Tools URL" },
+
+    { "type": "text", "id": "cables_and_connectors", "label": "Cables And Connectors" },
+    { "type": "image_picker", "id": "cables_and_connectors_image", "label": "Cables And Connectors Image" },
+    { "type": "url", "id": "cables_and_connectors_url", "label": "Cables And Connectors URL" },
+
+    { "type": "text", "id": "gaming_peripherals_text", "label": "Gaming Peripherals Text" },
+    { "type": "image_picker", "id": "gaming_peripherals_image", "label": "Gaming Peripherals Image" },
+    { "type": "url", "id": "gaming_peripherals_url", "label": "Gaming Peripherals URL" },
+
+    { "type": "text", "id": "raspberry-pi-kits_text", "label": "Raspberry Pi Kits Text" },
+    { "type": "image_picker", "id": "raspberry_pi_kits_image", "label": "Raspberry Pi Kits Image" },
+    { "type": "url", "id": "raspberry_pi_kits_url", "label": "Raspberry Pi Kits URL" }
+  ],
+  "presets": [
+    {
+      "name": "Featured Categories"
+    }
+  ]
+}
+{% endschema %}
+
+
+<!-- BEST SELLER -->
+ <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+<style type="text/tailwindcss">
+  @theme {
+      --color-dark-black: #010101;
+  }
+</style>
+<div class="best-seller xl:py-[132px] py-[112px] relative py-10 px-[24px]">
+  <div class="max-w-[1140px] container mx-auto">
+    <h2
+      class="!font-[700] ff-montserrat text-center !text-[48px] max-sm !text-[#112D49] leading-[120%]  max-lg:!text-[40px] max-md:!text-[32px] max-sm:!text-[28px]">
+      {{ section.settings.heading }}
+    </h2>
+    <div
+      class="swiper best-seller-slider !pt-[116px] max-lg:!pt-[80px] max-sm:!pt-[54px] max-sm:!pb-[23px] max-xl:!pb-10">
+      <div class="swiper-wrapper">
+        {% if section.settings.selected_collection != blank %}
+        {% assign products = collections[section.settings.selected_collection].products %}
+        {% for product in products %}
+        <div class="swiper-slide">
+          <div
+            class="md:p-[16px] p-[12px] bg-white rounded-[8px] relative hover:shadow-[0px_0px_11.4px_0px_#73A4E033] max-[480px]:shadow-[0px_0px_11.4px_0px_#73A4E033] duration-300 flex flex-col border-[#112D4914] border justify-between gap-[22px] max-md:min-h-[494px] min-h-[506px]">
+            <a href="{{ product.url }}" class="flex flex-col gap-[14px] md:gap-[16px]">
+              {% assign is_even = forloop.index0 | modulo: 2 %}
+              <div class="relative rounded-[4px] duration-300 !min-h-[242px]"
+                style="background-color: {% if is_even == 0 %}#E5E4E2{% else %}#EEF4FB{% endif %};">
+              <img src="{{ product.featured_image | image_url }}" alt="{{ product.title }}"
+  class="absolute bottom-[12px] left-[50%] translate-x-[-50%] max-h-[336px] max-lg:max-h-[300px] max-md:max-h-[277px] object-contain transition-transform duration-300 ease-in-out hover:translate-y-[-10px]"
+  width="238" height="274">
+
+              </div>
+              <div class="flex flex-col gap-2 max-sm:gap-[6px]">
+                <p class="!font-[700] leading-[120%] ff-montserrat text-[#112D49] text-[24px] max-lg:text-[20px]">{{
+                  product.title }}</p>
+                <p class="leading-[150%] ff-montserrat text-[#112D49]/80 font-normal text-[16px] max-sm:text-[14px]">{{
+                  product.description | strip_html | truncate: 100 }}</p>
+              </div>
+            </a>
+            <div class="flex flex-col  gap-[25px]">
+              <a href="{{ product.url }}" class="flex flex-col gap-[16px]">
+                <div class="flex items-center justify-between">
+                  <p class="font-semibold leading-[100%] !text-[#112D49] ff-montserrat text-[24px] max-sm:text-[20px]">
+                    ${{ product.price | dollar }}</p>
+                  <div>
+                    {{ 'rating.svg' | inline_asset_content }}
+                  </div>
+                </div>
+              </a>
+              <div class="flex max-sm:gap-[19px] gap-[24px] max-sm:h-[49px] items-center justify-between">
+                <a href="/cart/{{ product.variants.first.id }}:1"
+                  class="group cursor-pointer relative flex max-sm:py-[14px] justify-center px-[20px] !rounded-full py-[16px] max-w-[260px] w-full !bg-[#FFFFFF] !border-[2px] !border-[#112D49] text-white font-medium !leading-[120%] text-[14px] overflow-hidden rounded-[36px] transition duration-500 ">
+                  <span
+                    class="relative z-[2] duration-300 max-sm:!text-[14px] !text-[16px] transition-all text-nowrap !font-[500] !text-[#112D49] group-hover:!text-[#FFFFFF]">Shop
+                    Now</span>
+                  <span
+                    class="absolute top-full left-0 w-1/4 h-full bg-[#112D49] rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[0s] z-[1]"></span>
+                  <span
+                    class="absolute top-full left-1/4 w-1/4 h-full bg-[#112D49] rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[100ms] z-[1]"></span>
+                  <span
+                    class="absolute top-full left-1/2 w-1/4 h-full bg-[#112D49] rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[200ms] z-[1]"></span>
+                  <span
+                    class="absolute top-full left-[75%] w-1/4 h-full bg-[#112D49] rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[300ms] z-[1]"></span>
+                </a>
+                <form method="post" action="/cart/add">
+                  <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+                  <button type="submit"
+                    class="bg-[#73A4E0] size-[45px] max-sm:h-[49px] max-sm:w-[49px] rounded-full cursor-pointer flex items-center justify-center">
+                    <span class="flex size-[24px] items-center">
+                      <svg width="27" height="28" viewBox="0 0 27 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                          d="M18.7819 20.6229C19.3674 20.6229 19.9289 20.8555 20.3429 21.2695C20.7569 21.6835 20.9895 22.245 20.9895 22.8305C20.9895 23.416 20.7569 23.9775 20.3429 24.3915C19.9289 24.8055 19.3674 25.0381 18.7819 25.0381C18.1964 25.0381 17.6349 24.8055 17.2209 24.3915C16.8069 23.9775 16.5743 23.416 16.5743 22.8305C16.5743 21.6053 17.5566 20.6229 18.7819 20.6229ZM1.12109 2.96216H4.73051L5.76808 5.16975H22.0933C22.386 5.16975 22.6668 5.28605 22.8738 5.49305C23.0808 5.70005 23.1971 5.98081 23.1971 6.27355C23.1971 6.4612 23.1419 6.64884 23.0646 6.82545L19.113 13.967C18.7377 14.6403 18.0092 15.1039 17.1814 15.1039H8.95806L7.96464 16.9031L7.93153 17.0356C7.93153 17.1088 7.9606 17.179 8.01235 17.2307C8.0641 17.2825 8.13429 17.3115 8.20748 17.3115H20.9895V19.5191H7.74388C7.15839 19.5191 6.59688 19.2865 6.18288 18.8725C5.76887 18.4585 5.53629 17.897 5.53629 17.3115C5.53629 16.9252 5.63563 16.5609 5.8012 16.2519L7.30236 13.5476L3.32869 5.16975H1.12109V2.96216ZM7.74388 20.6229C8.32937 20.6229 8.89088 20.8555 9.30489 21.2695C9.71889 21.6835 9.95148 22.245 9.95148 22.8305C9.95148 23.416 9.71889 23.9775 9.30489 24.3915C8.89088 24.8055 8.32937 25.0381 7.74388 25.0381C7.15839 25.0381 6.59688 24.8055 6.18288 24.3915C5.76887 23.9775 5.53629 23.416 5.53629 22.8305C5.53629 21.6053 6.51867 20.6229 7.74388 20.6229ZM17.6781 12.8963L20.7466 7.37735H6.79461L9.39958 12.8963H17.6781Z"
+                          fill="white" />
+                      </svg>
+                    </span>
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <p class="text-white">No collection selected.</p>
+        {% endif %}
+      </div>
+    </div>
+    <div
+      class="flex absolute top-1/2 left-1/2 max-w-[1272px]  w-full -translate-x-1/2 -translate-y-1/2 max-xl:relative max-xl:translate-y-0 max-xl:translate-0-1/2 max-xl:justify-center max-sm:gap-[8px] max-xl:gap-[20px] justify-between">
+      <!-- Previous Button -->
+      <div
+        class="seller-button-prev left-[-2%] max-sm:w-[33px] max-sm:h-[33px] !w-[38px] flex group justify-center cursor-pointer items-center !h-[38px] border-[#112D49] rounded-full border min-w-[38px] size-[38px] hover:bg-[#112D49] transition-all duration-300">
+        <svg width="25" height="24" viewBox="0 0 25 24"
+          class="stroke-[#112D49] group-hover:stroke-white transition-all duration-300" fill="none"
+          xmlns="http://www.w3.org/2000/svg">
+          <path d="M15.3535 18L9.35352 12L15.3535 6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </div>
+      <!-- Next Button -->
+      <div
+        class="seller-button-next !w-[38px] max-sm:w-[33px] max-sm:h-[33px] !h-[38px] flex group justify-center cursor-pointer items-center border-[#112D49] rounded-full min-w-[38px] border size-[38px] hover:bg-[#112D49] transition-all duration-300">
+        <svg width="25" height="24" viewBox="0 0 25 24"
+          class="stroke-[#112D49] group-hover:stroke-white transition-all duration-300" fill="none"
+          xmlns="http://www.w3.org/2000/svg">
+          <path d="M9.35352 18L15.3535 12L9.35352 6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+  document.querySelectorAll('.best-seller-slider').forEach(swiperContainer => {
+    if (!swiperContainer.classList.contains('swiper-initialized')) {
+      new Swiper(swiperContainer, {
+        slidesPerView: 1,
+        spaceBetween: 20,
+        loop: true,
+        pagination: {
+          el: swiperContainer.querySelector('.swiper-pagination'),
+          clickable: true,
+        },
+        navigation: {
+          nextEl: document.querySelector('.seller-button-next'),
+          prevEl: document.querySelector('.seller-button-prev'),
+        },
+        breakpoints: {
+          480: { slidesPerView: 1 },
+          500: { slidesPerView: 1.5 },
+          768: { slidesPerView: 2 },
+          1100: { slidesPerView: 2.5 },
+          1200: { slidesPerView: 3 },
+        },
+      });
+    }
+  });
+</script>
+{% schema %}
+{
+"name": "Best sellers",
+"settings": [
+{
+"type": "text",
+"id": "heading",
+"label": "Heading"
+},
+{
+"type": "collection",
+"id": "selected_collection",
+"label": "Select Collection"
+}
+],
+"presets": [
+{
+"name": "Best sellers"
+}
+]
+}
+{% endschema %}
+
+<!-- BLOG GUIDES -->
+ <div class="flex flex-col relative justify-center px-[24px]">
+  <div class="flex flex-col max-w-[618px] mx-auto justify-center items-center">
+    <h2
+      class="!font-[700] !text-center !text-[48px] max-lg:!text-[40px] max-[400px]:!max-w-[305px] max-md:!text-[32px] max-sm:!text-[28px] max-sm:pb-[32px] max-md:pb-[40px] max-lg:pb-[50px] pb-[64px] !text-[#112D49]">
+      {{ section.settings.heading }}
+    </h2>
+  </div>
+  <div class="max-w-[1386px] flex flex-col gap-[24px] w-full mx-auto">
+    <div class="!grid grid-cols-2 max-lg:grid-cols-1 gap-[26px]">
+      <div
+        class="min-h-[335px] flex max-sm:flex-col max-sm:gap-[22px] max-sm:p-[10px_14px_14px_14px] max-sm:items-center relative rounded-lg bg-[#E5E4E2] p-[32px]">
+        <img
+          class="max-w-[283px] max-sm:relative max-xl:w-[35%] max-lg:w-[auto] max-sm:w-[202px] max-md:w-[48%] absolute bottom-0 right-0"
+          width="281" height="235" src="{{ section.settings.mini_nas_image | image_url }}" alt="min-nas" />
+        <div class="flex flex-col items-start h-full">
+          <p
+            class="font-[700] text-[32px] max-lg:text-[28px] max-sm:max-w-[194px] max-sm:text-[24px] leading-[120%] text-[#112D49]">
+            {{ section.settings.mini_nas_heading }}
+          </p>
+          <p
+            class="leading-[150%] text-[#112D49]/80 pt-[12px] max-sm:pt-[8px] max-sm:tracking-[-0.2px] max-sm:text-[14px] max-md:pt-[10px] max-w-[415px]">
+            {{ section.settings.mini_nas_description }}
+          </p>
+          <a href="{{ section.settings.mini_nas_blog_url }}"
+            class="items-center inline-flex !font-[500] text-[#112D49] max-sm:text-[14px] max-sm:leading-[121%] font-[500] mt-[28px] max-sm:mt-[24px] max-md:mt-[26px] group gap-[8px]">{{
+            section.settings.mini_nas_url_text }}
+            <svg class="group-hover:translate-x-5 transition-all duration-700" width="18" height="8" viewBox="0 0 18 8"
+              fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M1.35352 3.5C1.07737 3.5 0.853516 3.72386 0.853516 4C0.853516 4.27614 1.07737 4.5 1.35352 4.5L1.35352 3.5ZM17.2686 4.35355C17.4639 4.15829 17.4639 3.84171 17.2686 3.64645L14.0866 0.464467C13.8913 0.269205 13.5748 0.269205 13.3795 0.464467C13.1842 0.659729 13.1842 0.976312 13.3795 1.17157L16.2079 4L13.3795 6.82843C13.1842 7.02369 13.1842 7.34027 13.3795 7.53553C13.5748 7.7308 13.8913 7.7308 14.0866 7.53554L17.2686 4.35355ZM1.35352 4L1.35352 4.5L16.915 4.5L16.915 4L16.915 3.5L1.35352 3.5L1.35352 4Z"
+                fill="#112D49" />
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <div
+        class="min-h-[335px] flex max-sm:flex-col relative max-sm:items-center max-sm:p-[0px_14px_14px_14px] rounded-lg bg-[#EEF4FB] p-[32px]">
+        <img width="197" height="auto"
+          class="max-w-[197px] max-xl:w-[25%] max-sm:hidden max-lg:w-[auto] max-md:w-[40%] absolute bottom-0 right-0"
+          src="{{ section.settings.five_tools_desktop_image | image_url }}" alt="min-nas" />
+        <img width="288" height="159" class="sm:hidden" src="{{ section.settings.five_tools_mobile_image | image_url }}"
+          alt="five-tools" />
+        <div
+          class="flex flex-col items-start max-w-[385px] max-sm:pt-[42px] justify-center max-sm:justify-start h-full">
+          <p class="font-[700] text-[32px] max-lg:text-[28px] max-sm:text-[24px] leading-[120%] text-[#112D49]">
+            {{ section.settings.five_tools_heading }}
+          </p>
+          <p
+            class="leading-[150%] text-[#112D49]/80 pt-[12px] max-sm:pt-[8px] max-sm:text-[14px] max-md:pt-[10px] !max-w-[385px] max-[400px]:!max-w-[286px]">
+            {{ section.settings.five_tool_description }}
+          </p>
+          <a href="{{ section.settings.five_tools_blog_url }}"
+            class="items-center inline-flex !font-[500] text-[#112D49] max-sm:text-[14px] max-sm:leading-[121%] font-[500] mt-[28px] max-sm:mt-[24px] max-md:mt-[26px] group gap-[8px]">{{
+            section.settings.five_tool_url_text }}
+            <svg class="group-hover:translate-x-5 transition-all duration-700" width="18" height="8" viewBox="0 0 18 8"
+              fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M1.35352 3.5C1.07737 3.5 0.853516 3.72386 0.853516 4C0.853516 4.27614 1.07737 4.5 1.35352 4.5L1.35352 3.5ZM17.2686 4.35355C17.4639 4.15829 17.4639 3.84171 17.2686 3.64645L14.0866 0.464467C13.8913 0.269205 13.5748 0.269205 13.3795 0.464467C13.1842 0.659729 13.1842 0.976312 13.3795 1.17157L16.2079 4L13.3795 6.82843C13.1842 7.02369 13.1842 7.34027 13.3795 7.53553C13.5748 7.7308 13.8913 7.7308 14.0866 7.53554L17.2686 4.35355ZM1.35352 4L1.35352 4.5L16.915 4.5L16.915 4L16.915 3.5L1.35352 3.5L1.35352 4Z"
+                fill="#112D49" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="!grid grid-cols-1">
+      <div class="bg-[#D5E8FF] min-h-[388px] max-sm:min-h-[unset] rounded-lg relative">
+        <img
+          class="max-w-[375px] max-xl:w-[25%] max-sm:pb-[17px] max-sm:relative max-sm:w-[212px] max-sm:!top-0 max-sm:left-0 absolute left-[18px] top-[50px] max-md:!top-[18px] max-lg:top-[25px]"
+          width="375" height="303" src="{{ section.settings.raspberry_image | image_url }}"
+          alt="raspberry-mother-board" />
+        <div
+          class="!max-w-[441px] max-sm:px-[14px] h-full max-sm:h-[unset] flex w-full flex-col justify-center items-center mx-auto">
+          <p
+            class="font-[700] text-[32px] max-lg:text-[28px] text-center max-sm:text-[24px] leading-[120%] max-[400px]:!max-w-[297px] text-[#112D49]">
+            {{ section.settings.raspberry_heading }}
+          </p>
+          <p
+            class="leading-[150%] text-[#112D49]/80 max-sm:text-[14px] max-sm:max-w-[260px] max-sm:mx-auto text-center pt-[12px] max-md:pt-[10px] max-sm:pt-[8px] !max-w-[441px]">
+            {{ section.settings.raspberry_description }}
+          </p>
+          <a href="{{ section.settings.raspberry_blog_url }}"
+            class="items-center inline-flex !font-[500] text-[#112D49] max-sm:text-[14px] max-sm:leading-[121%] font-[500] mt-[28px] max-sm:mt-[24px] max-md:mt-[26px] group gap-[8px]">{{
+            section.settings.raspberry_url_text }}
+            <svg class="group-hover:translate-x-5 transition-all duration-700" width="18" height="8" viewBox="0 0 18 8"
+              fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M1.35352 3.5C1.07737 3.5 0.853516 3.72386 0.853516 4C0.853516 4.27614 1.07737 4.5 1.35352 4.5L1.35352 3.5ZM17.2686 4.35355C17.4639 4.15829 17.4639 3.84171 17.2686 3.64645L14.0866 0.464467C13.8913 0.269205 13.5748 0.269205 13.3795 0.464467C13.1842 0.659729 13.1842 0.976312 13.3795 1.17157L16.2079 4L13.3795 6.82843C13.1842 7.02369 13.1842 7.34027 13.3795 7.53553C13.5748 7.7308 13.8913 7.7308 14.0866 7.53554L17.2686 4.35355ZM1.35352 4L1.35352 4.5L16.915 4.5L16.915 4L16.915 3.5L1.35352 3.5L1.35352 4Z"
+                fill="#112D49" />
+            </svg>
+          </a>
+        </div>
+        <div class="max-sm:w-full max-sm:flex max-sm:justify-end max-sm:pt-[38px]">
+          <img
+            class="max-w-[365px] max-xl:w-[25%] max-sm:relative max-sm:w-[182px] max-sm:bottom-0 max-sm:!right-0 absolute right-[27px] bottom-[16px]"
+            src="{{ section.settings.raspberry_console_image  | image_url }}" width="365" height="302"
+            alt="raspberry-console" />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="flex justify-center w-full pt-[56px] max-md:pt-[38px]">
+    <a href="{{ section.settings.view_all_blogs }}"
+      class="group cursor-pointer !rounded-[93px] relative px-[20px] py-[16px] !border !border-solid !border-[#112D49] !bg-[#112D49] font-[500] !leading-[120%] text-[16px] overflow-hidden rounded-[36px] transition duration-500 ">
+      <span
+        class="relative z-[2] duration-300 transition-all text-white max-sm:text-[14px] group-hover:text-[#112D49]">View
+        All Blog Posts</span>
+      <span
+        class="absolute top-full left-0 w-1/4 h-full bg-white rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[0s] z-[1]"></span>
+      <span
+        class="absolute top-full left-1/4 w-1/4 h-full bg-white rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[100ms] z-[1]"></span>
+      <span
+        class="absolute top-full left-1/2 w-1/4 h-full bg-white rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[200ms] z-[1]"></span>
+      <span
+        class="absolute top-full left-[75%] w-1/4 h-full bg-white rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[300ms] z-[1]"></span>
+    </a>
+  </div>
+</div>
+
+{% schema %}
+{
+"name": "Blog Guides",
+"settings": [
+{
+"type": "text" ,
+"id": "heading" ,
+"label": "Heading"
+},
+{
+"type": "text",
+"id": "mini_nas_heading" ,
+"label": "Mini NAS Heading"
+} ,
+{
+"type": "textarea" ,
+"id": "mini_nas_description",
+"label": "Mini Nas Description"
+} ,
+{
+"type": "text",
+"id": "mini_nas_url_text",
+"label": "Mini Nas Url Text"
+},
+{
+"type": "url",
+"id": "mini_nas_blog_url",
+"label": "Mini Nas Blog Url"
+},
+{
+"type": "image_picker",
+"id": "mini_nas_image",
+"label": "Mini Nas Image"
+} ,
+
+
+{
+"type": "text",
+"id": "five_tools_heading",
+"label": "Five Tools Heading"
+},
+{
+"type": "text",
+"id": "five_tool_description",
+"label": "Five Tools Description"
+} ,
+{
+"type": "text",
+"id": "five_tool_url_text",
+"label": "Five Tools Url Text"
+},
+{
+"type": "url" ,
+"id": "five_tools_blog_url",
+"label": "Five Tools Blog Url"
+} ,
+{
+"type": "image_picker",
+"id": "five_tools_desktop_image",
+"label": "Five Tools Desktop Image"
+},
+{
+"type": "image_picker",
+"id": "five_tools_mobile_image",
+"label": "Five Tools Mobile Image"
+},
+{
+"type": "text",
+"id": "raspberry_heading",
+"label": "Raspberry Heading"
+} ,
+{
+"type": "textarea",
+"id": "raspberry_description",
+"label": "Raspberry Description"
+},
+{
+"type": "text",
+"id": "raspberry_url_text",
+"label": "Raspberry Url Text"
+},
+{
+"type": "url",
+"id": "raspberry_blog_url",
+"label": "Raspberry Blog Url"
+},
+{
+"type": "image_picker",
+"id": "raspberry_image",
+"label": "Raspberry Image"
+},
+{
+"type": "image_picker",
+"id": "raspberry_console_image",
+"label": "Raspberry Console Image"
+},
+{
+"type": "url",
+"id": "view_all_blogs",
+"label": "View All Blogs Url"
+}
+],
+"presets": [
+{
+"name": "Blog Guides"
+}
+]
+}
+{% endschema %}
+<!-- TESTINOMIAL -->
+ <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+<div class="xl:py-[132px] relative lg:py-[100px] xl:!pb-0 sm:py-[80px] px-[24px] py-[54px]">
+  <div class="max-w-[1140px] mx-auto">
+    <div class="max-w-[602px] mx-auto flex flex-col gap-[10px] md:gap-[8px]">
+      <p class="leading-[120%] text-[20px] italic text-center max-lg:text-[18px] text-[#112D49]">{{
+        section.settings.sub_heading }}</p>
+      <h2
+        class="!font-[700] capitalize !text-center !leading-[120%] max-sm:max-w-[250px] mx-auto !text-[48px] max-lg:!text-[40px] max-md:!text-[28px] !text-[#112D49]">
+        {{ section.settings.heading }}</h2>
+    </div>
+
+    <div class="swiper testimonial !px-[6px]  xl:!pt-[59px] lg:!pt-[40px] !pt-[32px] max-md:!pb-[15px] ">
+      <div class="swiper-wrapper xl:pb-[132px] ">
+        {% for card in section.blocks %}
+        <div class="swiper-slide">
+          <div
+            class="bg-white rounded-[8px] max-w-[558px] flex flex-col justify-center items-center sm:p-[20px] px-[14px] py-[20px] hover:shadow-[0px_2px_20px_0px_#112D491A] max-[580px]:shadow-[0px_2px_20px_0px_#112D491A] duration-300 transition-all">
+            {% if card.settings.image %}
+            <img src="{{ card.settings.image | image_url }}" alt="{{ card.settings.name }}"
+              class="rounded-full md:w-[93px] w-[74px] md:h-[93px] h-[74px]" width="93" height="93">
+            {% endif %}
+            <p
+              class="font-normal inline-block sm:text-[16px] text-[14px] text-center pt-[16px] !leading-[150%] md:pb-[20px] pb-[18px] text-[#112D49]/80 align-middle">
+              <img src="https://cdn.shopify.com/s/files/1/0932/6906/6023/files/start-comma.png?v=1747288508" width="20"
+                height="20" class="inline-block align-text-top mr-1" />
+              {{ card.settings.description }}
+              <img src="https://cdn.shopify.com/s/files/1/0932/6906/6023/files/end-comma.png?v=1747288589" width="20"
+                height="20" class="inline-block align-text-bottom ml-1" />
+            </p>
+            <img src="https://cdn.shopify.com/s/files/1/0932/6906/6023/files/rating.png?v=1747286992" width="192"
+              height="31" class="max-w-[192px] max-sm:w-[133px] max-sm:h-[25px] w-full mb-[8px] sm:mb-[10px] object-contain">
+            <p class="sm:text-[24px] text-[20px] text-center font-semibold !leading-[120%] text-[#112D49]">{{
+              card.settings.name }}</p>
+            <p class="font-normal text-center sm:text-[16px] text-[14px] !leading-[161%] text-[#112D49]/70">{{
+              card.settings.designation }}</p>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  <div
+    class="flex absolute top-[60%] left-1/2 max-w-[1256px]  w-full -translate-x-1/2 -translate-y-1/2 max-xl:relative max-xl:translate-y-0 max-xl:translate-0-1/2 max-xl:justify-center max-sm:gap-[8px] max-xl:gap-[20px] justify-between">
+    <!-- Previous Button -->
+    <div
+      class="testimonial-button-prev left-[-2%] cursor-pointer max-sm:w-[33px] max-sm:h-[33px] !w-[38px] flex group justify-center items-center !h-[38px] border-[#112D49] rounded-full border min-w-[38px] size-[38px] hover:bg-[#112D49] transition-all duration-300">
+      <svg width="25" height="24" viewBox="0 0 25 24"
+        class="stroke-[#112D49] rotate-180 group-hover:stroke-white transition-all duration-300" fill="none"
+        xmlns="http://www.w3.org/2000/svg">
+        <path d="M9.35352 18L15.3535 12L9.35352 6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </div>
+    <!-- Next Button -->
+    <div
+      class="testimonial-button-next !w-[38px] cursor-pointer max-sm:w-[33px] max-sm:h-[33px] !h-[38px] flex group justify-center items-center border-[#112D49] rounded-full min-w-[38px] border size-[38px] hover:bg-[#112D49] transition-all duration-300">
+      <svg width="25" height="24" viewBox="0 0 25 24"
+        class="stroke-[#112D49] group-hover:stroke-white transition-all duration-300" fill="none"
+        xmlns="http://www.w3.org/2000/svg">
+        <path d="M9.35352 18L15.3535 12L9.35352 6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </div>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+  document.querySelectorAll('.testimonial').forEach(swiperContainer => {
+    if (!swiperContainer.classList.contains('swiper-initialized')) {
+      new Swiper(swiperContainer, {
+        slidesPerView: 1,
+        spaceBetween: 24,
+        loop: true,
+        pagination: {
+          el: swiperContainer.querySelector('.swiper-pagination'),
+          clickable: true,
+        },
+        navigation: {
+          nextEl: document.querySelector('.testimonial-button-next'),
+          prevEl: document.querySelector('.testimonial-button-prev'),
+        },
+        breakpoints: {
+          480: {
+            slidesPerView: 1,
+          },
+          580: { slidesPerView: 1.5 },
+          800: { slidesPerView: 2, },
+        },
+      });
+    }
+  });
+</script>
+{% schema %}
+{
+"name": "testimonial",
+"settings": [
+{
+"type": "text",
+"label": "sub_heading",
+"id": "sub_heading"
+},
+{
+"type": "text",
+"label": "heading",
+"id": "heading"
+},
+],
+"blocks": [
+{
+"type": "testimonial_card",
+"name":"testimonial_card",
+"settings": [
+{
+"type": "image_picker",
+"label": "image",
+"id": "image"
+},
+{
+"type": "text",
+"label": "description",
+"id": "description"
+},
+{
+"type": "text",
+"label": "name",
+"id": "name"
+},
+{
+"type": "text",
+"label": "designation",
+"id": "designation"
+}
+]
+}
+],
+"presets": [
+{
+"name": "testimonial",
+"blocks": [
+{
+"type": "testimonial_card"
+}
+]
+}
+]
+}
+{% endschema %}
+
+<!-- JOIN NOW -->
+ <style>
+  .cta-bg {
+    background-image: url("{{ section.settings.image | img_url: "master" }}");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+</style>
+<div
+  class="px-[24px] max-sm:mt-[56px] sm:bg-[linear-gradient(0deg,rgba(17,45,73,1)_36%,rgba(255,255,255,1)_36%)] bg-[linear-gradient(0deg,rgba(17,45,73,1)_66%,rgba(255,255,255,1)_66%)]"
+>
+  <div
+    class="max-w-[1140px] !rounded-[24px] mx-auto px-[24px] py-[62px] md:py-[88px] cta-bg"
+  >
+    <div class="flex justify-center items-center flex-col">
+      <h2
+        class="!font-[700] max-sm:px-[22px] !text-[48px] max-lg:!text-[40px] max-md:!text-[28px] !leading-[120%] text-center !text-white"
+      >
+        {{section.settings.heading }}
+      </h2>
+      <p
+        class="font-normal max-sm:px-[12px] sm:!text-[16px] text-[14px] !leading-[150%] !text-white text-center sm:mt-[16px] mt-[18px] mb-[46px]"
+      >
+        {{section.settings.description }}
+      </p>
+      <form class="max-w-[489px] w-full">
+        <div
+          class="max-w-[489px] max-sm:h-[49px] mx-auto p-[7px] h-[66px] rounded-full w-full flex items-center justify-between gap-2 bg-white border-[#112D491A] border-[0.5px]"
+        >
+          <input
+            type="text"
+            autocomplete="off"
+            required
+            name="email"
+            class="pl-[10px] text-[14px] focus:!outline-0 focus:!shadow-none placeholder:!text-[#112D49]/52 !text sm:text-[16px] font-normal !leading-[140%] text-[#112D49]/52 w-full"
+            placeholder="Enter your email...."
+          />
+          <button
+            type="submit"
+            class="group cursor-pointer relative max-sm:!hidden px-[20px] py-[16px] !rounded-full min-w-[116px] !bg-[#112D49] !border-[2px] font-medium !border-solid !border-[#112D49] text-white !leading-[120%] overflow-hidden rounded-[36px] transition duration-500"
+          >
+            <span
+              class="relative z-[2] duration-300 max-sm:!text-[14px] !text-[16px] transition-all !font-[500] text-nowrap group-hover:text-[#112D49]"
+              >Join Now</span
+            >
+            <span
+              class="absolute top-full left-0 w-1/4 h-full bg-[#EAE9E7] rounded-full transition duration-500 group-hover:translate-y-[-32px] scale-200 translate-y-full delay-[0s] z-[1]"
+            ></span>
+            <span
+              class="absolute top-full left-1/4 w-1/4 h-full bg-[#EAE9E7] rounded-full transition duration-500 group-hover:translate-y-[-32px] scale-200 translate-y-full delay-[100ms] z-[1]"
+            ></span>
+            <span
+              class="absolute top-full left-1/2 w-1/4 h-full bg-[#EAE9E7] rounded-full transition duration-500 group-hover:translate-y-[-32px] scale-200 translate-y-full delay-[200ms] z-[1]"
+            ></span>
+            <span
+              class="absolute top-full left-[75%] w-1/4 h-full bg-[#EAE9E7] rounded-full transition duration-500 group-hover:translate-y-[-32px] scale-200 translate-y-full delay-[300ms] z-[1]"
+            ></span>
+          </button>
+        </div>
+        <button
+          type="submit"
+          class="group cursor-pointer relative sm:!hidden !h-[49px] px-[20px] !rounded-full py-[16px] max-w-[489px] w-full mx-auto !bg-[#112D49] !border-[2px] mt-[16px] !border-[#112D49] text-white font-medium !leading-[120%] text-[14px] overflow-hidden rounded-[36px] transition duration-500"
+        >
+          <span
+            class="relative z-[2] duration-300 max-sm:!text-[14px] !text-[16px] transition-all text-nowrap !font-[500] group-hover:text-[#112D49]"
+            >Join Now</span
+          >
+          <span
+            class="absolute top-full left-0 w-1/4 h-full bg-[#EAE9E7] rounded-full transition duration-500 group-hover:translate-y-[-32px] scale-200 translate-y-full delay-[0s] z-[1]"
+          ></span>
+          <span
+            class="absolute top-full left-1/4 w-1/4 h-full bg-[#EAE9E7] rounded-full transition duration-500 group-hover:translate-y-[-32px] scale-200 translate-y-full delay-[100ms] z-[1]"
+          ></span>
+          <span
+            class="absolute top-full left-1/2 w-1/4 h-full bg-[#EAE9E7] rounded-full transition duration-500 group-hover:translate-y-[-32px] scale-200 translate-y-full delay-[200ms] z-[1]"
+          ></span>
+          <span
+            class="absolute top-full left-[75%] w-1/4 h-full bg-[#EAE9E7] rounded-full transition duration-500 group-hover:translate-y-[-32px] scale-200 translate-y-full delay-[300ms] z-[1]"
+          ></span>
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% schema %} { "name": "join-now", "settings": [ { "type": "text", "id":
+"heading", "label": "Heading" }, { "type": "text", "id": "description", "label":
+"description" }, { "type": "image_picker", "id": "image", "label": "image" }, ],
+"presets": [ { "name": "join-now" } ] } {% endschema %}
+
+
+
+<!-- CUSTOM FOOTER -->
+ <!-- footer-custom.liquid -->
+{% schema %}
+{
+  "name": "Custom Footer",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "footer_logo",
+      "label": "Footer Logo"
+    },
+    {
+      "type": "text",
+      "id": "footer_description",
+      "label": "Footer Description",
+      "default": "Commodo egestas etiam arcu curabitur aliquam volutpat a gravida."
+    },
+    {
+      "type": "image_picker",
+      "id": "icon_facebook",
+      "label": "Facebook Icon"
+    },
+    {
+      "type": "url",
+      "id": "url_facebook",
+      "label": "Facebook URL"
+    },
+    {
+      "type": "image_picker",
+      "id": "icon_instagram",
+      "label": "Instagram Icon"
+    },
+    {
+      "type": "url",
+      "id": "url_instagram",
+      "label": "Instagram URL"
+    },
+    {
+      "type": "image_picker",
+      "id": "icon_x",
+      "label": "X (Twitter) Icon"
+    },
+    {
+      "type": "url",
+      "id": "url_x",
+      "label": "X (Twitter) URL"
+    },
+    {
+      "type": "image_picker",
+      "id": "icon_youtube",
+      "label": "YouTube Icon"
+    },
+    {
+      "type": "url",
+      "id": "url_youtube",
+      "label": "YouTube URL"
+    },
+    {
+      "type": "link_list",
+      "id": "footer_menu",
+      "label": "Footer Menu"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Footer",
+      "category": "Footer"
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+  /* Same styles as you provided */
+  .custom-footer {
+    background-color: #0c2d48;
+    color: white;
+    text-align: center;
+    font-family: "Montserrat", sans-serif !important;
+  }
+
+  .footer-logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+
+  .footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+  }
+
+  .footer-links a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .footer-socials {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .footer-socials img {
+    width: 32px;
+    height: 32px;
+  }
+
+  .footer-bottom {
+    border-top: 1px solid transparent;
+    border-image: linear-gradient(90deg, rgba(255, 255, 255, 0) 3.37%, rgba(255, 255, 255, 0.8) 51.44%, rgba(255, 255, 255, 0) 100%);
+    border-image-slice: 1;
+    padding-top: 20px;
+    color: #bbb;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1000px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+  }
+
+  .top-gradient-border {
+    height: 1px;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0) 3.37%, rgba(255, 255, 255, 0.8) 51.44%, rgba(255, 255, 255, 0) 100%);
+  }
+
+  .footer-bottom .links {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .footer-bottom .links a {
+    color: #bbb;
+    text-decoration: none;
+  }
+
+  .footer-bottom .copyright {
+    text-align: center;
+    flex: 1 1 100%;
+  }
+
+  @media (min-width: 600px) {
+    .footer-bottom .copyright {
+      flex: none;
+      text-align: left;
+    }
+
+    .footer-bottom .links {
+      justify-content: flex-end;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .custom-footer {
+      margin-top: -1px;
+    }
+  }
+</style>
+
+<div class="custom-footer lg:!pt-[75px] pt-[39px] md:pb-[30px] pb-[18px]">
+  <div class="footer-logo lg:!mb-[27px] lg:!gap-[24px] !gap-[16px]">
+    {% if section.settings.footer_logo %}
+    <a href="/" aria-label="Homepage">
+      <img src="{{ section.settings.footer_logo | image_url: width: 80 }}" alt="Footer Logo"
+        class="lg:w-[176px] w-[130px] h-[105px] lg:h-[142px]">
+    </a>
+    {% endif %}
+    <p style="max-width: 400px;" class="text-[16px] px-[30px] max-sm:text-[14px] text-white/80 !leading-[150%]">
+      {{ section.settings.footer_description }}
+    </p>
+  </div>
+
+  <div class="footer-links !gap-y-[14px] max-sm:!gap-x-[24px] lg:!mb-[27px] !mb-[36px] max-[460px]:mx-auto max-[460px]:flex-wrap max-[460px]:max-w-[246px]">
+    {% if section.settings.footer_menu %}
+      {% for link in linklists[section.settings.footer_menu].links %}
+        <a class="!font-medium !text-[16px] max-sm:!text-[14px] max-[460px]:text-center !leading-[150%] relative after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full"
+           href="{{ link.url }}">
+          {{ link.title }}
+        </a>
+      {% endfor %}
+    {% endif %}
+  </div>
+
+  <div class="footer-socials lg:!mb-[82px] !mb-[43px]">
+    {% if section.settings.icon_facebook %}
+    <a class="hover:!scale-[1.1] duration-300" href="{{ section.settings.url_facebook | default: '#' }}" aria-label="Facebook" target="_blank">
+      <img src="{{ section.settings.icon_facebook | image_url: width: 24 }}" alt="Facebook">
+    </a>
+    {% endif %}
+    {% if section.settings.icon_instagram %}
+    <a class="hover:!scale-[1.1] duration-300" href="{{ section.settings.url_instagram | default: '#' }}" aria-label="Instagram" target="_blank">
+      <img src="{{ section.settings.icon_instagram | image_url: width: 24 }}" alt="Instagram">
+    </a>
+    {% endif %}
+    {% if section.settings.icon_x %}
+    <a class="hover:!scale-[1.1] duration-300" href="{{ section.settings.url_x | default: '#' }}" aria-label="X" target="_blank">
+      <img src="{{ section.settings.icon_x | image_url: width: 24 }}" alt="X">
+    </a>
+    {% endif %}
+    {% if section.settings.icon_youtube %}
+    <a class="hover:!scale-[1.1] duration-300" href="{{ section.settings.url_youtube | default: '#' }}" aria-label="YouTube" target="_blank">
+      <img src="{{ section.settings.icon_youtube | image_url: width: 24 }}" alt="YouTube">
+    </a>
+    {% endif %}
+  </div>
+
+  <div class="min-h-[1px] top-gradient-border w-full max-w-[1440px] !block"></div>
+
+  <div class="footer-bottom md:!pt-[30px] max-md:!justify-center max-md:!flex-wrap min-[640px]:!gap-[30px] gap-[12px] !text-[14px] max-sm:!text-[12px] max-sm:!pt-[18px] max-md:items-center px-[24px]">
+    <div class="links !items-center !leading-[120%] max-sm:!gap-[3px] max-sm:text-center">
+      <a class="!text-[14px] !leading-[120%] tracking-normal font-normal !text-white max-sm:!text-[12px]" href="/terms">Terms and Conditions</a>
+      <a class="!text-[14px] !leading-[120%] tracking-normal font-normal !text-white max-sm:!text-[12px]" href="/privacy">
+        |<span class="max-sm:!px-[3px] px-[6px]">Privacy Policy</span>|
+      </a>
+      <a class="!text-[14px] !leading-[120%] tracking-normal font-normal !text-white max-sm:!text-[12px]" href="/terms-of-use">Terms of Use</a>
+    </div>
+    <div class="copyright !leading-[120%] !text-white !text-[14px] max-sm:!text-[12px]">
+      © 2025 Skaroob. All Rights Reserved.
+    </div>
+  </div>
+</div>
