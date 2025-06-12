@@ -1,0 +1,455 @@
+{{ 'customer.css' | asset_url | stylesheet_tag }}
+
+<script src="{{ 'customer.js' | asset_url }}" defer></script>
+
+{%- style -%}
+.section-{{ section.id }}-padding {
+padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+}
+
+.addresses-input{
+background-color : var(--color-white-light) !important;
+}
+
+.address-select{
+-webkit-appearance: none !important;;
+-moz-appearance: none !important;
+appearance : none ;
+text-indent: 1px;
+text-overflow: '';
+background: url('https://cdn.shopify.com/s/files/1/0707/1924/2409/files/arrow-3.png?v=1748517608') no-repeat right 15px
+center / 15px;
+}
+
+.show-addresses {
+background-color : var(--color-white-light) !important;
+h2 {
+color : var(--color-dark-blue) !important;
+font-weight : 600 !important;
+line-height : 120% ;
+}
+
+p{
+padding-bottom : 10px ;
+color : var(--color-dark-blue) !important;
+}
+}
+
+.customer:not(.account):not(.order){
+max-width : 825px !important;
+}
+
+@media screen and (min-width: 750px) {
+.section-{{ section.id }}-padding {
+padding-top: {{ section.settings.padding_top }}px;
+padding-bottom: {{ section.settings.padding_bottom }}px;
+}
+
+.customer:not(.account):not(.order){
+max-width : 825px !important;
+}
+}
+{%- endstyle -%}
+
+{%- paginate customer.addresses by 5 -%}
+<div class="customer addresses section-{{ section.id }}-padding bg-white" data-customer-addresses>
+    <h1 class="!font-[700] !text-[32px] text-dark-blue max-[750px]:!text-[24px]">{{ 'customer.addresses.title' | t }}
+    </h1>
+    <a class="text-dark-blue font-[500] pb-[20px] !text-[16px] max-[750px]:text-[14px] opacity-80"
+        href="{{ routes.account_url }}">
+        {{ 'customer.account.return' | t }}
+    </a>
+
+    <div data-address>
+        <button type="button" aria-expanded="false" aria-controls="AddAddress"
+            class="group cursor-pointer !m-0 cart__checkout-button relative !h-[52px] px-[20px] !rounded-[12px py-[16px] after:!shadow-[none] mx-auto !bg-[#112D49] !border-[2px] !border-[#112D49] text-white font-medium !leading-[120%] text-[14px] overflow-hidden rounded-[36px] transition duration-500 ">
+            <span
+                class="relative z-[2] duration-300 max-sm:!text-[14px] !text-[16px] transition-all text-nowrap !font-[500] group-hover:text-[#112D49]">{{
+                'customer.addresses.add_new' | t }}</span>
+            <span
+                class="absolute top-full left-0 w-1/4 h-full bg-[#EAE9E7] rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[0s] z-[1]"></span>
+            <span
+                class="absolute top-full left-1/4 w-1/4 h-full bg-[#EAE9E7] rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[100ms] z-[1]"></span>
+            <span
+                class="absolute top-full left-1/2 w-1/4 h-full bg-[#EAE9E7] rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[200ms] z-[1]"></span>
+            <span
+                class="absolute top-full left-[75%] w-1/4 h-full bg-[#EAE9E7] rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[300ms] z-[1]"></span>
+        </button>
+        <div id="AddAddress" class="pt-[20px]">
+            <h2 class="!font-[700] !text-[24px] text-dark-blue max-[750px]:!text-[18px]" id="AddressNewHeading">{{
+                'customer.addresses.add_new' | t }}</h2>
+            {%- form 'customer_address', customer.new_address, aria-labelledBy: 'AddressNewHeading' -%}
+            <div class="field after:!content-[none]">
+                <input class="addresses-input text-dark-blue !rounded-[8px] !shadow-none group " type="text"
+                    id="AddressFirstNameNew" name="address[first_name]" value="{{ form.first_name }}"
+                    autocomplete="given-name" placeholder="{{ 'customer.addresses.first_name' | t }}">
+                <label class="!opacity-50 group-focus-within:!opacity-100 text-dark-blue" for="AddressFirstNameNew">{{
+                    'customer.addresses.first_name' | t }}</label>
+            </div>
+            <div class="field group after:!content-[none]">
+                <input class="addresses-input text-dark-blue !rounded-[8px] !shadow-none" type="text"
+                    id="AddressLastNameNew" name="address[last_name]" value="{{ form.last_name }}"
+                    autocomplete="family-name" placeholder="{{ 'customer.addresses.last_name' | t }}">
+                <label class="!opacity-50 group-focus-within:!opacity-100 text-dark-blue" for="AddressLastNameNew">{{
+                    'customer.addresses.last_name' | t }}</label>
+            </div>
+            <div class="field group after:!content-[none]">
+                <input class="addresses-input text-dark-blue !rounded-[8px] !shadow-none" type="text"
+                    id="AddressCompanyNew" name="address[company]" value="{{ form.company }}"
+                    autocomplete="organization" placeholder="{{ 'customer.addresses.company' | t }}">
+                <label class="!opacity-50 group-focus-within:!opacity-100 text-dark-blue" for="AddressCompanyNew">{{
+                    'customer.addresses.company' | t }}</label>
+            </div>
+            <div class="field group after:!content-[none]">
+                <input class="addresses-input text-dark-blue !rounded-[8px] !shadow-none" type="text"
+                    id="AddressAddress1New" name="address[address1]" value="{{ form.address1 }}"
+                    autocomplete="address-line1" placeholder="{{ 'customer.addresses.address1' | t }}">
+                <label class="!opacity-50 group-focus-within:!opacity-100 text-dark-blue" for="AddressAddress1New">{{
+                    'customer.addresses.address1' | t }}</label>
+            </div>
+            <div class="field group after:!content-[none]">
+                <input class="addresses-input text-dark-blue !rounded-[8px] !shadow-none" type="text"
+                    id="AddressAddress2New" name="address[address2]" value="{{ form.address2 }}"
+                    autocomplete="address-line2" placeholder="{{ 'customer.addresses.address2' | t }}">
+                <label class="!opacity-50 group-focus-within:!opacity-100 text-dark-blue" for="AddressAddress2New">{{
+                    'customer.addresses.address2' | t }}</label>
+            </div>
+            <div class="field gruop after:!content-[none]">
+                <input class="addresses-input text-dark-blue !rounded-[8px] !shadow-none" type="text"
+                    id="AddressCityNew" name="address[city]" value="{{ form.city }}" autocomplete="address-level2"
+                    placeholder="{{ 'customer.addresses.city' | t }}">
+                <label class="!opacity-50 group-focus-within:!opacity-100 text-dark-blue" for="AddressCityNew">{{
+                    'customer.addresses.city' | t }}</label>
+            </div>
+            <div>
+                <label class="text-dark-blue" for="AddressCountryNew">{{ 'customer.addresses.country' | t }}</label>
+                <div class="select after:!content-[none]">
+                    <select class="addresses-input address-select text-dark-blue !rounded-[8px] !shadow-none"
+                        id="AddressCountryNew" name="address[country]" data-default="{{ form.country }}"
+                        autocomplete="country">
+                        {{ all_country_option_tags }}
+                    </select>
+                    <span class="svg-wrapper">
+                        {{- 'icon-caret.svg' | inline_asset_content -}}
+                    </span>
+                </div>
+            </div>
+            <div id="AddressProvinceContainerNew" style="display: none">
+                <label class="text-dark-blue" for="AddressProvinceNew">{{ 'customer.addresses.province' | t }}</label>
+                <div class="select after:!content-[none]">
+                    <select class="addresses-input address-select text-dark-blue !rounded-[8px] !shadow-none"
+                        id="AddressProvinceNew" name="address[province]" data-default="{{ form.province }}"
+                        autocomplete="address-level1"></select>
+                    <span class="svg-wrapper">
+                        {{- 'icon-caret.svg' | inline_asset_content -}}
+                    </span>
+                </div>
+            </div>
+            <div class="field group after:!content-[none]">
+                <input class="addresses-input text-dark-blue !rounded-[8px] !shadow-none" type="text" id="AddressZipNew"
+                    name="address[zip]" value="{{ form.zip }}" autocapitalize="characters" autocomplete="postal-code"
+                    placeholder="{{ 'customer.addresses.zip' | t }}">
+                <label class="!opacity-50 group-focus-within:!opacity-100 text-dark-blue" for="AddressZipNew">{{
+                    'customer.addresses.zip' | t }}</label>
+            </div>
+            <div class="field group after:!content-[none]">
+                <input class="addresses-input text-dark-blue !rounded-[8px] !shadow-none" type="tel"
+                    id="AddressPhoneNew" name="address[phone]" value="{{ form.phone }}" autocomplete="tel"
+                    placeholder="{{ 'customer.addresses.phone' | t }}">
+                <label class="!opacity-50 group-focus-within:!opacity-100 text-dark-blue" for="AddressPhoneNew">{{
+                    'customer.addresses.phone' | t }}</label>
+            </div>
+            <div class="py-[7px]">
+                {{ form.set_as_default_checkbox }}
+                <label for="address_default_address_new" class="text-dark-blue !font-[500]">{{
+                    'customer.addresses.set_default' | t }}</label>
+            </div>
+            <div>
+                <button
+                    class="group cursor-pointer !m-0 cart__checkout-button relative !h-[52px] px-[20px] !rounded-[12px py-[16px] after:!shadow-[none] mx-auto !bg-[#112D49] !border-[2px] !border-[#112D49] text-white font-medium !leading-[120%] text-[14px] overflow-hidden rounded-[36px] transition duration-500 ">
+                    <span
+                        class="relative z-[2] duration-300 max-sm:!text-[14px] !text-[16px] transition-all text-nowrap !font-[500] group-hover:text-[#112D49]">{{
+                        'customer.addresses.add' | t }}</span>
+                    <span
+                        class="absolute top-full left-0 w-1/4 h-full bg-[#EAE9E7] rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[0s] z-[1]"></span>
+                    <span
+                        class="absolute top-full left-1/4 w-1/4 h-full bg-[#EAE9E7] rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[100ms] z-[1]"></span>
+                    <span
+                        class="absolute top-full left-1/2 w-1/4 h-full bg-[#EAE9E7] rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[200ms] z-[1]"></span>
+                    <span
+                        class="absolute top-full left-[75%] w-1/4 h-full bg-[#EAE9E7] rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[300ms] z-[1]"></span>
+                </button>
+
+                <button
+                    class="group cursor-pointer !m-0 cart__checkout-button relative !h-[52px] px-[20px] !rounded-[12px py-[16px] after:!shadow-[none] mx-auto !bg-white !border-[2px] !border-[#112D49] text-white font-medium !leading-[120%] text-[14px] overflow-hidden rounded-[36px] transition duration-500 ">
+                    <span
+                        class="relative z-[2] duration-300 max-sm:!text-[14px] !text-[16px] transition-all text-nowrap !font-[500] text-[#112D49] group-hover:text-white">{{
+                        'customer.addresses.cancel' | t }}</span>
+                    <span
+                        class="absolute top-full left-0 w-1/4 h-full bg-[#112D49] rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[0s] z-[1]"></span>
+                    <span
+                        class="absolute top-full left-1/4 w-1/4 h-full bg-[#112D49] rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[100ms] z-[1]"></span>
+                    <span
+                        class="absolute top-full left-1/2 w-1/4 h-full bg-[#112D49] rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[200ms] z-[1]"></span>
+                    <span
+                        class="absolute top-full left-[75%] w-1/4 h-full bg-[#112D49] rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[300ms] z-[1]"></span>
+                </button>
+            </div>
+            {%- endform -%}
+        </div>
+    </div>
+
+    <ul role="list" class="!flex flex-col !gap-[16px] !pt-[16px] ">
+        {%- for address in customer.addresses -%}
+        <li data-address class="show-addresses py-[15px] px-[12px] !mt-0 !rounded-[8px]">
+            {%- if address == customer.default_address -%}
+            <h2>{{ 'customer.addresses.default' | t }}</h2>
+            {%- endif -%}
+            {{ address | format_address }}
+            <button type="button" id="EditFormButton_{{ address.id }}"
+                aria-label="{{ 'customer.addresses.edit_address' | t }} {{ forloop.index }}"
+                aria-controls="EditAddress_{{ address.id }}" aria-expanded="false" data-address-id="{{ address.id }}"
+                class="group cursor-pointer pt-[10px] !m-0 cart__checkout-button relative !h-[52px] px-[20px] !rounded-[12px py-[16px] after:!shadow-[none] mx-auto !bg-white !border-[2px] !border-[#112D49] text-white font-medium !leading-[120%] text-[14px] overflow-hidden rounded-[36px] transition duration-500 ">
+                <span
+                    class="relative z-[2] duration-300 max-sm:!text-[14px] !text-[16px] transition-all text-nowrap !font-[500] text-[#112D49] group-hover:text-white">
+                    {{ 'customer.addresses.edit' | t }}</span>
+                <span
+                    class="absolute top-full left-0 w-1/4 h-full bg-[#112D49] rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[0s] z-[1]"></span>
+                <span
+                    class="absolute top-full left-1/4 w-1/4 h-full bg-[#112D49] rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[100ms] z-[1]"></span>
+                <span
+                    class="absolute top-full left-1/2 w-1/4 h-full bg-[#112D49] rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[200ms] z-[1]"></span>
+                <span
+                    class="absolute top-full left-[75%] w-1/4 h-full bg-[#112D49] rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[300ms] z-[1]"></span>
+            </button>
+            <button type="button" aria-label="{{ 'customer.addresses.delete' | t }} {{ forloop.index }}"
+                data-target="{{ address.url }}" data-confirm-message="{{ 'customer.addresses.delete_confirm' | t }}"
+                class="group cursor-pointer pt-[10px] !m-0 cart__checkout-button relative !h-[52px] px-[20px] !rounded-[12px py-[16px] after:!shadow-[none] mx-auto !bg-white !border-[2px] !border-[#112D49] text-white font-medium !leading-[120%] text-[14px] overflow-hidden rounded-[36px] transition duration-500 ">
+                <span
+                    class="relative z-[2] duration-300 max-sm:!text-[14px] !text-[16px] transition-all text-nowrap !font-[500] text-[#112D49] group-hover:text-white">{{
+                    'customer.addresses.delete' | t }}</span>
+                <span
+                    class="absolute top-full left-0 w-1/4 h-full bg-[#112D49] rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[0s] z-[1]"></span>
+                <span
+                    class="absolute top-full left-1/4 w-1/4 h-full bg-[#112D49] rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[100ms] z-[1]"></span>
+                <span
+                    class="absolute top-full left-1/2 w-1/4 h-full bg-[#112D49] rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[200ms] z-[1]"></span>
+                <span
+                    class="absolute top-full left-[75%] w-1/4 h-full bg-[#112D49] rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[300ms] z-[1]"></span>
+            </button>
+            <div id="EditAddress_{{ address.id }}">
+                <h2 class="!pt-[20px]">{{ 'customer.addresses.edit_address' | t }}</h2>
+                {%- form 'customer_address', address -%}
+                <div class="field group after:!content-[none]">
+                    <input class="text-dark-blue !bg-white !rounded-[8px] !shadow-none" type="text"
+                        id="AddressFirstName_{{ form.id }}" name="address[first_name]" value="{{ form.first_name }}"
+                        autocomplete="given-name" placeholder="{{ 'customer.addresses.first_name' | t }}">
+                    <label for="AddressFirstName_{{ form.id }}">{{ 'customer.addresses.first_name' | t }}</label>
+                </div>
+                <div class="field after:!content-[none]">
+                    <input class="text-dark-blue !bg-white !rounded-[8px] !shadow-none" type="text"
+                        id="AddressLastName_{{ form.id }}" name="address[last_name]" value="{{ form.last_name }}"
+                        autocomplete="family-name" placeholder="{{ 'customer.addresses.last_name' | t }}">
+                    <label class="!opacity-50 group-focus-within:!opacity-100 text-dark-blue" x
+                        for="AddressLastName_{{ form.id }}">{{ 'customer.addresses.last_name' | t }}</label>
+                </div>
+                <div class="field group after:!content-[none]">
+                    <input class="text-dark-blue !bg-white !rounded-[8px] !shadow-none" type="text"
+                        id="AddressCompany_{{ form.id }}" name="address[company]" value="{{ form.company }}"
+                        autocomplete="organization" placeholder="{{ 'customer.addresses.company' | t }}">
+                    <label class="!opacity-50 group-focus-within:!opacity-100 text-dark-blue"
+                        for="AddressCompany_{{ form.id }}">{{ 'customer.addresses.company' | t }}</label>
+                </div>
+                <div class="field after:!content-[none]">
+                    <input class="text-dark-blue !bg-white !rounded-[8px] !shadow-none" type="text"
+                        id="AddressAddress1_{{ form.id }}" name="address[address1]" value="{{ form.address1 }}"
+                        autocomplete="address-line1" placeholder="{{ 'customer.addresses.address1' | t }}">
+                    <label class="!opacity-50 group-focus-within:!opacity-100 text-dark-blue"
+                        for="AddressAddress1_{{ form.id }}">{{ 'customer.addresses.address1' | t }}</label>
+                </div>
+                <div class="field group after:!content-[none]">
+                    <input class="text-dark-blue !bg-white !rounded-[8px] !shadow-none" type="text"
+                        id="AddressAddress2_{{ form.id }}" name="address[address2]" value="{{ form.address2 }}"
+                        autocomplete="address-line2" placeholder="{{ 'customer.addresses.address2' | t }}">
+                    <label class="!opacity-50 group-focus-within:!opacity-100 text-dark-blue"
+                        for="AddressAddress2_{{ form.id }}">{{ 'customer.addresses.address2' | t }}</label>
+                </div>
+                <div class="field group after:!content-[none]">
+                    <input class="text-dark-blue !bg-white !rounded-[8px] !shadow-none" type="text"
+                        id="AddressCity_{{ form.id }}" name="address[city]" value="{{ form.city }}"
+                        autocomplete="address-level2" placeholder="{{ 'customer.addresses.city' | t }}">
+                    <label class="!opacity-50 group-focus-within:!opacity-100 text-dark-blue"
+                        for="AddressCity_{{ form.id }}">{{ 'customer.addresses.city' | t }}</label>
+                </div>
+                <div>
+                    <label class="text-dark-blue" for="AddressCountry_{{ form.id }}">
+                        {{ 'customer.addresses.country' | t }}
+                    </label>
+                    <div class="select group after:!content-[none]">
+                        <select class="text-dark-blue address-select !bg-white !rounded-[8px] !shadow-none"
+                            id="AddressCountry_{{ form.id }}" name="address[country]" data-address-country-select
+                            data-default="{{ form.country }}" data-form-id="{{ form.id }}" autocomplete="country">
+                            {{ all_country_option_tags }}
+                        </select>
+                        <span class="svg-wrapper">
+                            {{- 'icon-caret.svg' | inline_asset_content -}}
+                        </span>
+                    </div>
+                </div>
+                <div id="AddressProvinceContainer_{{ form.id }}" style="display:none;">
+                    <label class="text-dark-blue" for="AddressProvince_{{ form.id }}">
+                        {{ 'customer.addresses.province' | t }}
+                    </label>
+                    <div class="select group after:!content-[none]">
+                        <select class="text-dark-blue address-select !bg-white !rounded-[8px] !shadow-none"
+                            id="AddressProvince_{{ form.id }}" name="address[province]"
+                            data-default="{{ form.province }}" autocomplete="address-level1"></select>
+                        <span class="svg-wrapper">
+                            {{- 'icon-caret.svg' | inline_asset_content -}}
+                        </span>
+                    </div>
+                </div>
+                <div class="field group after:!content-[none]">
+                    <input class="text-dark-blue !bg-white !rounded-[8px] !shadow-none" type="text"
+                        id="AddressZip_{{ form.id }}" name="address[zip]" value="{{ form.zip }}"
+                        autocapitalize="characters" autocomplete="postal-code"
+                        placeholder="{{ 'customer.addresses.zip' | t }}">
+                    <label class="!opacity-50 group-focus-within:!opacity-100 text-dark-blue"
+                        for="AddressZip_{{ form.id }}">{{ 'customer.addresses.zip' | t }}</label>
+                </div>
+                <div class="field group after:!content-[none]">
+                    <input class="text-dark-blue !bg-white !rounded-[8px] !shadow-none" type="tel"
+                        id="AddressPhone_{{ form.id }}" name="address[phone]" value="{{ form.phone }}"
+                        autocomplete="tel" placeholder="{{ 'customer.addresses.phone' | t }}">
+                    <label class="!opacity-50 group-focus-within:!opacity-100 text-dark-blue"
+                        for="AddressPhone_{{ form.id }}">{{ 'customer.addresses.phone' | t }}</label>
+                </div>
+                <div>
+                    {{ form.set_as_default_checkbox }}
+                    <label class="text-dark-blue !font-[500] " for="address_default_address_{{ form.id }}">
+                        {{ 'customer.addresses.set_default' | t }}
+                    </label>
+                </div>
+                <div class="flex gap-[8px] pt-[20px] items-center">
+                    <button
+                        class="group cursor-pointer !m-0 cart__checkout-button relative !h-[52px] px-[20px] !rounded-[12px] py-[16px] w-full after:!shadow-[none] mx-auto !bg-[#112D49] !border-[2px] !border-[#112D49] text-white font-medium !leading-[120%] text-[14px] overflow-hidden rounded-[36px] transition duration-500 ">
+                        <span
+                            class="relative z-[2] duration-300 max-sm:!text-[14px] !text-[16px] transition-all text-nowrap !font-[500] group-hover:text-[#112D49]">{{
+                            'customer.addresses.update' | t }}</span>
+                        <span
+                            class="absolute top-full left-0 w-1/4 h-full bg-[#EAE9E7] rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[0s] z-[1]"></span>
+                        <span
+                            class="absolute top-full left-1/4 w-1/4 h-full bg-[#EAE9E7] rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[100ms] z-[1]"></span>
+                        <span
+                            class="absolute top-full left-1/2 w-1/4 h-full bg-[#EAE9E7] rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[200ms] z-[1]"></span>
+                        <span
+                            class="absolute top-full left-[75%] w-1/4 h-full bg-[#EAE9E7] rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[300ms] z-[1]"></span>
+                    </button>
+
+                    <button type="reset"
+                        class="group cursor-pointer !m-0 cart__checkout-button relative !h-[52px] px-[20px] !rounded-[12px] py-[16px] w-full after:!shadow-[none] mx-auto !bg-[#112D49] !border-[2px] !border-[#112D49] text-white font-medium !leading-[120%] text-[14px] overflow-hidden rounded-[36px] transition duration-500 ">
+                        <span
+                            class="relative z-[2] duration-300 max-sm:!text-[14px] !text-[16px] transition-all text-nowrap !font-[500] !text-white group-hover:!text-[#112D49]">{{
+                            'customer.addresses.cancel' | t }}</span>
+                        <span
+                            class="absolute top-full left-0 w-1/4 h-full bg-[#EAE9E7] rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[0s] z-[1]"></span>
+                        <span
+                            class="absolute top-full left-1/4 w-1/4 h-full bg-[#EAE9E7] rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[100ms] z-[1]"></span>
+                        <span
+                            class="absolute top-full left-1/2 w-1/4 h-full bg-[#EAE9E7] rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[200ms] z-[1]"></span>
+                        <span
+                            class="absolute top-full left-[75%] w-1/4 h-full bg-[#EAE9E7] rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[300ms] z-[1]"></span>
+                    </button>
+                </div>
+                {%- endform -%}
+            </div>
+        </li>
+        {%- endfor -%}
+    </ul>
+
+    {%- if paginate.pages > 1 -%}
+    {%- if paginate.parts.size > 0 -%}
+    <nav class="pagination" role="navigation" aria-label="{{ 'general.pagination.label' | t }}">
+        <ul role="list">
+            {%- if paginate.previous -%}
+            <li>
+                <a href="{{ paginate.previous.url }}" aria-label="{{ 'general.pagination.previous' | t }}">
+                    <span class="svg-wrapper">
+                        {{- 'icon-caret.svg' | inline_asset_content -}}
+                    </span>
+                </a>
+            </li>
+            {%- endif -%}
+
+            {%- for part in paginate.parts -%}
+            <li>
+                {%- if part.is_link -%}
+                <a href="{{ part.url }}" aria-label="{{ 'general.pagination.page' | t: number: part.title }}">
+                    {{- part.title -}}
+                </a>
+                {%- else -%}
+                {%- if part.title == paginate.current_page -%}
+                <span aria-current="page" aria-label="{{ 'general.pagination.page' | t: number: part.title }}">
+                    {{- part.title -}}
+                </span>
+                {%- else -%}
+                <span>{{ part.title }}</span>
+                {%- endif -%}
+                {%- endif -%}
+            </li>
+            {%- endfor -%}
+
+            {%- if paginate.next -%}
+            <li>
+                <a href="{{ paginate.next.url }}" aria-label="{{ 'general.pagination.next' | t }}">
+                    <span class="svg-wrapper">
+                        {{- 'icon-caret.svg' | inline_asset_content -}}
+                    </span>
+                </a>
+            </li>
+            {%- endif -%}
+        </ul>
+    </nav>
+    {%- endif -%}
+    {%- endif -%}
+</div>
+{%- endpaginate -%}
+
+<script>
+    window.addEventListener('load', () => {
+        typeof CustomerAddresses !== 'undefined' && new CustomerAddresses();
+    });
+</script>
+
+{% schema %}
+{
+"name": "t:sections.main-addresses.name",
+"settings": [
+{
+"type": "header",
+"content": "t:sections.all.padding.section_padding_heading"
+},
+{
+"type": "range",
+"id": "padding_top",
+"min": 0,
+"max": 100,
+"step": 4,
+"unit": "px",
+"label": "t:sections.all.padding.padding_top",
+"default": 36
+},
+{
+"type": "range",
+"id": "padding_bottom",
+"min": 0,
+"max": 100,
+"step": 4,
+"unit": "px",
+"label": "t:sections.all.padding.padding_bottom",
+"default": 36
+}
+]
+}
+{% endschema %}

@@ -1,0 +1,62 @@
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<style>
+    .error-common-button {
+        background: var(--color-dark-blue) !important;
+        border-color: var(--color-dark-blue) !important;
+    }
+
+    .error-common-button-text {
+        color: white !important;
+    }
+
+    .error-common-button:hover .error-common-button-text {
+        color: var(--color-dark-blue) !important;
+    }
+</style>
+<div
+    class="template-404 lg:!py-[60px] !my-[20px] !py-[40px] !px-[24px] page-width flex flex-col justify-center items-center page-margin center">
+    {% if section.settings.image %}
+    <img src="{{ section.settings.image | image_url }}" alt="404" style="height:inherit"
+        class="md:max-w-[364px] max-w-[260px] md:mb-[48px] mb-[24px]" width="364" height="232">
+    {% endif %}
+    <h1 class="title lg:!text-[48px] text-[32px] !leading-[120%] text-dark-blue !font-[700] !mb-[12px] !mt-0">
+        {{ 'templates.404.title' | t }}
+    </h1>
+    <p class="!mt-0 sm:!text-[16px] max-w-[542px] text-center lg:!mb-[42px] !mb-[20px] text-dark-blue !text-[14px]">
+        {{ 'templates.404.subtext' | t }}
+    </p>
+    <div class="w-full flex justify-center items-center">
+        <a href="{{ routes.all_products_collection_url }}"
+            class="group cursor-pointer relative !h-[52px] error-common-button px-[18px] !rounded-full py-[16px] mx-auto  border-[2px]  font-medium !leading-[120%] after:!shadow-none text-[14px] overflow-hidden rounded-[36px] transition duration-500 ">
+            <span
+                class="relative z-[2] duration-300 max-sm:!text-[14px] !text-[16px] error-common-button-text transition-all text-nowrap !font-[500]">{{
+                'general.continue_shopping' | t }}</span>
+            <span
+                class="absolute top-full left-0 w-1/4 h-full bg-white rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[0s] !z-[1]"></span>
+            <span
+                class="absolute top-full left-1/4 w-1/4 h-full bg-white rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[100ms] !z-[1]"></span>
+            <span
+                class="absolute top-full left-1/2 w-1/4 h-full bg-white rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[200ms] !z-[1]"></span>
+            <span
+                class="absolute top-full left-[75%] w-1/4 h-full bg-white rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[300ms] !z-[1]"></span>
+        </a>
+    </div>
+</div>
+{% schema %}
+{
+"name": "404-error",
+"settings": [
+{
+"type": "image_picker",
+"label": "image",
+"id": "image"
+}
+],
+"presets": [
+{
+"name": "404-error",
+}
+]
+
+}
+{% endschema %}

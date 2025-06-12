@@ -1,0 +1,563 @@
+{{ 'template-collection.css' | asset_url | stylesheet_tag }}
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+
+{% if section.settings.image_shape == 'blob' %}
+{{ 'mask-blobs.css' | asset_url | stylesheet_tag }}
+{%- endif -%}
+
+{%- unless section.settings.quick_add == 'none' -%}
+{{ 'quick-add.css' | asset_url | stylesheet_tag }}
+{%- endunless -%}
+
+{%- if section.settings.quick_add == 'standard' -%}
+<script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
+
+{%- if section.settings.quick_add == 'bulk' -%}
+<script src="{{ 'quick-add-bulk.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'quantity-popover.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'price-per-item.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'quick-order-list.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
+
+{%- style -%}
+.section-{{ section.id }}-padding {
+padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+}
+
+.wishlist-active .heart-path {
+fill: #ef4444; /* Tailwind's red-500 */
+stroke: #ef4444; /* Change stroke to red as well */
+}
+
+.badge {
+background : var(--color-dark-blue) ;
+font-size : 6px ;
+padding:3px 6px !important
+}
+
+@media screen and (min-width: 750px) {
+.section-{{ section.id }}-padding {
+padding-top: {{ section.settings.padding_top }}px;
+padding-bottom: {{ section.settings.padding_bottom }}px;
+}
+}
+{%- endstyle -%}
+
+<div class="section-{{ section.id }}-padding">
+    {%- paginate collection.products by section.settings.products_per_page -%}
+    {% comment %} Sort is the first tabbable element when filter type is vertical {% endcomment %}
+    {%- if section.settings.enable_sorting and section.settings.filter_type == 'vertical' -%}
+    <facet-filters-form class="facets facets-vertical-sort page-width small-hide">
+        <form class="facets-vertical-form" id="FacetSortForm">
+            <div class="facet-filters sorting caption">
+                <div class="facet-filters__field">
+                    <h2 class="facet-filters__label caption-large text-body">
+                        <label for="SortBy">{{ 'products.facets.sort_by_label' | t }}</label>
+                    </h2>
+                    <div class="select">
+                        {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+                        <select name="sort_by" class="facet-filters__sort select__select caption-large" id="SortBy"
+                            aria-describedby="a11y-refresh-page-message">
+                            {%- for option in collection.sort_options -%}
+                            <option value="{{ option.value | escape }}" {% if option.value==sort_by %}
+                                selected="selected" {% endif %}>
+                                {{ option.name | escape }}
+                            </option>
+                            {%- endfor -%}
+                        </select>
+                        <span class="svg-wrapper">
+                            {{- 'icon-caret.svg' | inline_asset_content -}}
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-count-vertical light" role="status">
+                <h2 class="product-count__text text-body">
+                    <span id="ProductCountDesktop">
+                        {%- if collection.results_count -%}
+                        {{
+                        'templates.search.results_with_count'
+                        | t: terms: collection.terms, count: collection.results_count
+                        }}
+                        {%- elsif collection.products_count == collection.all_products_count -%}
+                        {{ 'products.facets.product_count_simple' | t: count: collection.products_count }}
+                        {%- else -%}
+                        {{
+                        'products.facets.product_count'
+                        | t: product_count: collection.products_count, count: collection.all_products_count
+                        }}
+                        {%- endif -%}
+                    </span>
+                </h2>
+                {%- render 'loading-spinner' -%}
+            </div>
+        </form>
+    </facet-filters-form>
+    {%- endif -%}
+
+    <div class="{% if section.settings.filter_type == 'vertical' %} facets-vertical  page-width{% endif %}">
+        {{ 'component-facets.css' | asset_url | stylesheet_tag }}
+        <script src="{{ 'facets.js' | asset_url }}" defer="defer"></script>
+        {%- if section.settings.enable_filtering or section.settings.enable_sorting -%}
+        <aside aria-labelledby="verticalTitle"
+            class="facets-wrapper{% unless section.settings.enable_filtering %} facets-wrapper--no-filters{% endunless %}{% if section.settings.filter_type != 'vertical' %} xl:!px-0 !px-[12px] !max-w-[1140px] page-width{% endif %}"
+            id="main-collection-filters" data-id="{{ section.id }}">
+            {% render 'facets',
+            results: collection,
+            enable_filtering: section.settings.enable_filtering,
+            enable_sorting: section.settings.enable_sorting,
+            filter_type: section.settings.filter_type,
+            paginate: paginate
+            %}
+        </aside>
+        {%- endif -%}
+
+        <div class="product-grid-container{% if settings.animations_reveal_on_scroll %} lg:mt-[80px] lg:mt-[60px] md:mt-[40px] mt-[20px] scroll-trigger animate--slide-in{% endif %}"
+            id="ProductGridContainer" {% if settings.animations_reveal_on_scroll %} data-cascade {% endif %}>
+            {%- if collection.products.size == 0 -%}
+            <div class="collection collection--empty " id="product-grid" data-id="{{ section.id }}">
+                <div class="loading-overlay gradient"></div>
+                <div class="title-wrapper center">
+                    <h2 class="title title--primary">
+                        {{ 'sections.collection_template.empty' | t -}}
+                        <br>
+                        {{
+                        'sections.collection_template.use_fewer_filters_html'
+                        | t: link: collection.url, class: 'underlined-link link'
+                        }}
+                    </h2>
+                </div>
+            </div>
+            {%- else -%}
+            <div
+                class="collection{% if section.settings.filter_type != 'vertical' %} xl:!px-0 !px-[12px] !max-w-[1140px] page-width page-width{% endif %}">
+                <div class="loading-overlay gradient"></div>
+                <ul id="product-grid" data-id="{{ section.id }}" class="!gap-[24px]
+                !grid product-grid grid--{{ section.settings.columns_mobile }}-col-tablet-down
+                grid--{{ section.settings.columns_desktop }}-col-desktop
+                {% if section.settings.quick_add == 'bulk' %} collection-quick-add-bulk{% endif %}
+              ">
+                    {% assign skip_card_product_styles = false %}
+                    {%- for product in collection.products -%}
+                    {% assign lazy_load = false %}
+                    {%- if forloop.index > 2 -%}
+                    {%- assign lazy_load = true -%}
+                    {%- endif -%}
+                    <li class="grid__item{% if settings.animations_reveal_on_scroll %} scroll-trigger relative !max-w-[100%] !w-full animate--slide-in{% endif %}"
+                        {% if settings.animations_reveal_on_scroll %} data-cascade
+                        style="--animation-order: {{ forloop.index }};" {% endif %}>
+                        <button id="heart-icon"
+                            class="!absolute z-[10] cursor-pointer right-[26px] top-[26px] max-sm:top-[12px] max-sm:right-[12px] favorite-btn add-to-wishlist wishlist-{{ product.id }}"
+                            data-id="{{ product.id }}" data-variant-id="{{ product.variants.first.id }}"
+                            data-title="{{ product.title | escape }}" data-url="{{ product.url }}"
+                            data-image="{{ product.featured_image | img_url: '300x300' }}"
+                            data-price="{{ product.price | money_without_currency }}">
+                            <svg width="32" height="32" viewBox="0 0 32 32" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <rect width="32" height="32" rx="16" fill="#73A4E0" fill-opacity="0.12" />
+                                <path
+                                    class="heart-path transition-colors duration-300 fill-gray-300 stroke-[#73A4E0] stroke-2 group-[.wishlist-active]:fill-red-500"
+                                    d="M23.0255 9.69932C22.1056 9.14181 21.0157 8.90678 19.9382 9.03351C18.8606 9.16025 17.8607 9.64106 17.1055 10.3956L16.0025 11.4463H15.9767L14.8866 10.3956C14.1314 9.64106 13.1315 9.16025 12.0539 9.03351C10.9764 8.90678 9.88655 9.14181 8.96659 9.69932C8.42895 10.0362 7.97572 10.4849 7.63985 11.0127C7.30399 11.5404 7.09394 12.134 7.02502 12.7503C6.95609 13.3665 7.03002 13.9898 7.24142 14.5749C7.45282 15.16 7.79637 15.6921 8.24706 16.1325L15.9465 24L16.1016 23.8499L16.149 23.8958L23.758 16.1325C24.2081 15.6913 24.5508 15.1584 24.7611 14.5728C24.9715 13.9872 25.0443 13.3635 24.9741 12.7472C24.9039 12.131 24.6926 11.5376 24.3555 11.0103C24.0184 10.4831 23.5641 10.0352 23.0255 9.69932V9.69932Z"
+                                    fill="#D9D9D9" stroke="#73A4E0" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                        </button>
+
+                        {% render 'card-product',
+                        card_product: product,
+                        media_aspect_ratio: section.settings.image_ratio,
+                        image_shape: section.settings.image_shape,
+                        show_secondary_image: section.settings.show_secondary_image,
+                        show_vendor: section.settings.show_vendor,
+                        show_rating: section.settings.show_rating,
+                        lazy_load: lazy_load,
+                        skip_styles: skip_card_product_styles,
+                        quick_add: section.settings.quick_add,
+                        section_id: section.id
+                        %}
+                    </li>
+                    {%- assign skip_card_product_styles = true -%}
+                    {%- endfor -%}
+                </ul>
+
+                {%- if paginate.pages > 1 -%}
+                {% render 'pagination', paginate: paginate, anchor: '' %}
+                {%- endif -%}
+            </div>
+            {%- endif -%}
+        </div>
+    </div>
+    {%- endpaginate -%}
+    {% if section.settings.image_shape == 'arch' %}
+    {{ 'mask-arch.svg' | inline_asset_content }}
+    {%- endif -%}
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const toggleBtnDesktop = document.getElementById("toggleView");
+        const toggleBtnMobile = document.getElementById("toggleViewTwo");
+
+        const productList = document.getElementById("product-grid");
+        const rowCards = document.querySelectorAll("#row-card");
+        const infoRow = document.querySelectorAll("#info-row");
+        const cardHeights = document.querySelectorAll("#card-height");
+        const imageHeight = document.querySelectorAll("#image-height");
+        const information = document.querySelectorAll("#information");
+        const cardHeading = document.querySelectorAll("#card-heading");
+        const innerImage = document.querySelectorAll("#inner-image");
+        const heartIcon = document.querySelectorAll("#heart-icon");
+
+        if (!productList) return;
+
+        // SVG Icons
+        const gridIcon = `
+    <svg width="30" height="30" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M6.33333 1H1.88889C1.39797 1 1 1.39797 1 1.88889V6.33333C1 6.82425 1.39797 7.22222 1.88889 7.22222H6.33333C6.82425 7.22222 7.22222 6.82425 7.22222 6.33333V1.88889C7.22222 1.39797 6.82425 1 6.33333 1Z" stroke="#112D49" stroke-width="1.77777" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M6.33333 10.7773H1.88889C1.39797 10.7773 1 11.1753 1 11.6662V16.1107C1 16.6016 1.39797 16.9996 1.88889 16.9996H6.33333C6.82425 16.9996 7.22222 16.6016 7.22222 16.1107V11.6662C7.22222 11.1753 6.82425 10.7773 6.33333 10.7773Z" stroke="#112D49" stroke-width="1.77777" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M16.1107 1H11.6662C11.1753 1 10.7773 1.39797 10.7773 1.88889V6.33333C10.7773 6.82425 11.1753 7.22222 11.6662 7.22222H16.1107C16.6016 7.22222 16.9996 6.82425 16.9996 6.33333V1.88889C16.9996 1.39797 16.6016 1 16.1107 1Z" stroke="#112D49" stroke-width="1.77777" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M16.1107 10.7773H11.6662C11.1753 10.7773 10.7773 11.1753 10.7773 11.6662V16.1107C10.7773 16.6016 11.1753 16.9996 11.6662 16.9996H16.1107C16.6016 16.9996 16.9996 16.6016 16.9996 16.1107V11.6662C16.9996 11.1753 16.6016 10.7773 16.1107 10.7773Z" stroke="#112D49" stroke-width="1.77777" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>`;
+
+        const listIcon = `
+    <svg width="30" height="30" viewBox="0 0 26 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path class="-translate-x-[20px]" d="M25.6667 3.83333V1H45.5V3.83333H25.6667ZM25.6667 9.5V6.66667H45.5V9.5H25.6667ZM25.6667 15.1667V12.3333H45.5V15.1667H25.6667ZM21.4167 3.83333C21.0153 3.83333 20.6791 3.69733 20.408 3.42533C20.1369 3.15333 20.0009 2.81711 20 2.41667C19.9991 2.01622 20.1351 1.68 20.408 1.408C20.6809 1.136 21.0172 1 21.4167 1C21.8162 1 22.1529 1.136 22.4268 1.408C22.7006 1.68 22.8362 2.01622 22.8333 2.41667C22.8305 2.81711 22.6945 3.15381 22.4253 3.42675C22.1562 3.69969 21.8199 3.83522 21.4167 3.83333ZM21.4167 9.5C21.0153 9.5 20.6791 9.364 20.408 9.092C20.1369 8.82 20.0009 8.48378 20 8.08333C19.9991 7.68289 20.1351 7.34667 20.408 7.07467C20.6809 6.80267 21.0172 6.66667 21.4167 6.66667C21.8162 6.66667 22.1529 6.80267 22.4268 7.07467C22.7006 7.34667 22.8362 7.68289 22.8333 8.08333C22.8305 8.48378 22.6945 8.82047 22.4253 9.09342C22.1562 9.36636 21.8199 9.50189 21.4167 9.5ZM21.4167 15.1667C21.0153 15.1667 20.6791 15.0307 20.408 14.7587C20.1369 14.4867 20.0009 14.1504 20 13.75C19.9991 13.3496 20.1351 13.0133 20.408 12.7413C20.6809 12.4693 21.0172 12.3333 21.4167 12.3333C21.8162 12.3333 22.1529 12.4693 22.4268 12.7413C22.7006 13.0133 22.8362 13.3496 22.8333 13.75C22.8305 14.1504 22.6945 14.4871 22.4253 14.7601C22.1562 15.033 21.8199 15.1686 21.4167 15.1667Z" fill="#112D49"/>
+</svg>
+`;
+
+        function updateIcons(html) {
+            document.querySelectorAll(".toggle-icon").forEach(icon => {
+                icon.innerHTML = html;
+            });
+        }
+
+        function applyGridView() {
+            productList.classList.remove("!grid-cols-1");
+            productList.classList.add("!grid-cols-2", "md:!grid-cols-3");
+
+            rowCards.forEach(card => card.classList.remove("!flex-row", "xl:!gap-[55px]", "!gap-[24px]"));
+            infoRow.forEach(card => card.classList.remove("sm:!flex-row"));
+            imageHeight.forEach(card => card.classList.remove("!w-[100px] ", "!h-[100px]"));
+            heartIcon.forEach(card => card.classList.remove("left-[165px]", "max-sm:!left-[158px]", "max-sm:!top-[12px]", "!right-[unset]", "max-[440px]:!left-[125px]"));
+            information.forEach(card => card.classList.remove("!max-w-[490px]", "!flex", "!items-center", "justify-between", "w-full", "sm:!pl-[20px]"));
+            innerImage.forEach(card => card.classList.remove("!w-[70%]", "!top-1/2", "!left-1/2", "-translate-x-1/2", "-translate-y-1/2"));
+            cardHeading.forEach(card => card.classList.remove("!max-w-[306px]", "!flex", "!items-center"));
+            cardHeights.forEach(card => {
+                card.classList.remove("min-h-[unset]");
+                card.classList.add("min-h-[260px]", "sm:min-h-[416px]");
+            });
+
+            updateIcons(gridIcon);
+            localStorage.setItem("viewType", "grid");
+        }
+
+        function applyListView() {
+            productList.classList.remove("!grid-cols-2", "md:!grid-cols-3");
+            productList.classList.add("!grid-cols-1");
+
+            rowCards.forEach(card => card.classList.add("!flex-row", "xl:!gap-[55px]", "!gap-[24px]"));
+            infoRow.forEach(card => card.classList.add("sm:!flex-row"));
+            imageHeight.forEach(card => card.classList.add("!w-[100px]", "!h-[100px]"));
+            heartIcon.forEach(card => card.classList.add("left-[165px]", "max-sm:!left-[158px]", "max-[430px]:!left-[128px]", "max-sm:!top-[12px]", "!right-[unset]", "max-[440px]:!left-[125px]"));
+            information.forEach(card => card.classList.add("!max-w-[490px]", "sm:!flex", "!items-center", "justify-between", "w-full", "sm:!pl-[20px]"));
+            innerImage.forEach(card => card.classList.add("!w-[70%]", "!top-1/2", "!left-1/2", "-translate-x-1/2", "-translate-y-1/2"));
+            cardHeading.forEach(card => card.classList.add("!max-w-[306px]", "!flex", "!items-center"));
+            cardHeights.forEach(card => {
+                card.classList.remove("min-h-[260px]", "sm:min-h-[416px]");
+                card.classList.add("min-h-[unset]");
+            });
+
+            updateIcons(listIcon);
+            localStorage.setItem("viewType", "list");
+        }
+
+        function handleToggle() {
+            if (productList.classList.contains("!grid-cols-1")) {
+                applyGridView();
+            } else {
+                applyListView();
+            }
+        }
+
+        // Initial view from localStorage
+        const savedView = localStorage.getItem("viewType") || "grid";
+        if (savedView === "list") {
+            applyListView();
+        } else {
+            applyGridView();
+        }
+
+        // Add event listeners to both buttons
+        if (toggleBtnDesktop) toggleBtnDesktop.addEventListener("click", handleToggle);
+        if (toggleBtnMobile) toggleBtnMobile.addEventListener("click", handleToggle);
+    });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+        console.log("Wishlist from localStorage:", wishlist);
+
+        // Remove all active classes first
+        document.querySelectorAll(".add-to-wishlist.wishlist-active").forEach(btn => {
+            btn.classList.remove("wishlist-active");
+        });
+
+        // Activate buttons that are already in wishlist
+        wishlist.forEach(item => {
+            const btn = document.querySelector(`.wishlist-${item.id}`);
+            if (btn) {
+                console.log("Activating wishlist button for product ID:", item.id);
+                btn.classList.add("wishlist-active");
+            }
+        });
+
+        // Add event listeners to wishlist buttons
+        document.querySelectorAll(".add-to-wishlist").forEach(btn => {
+            btn.addEventListener("click", function () {
+                const product = {
+                    id: btn.dataset.id,
+                    variant_id: btn.dataset.variantId,
+                    title: btn.dataset.title,
+                    url: btn.dataset.url,
+                    image: btn.dataset.image,
+                    price: btn.dataset.price,
+                };
+
+                const alreadyInWishlist = wishlist.some(item => String(item.id) === String(product.id));
+
+                if (!alreadyInWishlist) {
+                    wishlist.push(product);
+                    btn.classList.add("wishlist-active");
+                } else {
+                    wishlist = wishlist.filter(item => String(item.id) !== String(product.id));
+                    btn.classList.remove("wishlist-active");
+                }
+
+                localStorage.setItem("wishlist", JSON.stringify(wishlist));
+                console.log("Updated wishlist:", wishlist);
+            });
+        });
+    });
+</script>
+
+
+
+
+{% schema %}
+{
+"name": "t:sections.main-collection-product-grid.name",
+"class": "section",
+"settings": [
+{
+"type": "range",
+"id": "products_per_page",
+"min": 6,
+"max": 36,
+"step": 6,
+"default": 12,
+"label": "t:sections.main-collection-product-grid.settings.products_per_page.label"
+},
+{
+"type": "range",
+"id": "columns_desktop",
+"min": 1,
+"max": 6,
+"step": 1,
+"default": 4,
+"label": "t:sections.main-collection-product-grid.settings.columns_desktop.label"
+},
+{
+"type": "select",
+"id": "columns_mobile",
+"default": "2",
+"label": "t:sections.main-collection-product-grid.settings.columns_mobile.label",
+"options": [
+{
+"value": "1",
+"label": "t:sections.main-collection-product-grid.settings.columns_mobile.options__1.label"
+},
+{
+"value": "2",
+"label": "t:sections.main-collection-product-grid.settings.columns_mobile.options__2.label"
+}
+]
+},
+{
+"type": "color_scheme",
+"id": "color_scheme",
+"label": "t:sections.all.colors.label",
+"info": "t:sections.all.colors.has_cards_info",
+"default": "scheme-1"
+},
+{
+"type": "header",
+"content": "t:sections.main-collection-product-grid.settings.header__3.content"
+},
+{
+"type": "select",
+"id": "image_ratio",
+"options": [
+{
+"value": "adapt",
+"label": "t:sections.main-collection-product-grid.settings.image_ratio.options__1.label"
+},
+{
+"value": "portrait",
+"label": "t:sections.main-collection-product-grid.settings.image_ratio.options__2.label"
+},
+{
+"value": "square",
+"label": "t:sections.main-collection-product-grid.settings.image_ratio.options__3.label"
+}
+],
+"default": "adapt",
+"label": "t:sections.main-collection-product-grid.settings.image_ratio.label"
+},
+{
+"type": "select",
+"id": "image_shape",
+"options": [
+{
+"value": "default",
+"label": "t:sections.all.image_shape.options__1.label"
+},
+{
+"value": "arch",
+"label": "t:sections.all.image_shape.options__2.label"
+},
+{
+"value": "blob",
+"label": "t:sections.all.image_shape.options__3.label"
+},
+{
+"value": "chevronleft",
+"label": "t:sections.all.image_shape.options__4.label"
+},
+{
+"value": "chevronright",
+"label": "t:sections.all.image_shape.options__5.label"
+},
+{
+"value": "diamond",
+"label": "t:sections.all.image_shape.options__6.label"
+},
+{
+"value": "parallelogram",
+"label": "t:sections.all.image_shape.options__7.label"
+},
+{
+"value": "round",
+"label": "t:sections.all.image_shape.options__8.label"
+}
+],
+"default": "default",
+"label": "t:sections.all.image_shape.label"
+},
+{
+"type": "checkbox",
+"id": "show_secondary_image",
+"default": false,
+"label": "t:sections.main-collection-product-grid.settings.show_secondary_image.label"
+},
+{
+"type": "checkbox",
+"id": "show_vendor",
+"default": false,
+"label": "t:sections.main-collection-product-grid.settings.show_vendor.label"
+},
+{
+"type": "checkbox",
+"id": "show_rating",
+"default": false,
+"label": "t:sections.main-collection-product-grid.settings.show_rating.label",
+"info": "t:sections.main-collection-product-grid.settings.show_rating.info"
+},
+{
+"type": "select",
+"id": "quick_add",
+"default": "none",
+"label": "t:sections.main-collection-product-grid.settings.quick_add.label",
+"options": [
+{
+"value": "none",
+"label": "t:sections.main-collection-product-grid.settings.quick_add.options.option_1"
+},
+{
+"value": "standard",
+"label": "t:sections.main-collection-product-grid.settings.quick_add.options.option_2"
+},
+{
+"value": "bulk",
+"label": "t:sections.main-collection-product-grid.settings.quick_add.options.option_3"
+}
+]
+},
+{
+"type": "header",
+"content": "t:sections.main-collection-product-grid.settings.header__1.content"
+},
+{
+"type": "checkbox",
+"id": "enable_filtering",
+"default": true,
+"label": "t:sections.main-collection-product-grid.settings.enable_filtering.label",
+"info": "t:sections.main-collection-product-grid.settings.enable_filtering.info"
+},
+{
+"type": "select",
+"id": "filter_type",
+"options": [
+{
+"value": "horizontal",
+"label": "t:sections.main-collection-product-grid.settings.filter_type.options__1.label"
+},
+{
+"value": "vertical",
+"label": "t:sections.main-collection-product-grid.settings.filter_type.options__2.label"
+},
+{
+"value": "drawer",
+"label": "t:sections.main-collection-product-grid.settings.filter_type.options__3.label"
+}
+],
+"default": "horizontal",
+"label": "t:sections.main-collection-product-grid.settings.filter_type.label"
+},
+{
+"type": "checkbox",
+"id": "enable_sorting",
+"default": true,
+"label": "t:sections.main-collection-product-grid.settings.enable_sorting.label"
+},
+{
+"type": "header",
+"content": "t:sections.all.padding.section_padding_heading"
+},
+{
+"type": "range",
+"id": "padding_top",
+"min": 0,
+"max": 100,
+"step": 4,
+"unit": "px",
+"label": "t:sections.all.padding.padding_top",
+"default": 36
+},
+{
+"type": "range",
+"id": "padding_bottom",
+"min": 0,
+"max": 100,
+"step": 4,
+"unit": "px",
+"label": "t:sections.all.padding.padding_bottom",
+"default": 36
+}
+]
+}
+{% endschema %}

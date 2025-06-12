@@ -1,0 +1,297 @@
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+{{ 'customer.css' | asset_url | stylesheet_tag }}
+{%- style -%}
+.section-{{ section.id }}-padding {
+padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+}
+.form__message{
+color : red;
+}
+.shopify-section{
+background-image: url('{{ section.settings.image | img_url: 'master' }}');
+background-size: cover;
+background-position: center;
+background-repeat: no-repeat;
+}
+
+.customer form{
+margin-top : 16px;
+}
+.customer .field{
+margin-top : 8px;
+}
+.error-ul li a {
+color :red;
+}
+.customer button{
+margin: 12px 0px 0px 0px;
+}
+@media screen and (min-width: 750px) {
+.section-{{ section.id }}-padding {
+padding-top: {{ section.settings.padding_top }}px;
+padding-bottom: {{ section.settings.padding_bottom }}px;
+}
+.customer form{
+margin-top : 24px;
+}
+.customer .field{
+margin-top : 12px;
+}
+.customer button{
+margin: 24px 0px 0px 0px;
+}
+
+}
+
+{%- endstyle -%}
+<div class="min-h-[calc(100vh-60px)] py-[60px] flex justify-center items-center">
+    <div
+        class="customer !bg-white  border-[#E3E3E3] lg:min-w-[590px] max-w-[600px] w-full lg:!p-[64px] !p-[20px] border-[1px] rounded-[15px] register section-{{ section.id }}-padding">
+        <h1 class="!font-[700] !text-[#112D49] !text-[32px] max-[750px]:!text-[24px] !leading-[120%] !text-center">
+            {{ 'customer.register.title' | t }}
+        </h1>
+        <p class="text-[16px] font-normal text-[#112D49] max-w-[396px] !leading-[150%] !my-0 !mx-auto !pt-[8px]">{{
+            section.settings.description }}</p>
+        {%- form 'create_customer'-%}
+        {%- if form.errors -%}
+        <h2 class="form__message !outline-none !shadow-none max-[750px]:text-[20px]" tabindex="-1" autofocus>
+            <span class="svg-wrapper">
+                {{- 'icon-error.svg' | inline_asset_content -}}
+            </span>
+            {{ 'templates.contact.form.error_heading' | t }}
+        </h2>
+        <ul class="!ps-[20px] error-ul !mb-[24px] max-[750px]:mb-[12px]">
+            {%- for field in form.errors -%}
+            <li class="!text-red-500">
+                {%- if field == 'form' -%}
+                {{ form.errors.messages[field] }}
+                {%- else -%}
+                <a class="!text-red-500" href="#RegisterForm-{{ field }}">
+                    {{ form.errors.translated_fields[field] | capitalize }}
+                    {{ form.errors.messages[field] }}
+                </a>
+                {%- endif -%}
+            </li>
+            {%- endfor -%}
+        </ul>
+        {%- endif -%}
+        <div class="field after:!content-[none] before:!content-[none]">
+            <input autocomplete="off" required
+                class="!rounded-[102px] !h-[50px] placeholder:!text-[#112D49]/80 !text-[#112D49]/80 text-[16px] focus:!outline-none focus:!ring-0 focus:!ring-[#abc] !bg-[#F4F8F7]"
+                type="text" name="customer[first_name]" id="RegisterForm-FirstName" {% if form.first_name %}
+                value="{{ form.first_name }}" {% endif %} autocomplete="given-name"
+                placeholder="{{ 'customer.register.first_name' | t }}">
+            <label class="!text-[#112D49]/80" for="RegisterForm-FirstName">
+                {{ 'customer.register.first_name' | t }}
+            </label>
+        </div>
+        <div class="field after:!content-[none] before:!content-[none]">
+            <input autocomplete="off" required
+                class="!rounded-[102px] !h-[50px] placeholder:!text-[#112D49]/80 !text-[#112D49]/80 text-[16px] focus:!outline-none focus:!ring-0 focus:!ring-[#abc] !bg-[#F4F8F7]"
+                type="text" name="customer[last_name]" id="RegisterForm-LastName" {% if form.last_name %}
+                value="{{ form.last_name }}" {% endif %} autocomplete="family-name"
+                placeholder="{{ 'customer.register.last_name' | t }}">
+            <label class="!text-[#112D49]/80" for="RegisterForm-LastName">
+                {{ 'customer.register.last_name' | t }}
+            </label>
+        </div>
+        <div class="field after:!content-[none] before:!content-[none]">
+            <input autocomplete="off" required
+                class="!rounded-[102px] !h-[50px] placeholder:!text-[#112D49]/80 !text-[#112D49]/80 text-[16px] focus:!outline-none focus:!ring-0 focus:!ring-[#abc] !bg-[#F4F8F7]"
+                type="email" name="customer[email]" id="RegisterForm-email" {% if form.email %} value="{{ form.email }}"
+                {% endif %} spellcheck="false" autocapitalize="off" autocomplete="email" aria-required="true" {% if
+                form.errors contains 'email' %} aria-invalid="true" aria-describedby="RegisterForm-email-error" {% endif
+                %} placeholder="{{ 'customer.register.email' | t }}">
+            <label class="!text-[#112D49]/80" for="RegisterForm-email">
+                {{ 'customer.register.email' | t }}
+            </label>
+        </div>
+        {%- if form.errors contains 'email' -%}
+        <span id="RegisterForm-email-error" class="form__message">
+            <span class="svg-wrapper">
+                {{- 'icon-error.svg' | inline_asset_content -}}
+            </span>
+            {{ form.errors.translated_fields.email | capitalize }}
+            {{ form.errors.messages.email }}.
+        </span>
+        {%- endif -%}
+        <div class="field after:!content-[none] before:!content-[none] mt-4">
+            <input autocomplete="off" required
+                class="!rounded-[102px] !h-[50px] placeholder:!text-[#112D49]/80 !text-[#112D49]/80 text-[16px] focus:!outline-none focus:!ring-0 focus:!ring-[#abc] !bg-[#F4F8F7]"
+                type="email" name="confirm_email" id="RegisterForm-confirm-email" spellcheck="false"
+                autocapitalize="off" aria-required="true" placeholder="Confirm Email">
+            <label class="!text-[#112D49]/80" for="RegisterForm-confirm-email">
+                Confirm Email
+            </label>
+        </div>
+        <!-- Error Message -->
+        <span id="confirm-email-error" class="form__message hidden text-red-600 text-sm mt-2">
+            Email addresses do not match.
+        </span>
+
+        <div
+            class="field after:!content-[none] before:!content-[none] field relative after:!content-[none] before:!content-[none] !bg-[#F4F8F7] !rounded-[102px] !h-[50px]">
+            <input autocomplete="off" required
+                class="!rounded-[102px] !h-[50px] placeholder:!text-[#112D49]/80 !text-[#112D49]/80 text-[16px] focus:!outline-none focus:!ring-0 focus:!ring-[#abc] !bg-[#F4F8F7]"
+                type="password" name="customer[password]" id="RegisterForm-password" aria-required="true" {% if
+                form.errors contains 'password' %} aria-invalid="true" aria-describedby="RegisterForm-password-error" {%
+                endif %} placeholder="{{ 'customer.register.password' | t }}">
+            <label class="!text-[#112D49]/80" for="RegisterForm-password">
+                {{ 'customer.register.password' | t }}
+            </label>
+            <button type="button" onclick="togglePasswordVisibility(this, 'RegisterForm-password')"
+                class="absolute focus:outline-none  focus-visible:!ring-0 !outline-none focus-visible:!ring-none !min-w-[39px] right-0 top-1/2 -translate-y-1/2 after:!content-[none] !pr-[15px] !my-0 before:!content-[none] !justify-end !border-none !bg-transparent focus:outline-none"
+                aria-label="Toggle password visibility">
+                <span
+                    class="icon-show relative inline-flex after:!rotate-45 after:!origin-top-left after:!absolute after:!top-[11%] after:!left-[11%] after:!w-[110%] after:!transition-all after:!duration-300 after:!h-[1.5px] after:!rounded-lg after:!bg-[#3F566B]">
+                    {{ 'eye.svg' | inline_asset_content }}
+                </span>
+                <span class="icon-hide hidden">
+                    {{ 'eye.svg' | inline_asset_content }}
+                </span>
+            </button>
+        </div>
+        {%- if form.errors contains 'password' -%}
+        <span id="RegisterForm-password-error" class="form__message">
+            <span class="svg-wrapper">
+                {{- 'icon-error.svg' | inline_asset_content -}}
+            </span>
+            {{ form.errors.translated_fields.password | capitalize }}
+            {{ form.errors.messages.password }}.
+        </span>
+        {%- endif -%}
+        <div
+            class="field after:!content-[none] before:!content-[none] field relative after:!content-[none] before:!content-[none] !bg-[#F4F8F7] !rounded-[102px] !h-[50px] mt-4">
+            <input autocomplete="off" required
+                class="!rounded-[102px] !h-[50px] placeholder:!text-[#112D49]/80 !text-[#112D49]/80 text-[16px] focus:!outline-none focus:!ring-0 !bg-[#F4F8F7]"
+                type="password" name="confirm_password" id="RegisterForm-confirm-password"
+                placeholder="Confirm Password" aria-required="true">
+            <label class="!text-[#112D49]/80" for="RegisterForm-confirm-password">
+                Confirm Password
+            </label>
+            <!-- 👁️ Eye Button -->
+            <button type="button" onclick="togglePasswordVisibility(this, 'RegisterForm-confirm-password')"
+                class="absolute focus:outline-none focus-visible:!ring-0 !outline-none focus-visible:!ring-none !min-w-[39px] right-0 top-1/2 -translate-y-1/2 after:!content-[none] !pr-[15px] !my-0 before:!content-[none] !justify-end !border-none !bg-transparent"
+                aria-label="Toggle confirm password visibility">
+                <span
+                    class="icon-show relative inline-flex after:!rotate-45 after:!origin-top-left after:!absolute after:!top-[11%] after:!left-[11%] after:!w-[110%] after:!transition-all after:!duration-300 after:!h-[1.5px] after:!rounded-lg after:!bg-[#3F566B]">
+                    {{ 'eye.svg' | inline_asset_content }}
+                </span>
+                <span class="icon-hide hidden">
+                    {{ 'eye.svg' | inline_asset_content }}
+                </span>
+            </button>
+        </div>
+        <span id="confirm-password-error" class="form__message hidden text-red-600 text-sm mt-2">
+            Passwords do not match.
+        </span>
+        <button type="submit" id="registerSubmit"
+            class="group cursor-pointer relative !h-[52px] px-[20px] !rounded-full py-[16px] w-full mx-auto !bg-[#112D49] !border-[2px] !border-[#112D49] text-white font-medium !leading-[120%] after:!shadow-none text-[14px] overflow-hidden rounded-[36px] transition duration-500 ">
+            <span
+                class="relative z-[2] duration-300 max-sm:!text-[14px] !text-[16px] transition-all text-nowrap !font-[500] group-hover:text-[#112D49]">
+                {{ 'customer.register.submit' | t }}</span>
+            <span
+                class="absolute top-full left-0 w-1/4 h-full bg-[#EAE9E7] rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[0s] z-[1]"></span>
+            <span
+                class="absolute top-full left-1/4 w-1/4 h-full bg-[#EAE9E7] rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[100ms] z-[1]"></span>
+            <span
+                class="absolute top-full left-1/2 w-1/4 h-full bg-[#EAE9E7] rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[200ms] z-[1]"></span>
+            <span
+                class="absolute top-full left-[75%] w-1/4 h-full bg-[#EAE9E7] rounded-full transition duration-500 group-hover:translate-y-[-32px]  scale-200 translate-y-full delay-[300ms] z-[1]"></span>
+        </button>
+        <p class="text-[#41576D] mt-[20px] text-[16px] leading-[150%]">Already a member? <a
+                class="!text-[#112D49] font-[600] !text-[16px]" href="{{ routes.account_login_url }}">Log in</a></p>
+        {%- endform -%}
+    </div>
+</div>
+<script>
+    function togglePasswordVisibility(button, inputId) {
+        const input = document.getElementById(inputId);
+        const showIcon = button.querySelector(".icon-show");
+        const hideIcon = button.querySelector(".icon-hide");
+        if (input.type === "password") {
+            input.type = "text";
+            showIcon.classList.add("hidden");
+            hideIcon.classList.remove("hidden");
+        } else {
+            input.type = "password";
+            showIcon.classList.remove("hidden");
+            hideIcon.classList.add("hidden");
+        }
+    }
+    document.addEventListener("DOMContentLoaded", function () {
+        const form = document.querySelector("form");
+        const email = document.getElementById("RegisterForm-email");
+        const confirmEmail = document.getElementById("RegisterForm-confirm-email");
+        const emailError = document.getElementById("confirm-email-error");
+        const password = document.getElementById("RegisterForm-password");
+        const confirmPassword = document.getElementById("RegisterForm-confirm-password");
+        const passwordError = document.getElementById("confirm-password-error");
+        form.addEventListener("submit", function (e) {
+            let valid = true;
+            // Reset previous errors
+            emailError.classList.add("hidden");
+            passwordError.classList.add("hidden");
+            confirmEmail.classList.remove("border", "border-red-500");
+            confirmPassword.classList.remove("border", "border-red-500");
+            // Check if emails match
+            if (email.value.trim() !== confirmEmail.value.trim()) {
+                emailError.classList.remove("hidden");
+                confirmEmail.classList.add("border", "border-red-500");
+                valid = false;
+            }
+            // Check if passwords match
+            if (password.value !== confirmPassword.value) {
+                passwordError.classList.remove("hidden");
+                confirmPassword.classList.add("border", "border-red-500");
+                valid = false;
+            }
+            // Prevent form if any mismatch
+            if (!valid) {
+                e.preventDefault();
+            }
+        });
+    });
+</script>
+{% schema %}
+{
+"name": "t:sections.main-register.name",
+"settings": [
+{
+"type": "image_picker",
+"id": "image",
+"label": "image"
+},
+{
+"type": "text",
+"id": "description",
+"label": "description"
+},
+{
+"type": "header",
+"content": "t:sections.all.padding.section_padding_heading"
+},
+{
+"type": "range",
+"id": "padding_top",
+"min": 0,
+"max": 100,
+"step": 4,
+"unit": "px",
+"label": "t:sections.all.padding.padding_top",
+"default": 36
+},
+{
+"type": "range",
+"id": "padding_bottom",
+"min": 0,
+"max": 100,
+"step": 4,
+"unit": "px",
+"label": "t:sections.all.padding.padding_bottom",
+"default": 36
+}
+]
+}
+{% endschema %}
